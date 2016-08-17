@@ -18,10 +18,29 @@ namespace kcptun_gui.View
         public LogForm()
         {
             InitializeComponent();
+            this.StartPosition = FormStartPosition.Manual;
+            this.Left = GetBestLeft();
+            this.Top = GetBestTop();
         }
 
         private void LogForm_Load(object sender, EventArgs e)
         {
+        }
+
+        protected override void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+            logViewerUserControl1.ScrollToCaret();
+        }
+
+        public int GetBestLeft()
+        {
+            return Screen.PrimaryScreen.WorkingArea.Width - this.Width;
+        }
+
+        public int GetBestTop()
+        {
+            return Screen.PrimaryScreen.WorkingArea.Height - this.Height;
         }
 
         private void openLocationToolStripMenuItem_Click(object sender, EventArgs e)

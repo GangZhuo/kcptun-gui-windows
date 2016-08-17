@@ -38,6 +38,11 @@ namespace kcptun_gui.View
             UpdateContent();
         }
 
+        public void ScrollToCaret()
+        {
+            LogTextBox.ScrollToCaret();
+        }
+
         public void DoCleanLogs()
         {
             bool timerEnabled = timer1.Enabled;
