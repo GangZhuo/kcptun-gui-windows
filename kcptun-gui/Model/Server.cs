@@ -30,81 +30,81 @@ namespace kcptun_gui.Model
         #region Properties
 
         [Category(PropertyCategories.Base)]
-        [Description("local listen address")]
+        [Description("Local listen address.")]
         public string localaddr { get; set; }
 
         [Category(PropertyCategories.Base)]
-        [Description("kcp server address")]
+        [Description("KCP server address.")]
         public string remoteaddr { get; set; }
 
         [Category(PropertyCategories.Base)]
-        [Description("mode for communication")]
+        [Description("Mode for communication.")]
         public kcptun_mode mode { get; set; }
 
         [Category(PropertyCategories.Base)]
-        [Description("remarks specify by user")]
+        [Description("Mnemonic-name for server.")]
         public string remarks { get; set; }
 
         [Category(PropertyCategories.Security)]
-        [Description("key for communcation, must be the same as kcptun server")]
+        [Description("Key for communcation. Must be same as KCP server.")]
         public string key { get; set; }
 
         [Category(PropertyCategories.Security)]
-        [Description("methods for encryption")]
+        [Description("Method for encryption. Must be same as KCP server.")]
         public kcptun_crypt crypt { get; set; }
 
         [Category(PropertyCategories.WindowSize)]
-        [Description("set send window size(num of packets)")]
+        [Description("Send window size (num of packets).")]
         public int sndwnd { get; set; }
 
         [Category(PropertyCategories.WindowSize)]
-        [Description("set receive window size(num of packets)")]
+        [Description("Receive window size (num of packets).")]
         public int rcvwnd { get; set; }
 
         [Category(PropertyCategories.ReedSolomon)]
-        [Description("set reed-solomon erasure coding - datashard")]
+        [Description("Reed-solomon erasure coding - datashard. Must be same as KCP server.")]
         public int datashard { get; set; }
 
         [Category(PropertyCategories.ReedSolomon)]
-        [Description("set reed-solomon erasure coding - parityshard")]
+        [Description("Reed-solomon erasure coding - parityshard. Must be same as KCP server.")]
         public int parityshard { get; set; }
 
         [Category(PropertyCategories.Options)]
-        [Description("establish N physical connections as specified by 'conn' to server")]
+        [Description("Establish N physical connections as specified by 'conn' to server.")]
         public int conn { get; set; }
 
         [Category(PropertyCategories.Options)]
-        [Description("set MTU of UDP packets, suggest 'tracepath' to discover path mtu")]
+        [Description("MTU of UDP packets, suggest 'tracepath' to discover path mtu.")]
         public int mtu { get; set; }
 
         [Category(PropertyCategories.Options)]
-        [Description("disable compression")]
+        [Description("No snappy compression. Must be same as KCP server.")]
         public bool nocomp { get; set; }
 
         [Category(PropertyCategories.Options)]
-        [Description("set DSCP(6bit)")]
+        [Description("DSCP(6bit). Ref https://en.wikipedia.org/wiki/Differentiated_services#Commonly_used_DSCP_values .")]
         public int dscp { get; set; }
 
         [Category(PropertyCategories.Advanced)]
-        [Description("")]
+        [Description("Ref https://github.com/xtaci/kcptun .")]
         public int nodelay { get; set; }
 
         [Category(PropertyCategories.Advanced)]
-        [Description("")]
+        [Description("Ref https://github.com/xtaci/kcptun .")]
         public int resend { get; set; }
 
         [Category(PropertyCategories.Advanced)]
-        [Description("")]
+        [Description("Ref https://github.com/xtaci/kcptun .")]
         public int nc { get; set; }
 
         [Category(PropertyCategories.Advanced)]
-        [Description("")]
+        [Description("Ref https://github.com/xtaci/kcptun .")]
         public int interval { get; set; }
 
         [Category(PropertyCategories.Advanced)]
-        [DisplayName("Other Arguments")]
-        [Description("")]
-        public string other_arguments { get; set; }
+        [DisplayName("extend arguments")]
+        [Description("Extend arguments append to end.")]
+        public string extend_arguments { get; set; }
 
         #endregion
 

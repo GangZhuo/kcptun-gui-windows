@@ -221,10 +221,10 @@ namespace kcptun_gui.Controller
                 arguments.Append($" --nc {server.nc}");
                 arguments.Append($" --interval {server.interval}");
             }
-            if (!string.IsNullOrEmpty(server.other_arguments))
-                arguments.Append($" {server.other_arguments}");
+            if (!string.IsNullOrEmpty(server.extend_arguments))
+                arguments.Append($" {server.extend_arguments}");
 
-            return arguments.ToString();
+            return arguments.ToString().Trim();
         }
     }
 }

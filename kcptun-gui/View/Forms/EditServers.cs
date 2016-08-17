@@ -27,6 +27,7 @@ namespace kcptun_gui.View
             InitializeComponent();
 
             ServerListBox.SelectedIndexChanged += ServerListBox_SelectedIndexChanged;
+            ServerPropertyGrid.PropertyValueChanged += ServerPropertyGrid_PropertyValueChanged;
 
             controller.ConfigController.ConfigChanged += OnConfigChanged;
         }
@@ -62,7 +63,18 @@ namespace kcptun_gui.View
 
         private void LoadServer()
         {
-            ServerPropertyGrid.SelectedObject = GetSelectedServer();
+            Server server = GetSelectedServer();
+            ServerPropertyGrid.SelectedObject = server;
+            RefreshServerArgumentTextBox();
+        }
+
+        private void RefreshServerArgumentTextBox()
+        {
+            Server server = GetSelectedServer();
+            if (server != null)
+                ArgumentsTextBox.Text = KCPTunnelController.BuildArguments(server);
+            else
+                ArgumentsTextBox.Text = "";
         }
 
         private void RefreshButtons()
@@ -92,6 +104,11 @@ namespace kcptun_gui.View
         {
             LoadServerList();
             RefreshButtons();
+        }
+
+        private void ServerPropertyGrid_PropertyValueChanged(object s, PropertyValueChangedEventArgs e)
+        {
+            RefreshServerArgumentTextBox();
         }
 
         private bool indexChangeLock = false;
