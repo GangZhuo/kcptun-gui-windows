@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.panel1 = new System.Windows.Forms.Panel();
+            this.GUIVersion = new System.Windows.Forms.Label();
             this.LogoPictureBox = new System.Windows.Forms.PictureBox();
             this.KcptunVersion = new System.Windows.Forms.Label();
             this.AboutLabel = new System.Windows.Forms.Label();
@@ -36,7 +37,6 @@
             this.kcptunHomePageLinkLabel = new System.Windows.Forms.LinkLabel();
             this.KcptunHomePageLabel = new System.Windows.Forms.Label();
             this.HomePageLinkLabel = new System.Windows.Forms.LinkLabel();
-            this.GUIVersion = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LogoPictureBox)).BeginInit();
             this.SuspendLayout();
@@ -58,6 +58,15 @@
             this.panel1.Size = new System.Drawing.Size(401, 268);
             this.panel1.TabIndex = 9;
             // 
+            // GUIVersion
+            // 
+            this.GUIVersion.AutoSize = true;
+            this.GUIVersion.Location = new System.Drawing.Point(3, 241);
+            this.GUIVersion.Name = "GUIVersion";
+            this.GUIVersion.Size = new System.Drawing.Size(90, 13);
+            this.GUIVersion.TabIndex = 8;
+            this.GUIVersion.Text = "GUI version 1.1.1";
+            // 
             // LogoPictureBox
             // 
             this.LogoPictureBox.BackColor = System.Drawing.Color.Transparent;
@@ -74,9 +83,9 @@
             this.KcptunVersion.AutoSize = true;
             this.KcptunVersion.Location = new System.Drawing.Point(3, 213);
             this.KcptunVersion.Name = "KcptunVersion";
-            this.KcptunVersion.Size = new System.Drawing.Size(55, 13);
+            this.KcptunVersion.Size = new System.Drawing.Size(128, 13);
             this.KcptunVersion.TabIndex = 7;
-            this.KcptunVersion.Text = "20160811";
+            this.KcptunVersion.Text = "kcptun version 20160811";
             // 
             // AboutLabel
             // 
@@ -121,20 +130,11 @@
             this.HomePageLinkLabel.AutoSize = true;
             this.HomePageLinkLabel.Location = new System.Drawing.Point(70, 154);
             this.HomePageLinkLabel.Name = "HomePageLinkLabel";
-            this.HomePageLinkLabel.Size = new System.Drawing.Size(206, 13);
+            this.HomePageLinkLabel.Size = new System.Drawing.Size(250, 13);
             this.HomePageLinkLabel.TabIndex = 4;
             this.HomePageLinkLabel.TabStop = true;
-            this.HomePageLinkLabel.Text = "https://github.com/GangZhuo/kcptun-gui";
+            this.HomePageLinkLabel.Text = "https://github.com/GangZhuo/kcptun-gui-windows";
             this.HomePageLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.OnLinkClicked);
-            // 
-            // GUIVersion
-            // 
-            this.GUIVersion.AutoSize = true;
-            this.GUIVersion.Location = new System.Drawing.Point(3, 241);
-            this.GUIVersion.Name = "GUIVersion";
-            this.GUIVersion.Size = new System.Drawing.Size(35, 13);
-            this.GUIVersion.TabIndex = 8;
-            this.GUIVersion.Text = "label1";
             // 
             // AboutUserControl
             // 
