@@ -63,6 +63,7 @@
     <Compile Include="Controller\MainController.cs" />
     <Compile Include="Controller\KCPTunnelController.cs" />
     <Compile Include="Controller\Logging.cs" />
+    <Compile Include="Controller\System\AutoStartup.cs" />
     <Compile Include="View\Forms\AboutForm.cs">
       <SubType>Form</SubType>
     </Compile>

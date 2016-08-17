@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.NetworkInformation;
 using kcptun_gui.Controller;
 using System.Drawing;
+using Microsoft.Win32;
 
 namespace kcptun_gui.Util
 {
@@ -124,6 +125,17 @@ namespace kcptun_gui.Util
                 }
             }
             return bmp;
+        }
+
+        public static RegistryKey OpenUserRegKey(string name, bool writable)
+        {
+            // we are building x86 binary for both x86 and x64, which will
+            // cause problem when opening registry key
+            // detect operating system instead of CPU
+            RegistryKey userKey = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser,
+                Environment.Is64BitOperatingSystem ? RegistryView.Registry64 : RegistryView.Registry32);
+            userKey = userKey.OpenSubKey(name, writable);
+            return userKey;
         }
 
     }

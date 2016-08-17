@@ -22,6 +22,7 @@ namespace kcptun_gui.View
         private MenuItem stopItem;
         private MenuItem restartItem;
         private MenuItem killAllItem;
+        private MenuItem autoStartupItem;
 
         private EidtServersForm editServersForm;
         private AboutForm aboutForm;
@@ -58,6 +59,7 @@ namespace kcptun_gui.View
             Configuration config = controller.ConfigController.GetConfigurationCopy();
             UpdateServersMenu();
             enableItem.Checked = config.enabled;
+            autoStartupItem.Checked = AutoStartup.Check();
         }
 
         private MenuItem CreateMenuItem(string text, EventHandler click)
@@ -85,6 +87,8 @@ namespace kcptun_gui.View
                     this.restartItem = CreateMenuItem("Restart", new EventHandler(this.OnRestartItemClick)),
                     this.killAllItem = CreateMenuItem("Kill All", new EventHandler(this.OnKillAllItemClick)),
                 }),
+                new MenuItem("-"),
+                this.autoStartupItem = CreateMenuItem("Start on Boot", new EventHandler(this.OnAutoStartupItemClick)),
                 new MenuItem("-"),
                 CreateMenuItem("Show Logs...", new EventHandler(this.OnShowLogItemClick)),
                 CreateMenuItem("About...", new EventHandler(this.OnAboutItemClick)),
@@ -275,6 +279,15 @@ namespace kcptun_gui.View
             {
                 Logging.LogUsefulException(ex);
                 MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void OnAutoStartupItemClick(object sender, EventArgs e)
+        {
+            autoStartupItem.Checked = !autoStartupItem.Checked;
+            if (!AutoStartup.Set(autoStartupItem.Checked))
+            {
+                MessageBox.Show("Failed to update registry");
             }
         }
 
