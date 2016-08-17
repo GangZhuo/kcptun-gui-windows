@@ -16,6 +16,8 @@ namespace kcptun_gui.Model
 
         public bool enabled;
 
+        public bool verbose;
+
         [JsonIgnore]
         public bool isDefault;
 

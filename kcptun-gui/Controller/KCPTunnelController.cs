@@ -13,6 +13,8 @@ namespace kcptun_gui.Controller
     {
         const string FILENAME = "kcptun-client.exe";
 
+        private MainController controller;
+
         private MyProcess _process;
         private Server _server;
 
@@ -54,11 +56,9 @@ namespace kcptun_gui.Controller
         public event EventHandler Started;
         public event EventHandler Stoped;
 
-        public KCPTunnelController() { }
-
-        public KCPTunnelController(Server server)
+        public KCPTunnelController(MainController controller)
         {
-            _server = server;
+            this.controller = controller;
         }
 
         public void Start()
@@ -132,12 +132,14 @@ namespace kcptun_gui.Controller
 
         private void OnProcessOutputDataReceived(object sender, DataReceivedEventArgs e)
         {
-            WriteToLogFile(sender as MyProcess, e.Data);
+            if (controller.ConfigController.GetCurrentConfiguration().verbose)
+                WriteToLogFile(sender as MyProcess, e.Data);
         }
 
         private void OnProcessErrorDataReceived(object sender, DataReceivedEventArgs e)
         {
-            WriteToLogFile(sender as MyProcess, e.Data);
+            if (controller.ConfigController.GetCurrentConfiguration().verbose)
+                WriteToLogFile(sender as MyProcess, e.Data);
         }
 
         private void OnProcessExited(object sender, EventArgs e)

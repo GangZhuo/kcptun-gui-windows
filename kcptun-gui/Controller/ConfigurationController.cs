@@ -6,14 +6,18 @@ namespace kcptun_gui.Controller
 {
     public class ConfigurationController
     {
+        private MainController controller;
+
         private Configuration _config;
 
         public event EventHandler ConfigChanged;
         public event EventHandler EnableChanged;
+        public event EventHandler VerboseChanged;
         public event EventHandler ServerIndexChanged;
 
-        public ConfigurationController()
+        public ConfigurationController(MainController controller)
         {
+            this.controller = controller;
             _config = Configuration.Load();
             if (_config.servers.Count == 0)
             {
@@ -45,6 +49,14 @@ namespace kcptun_gui.Controller
             SaveConfig(_config);
             if (EnableChanged != null)
                 EnableChanged.Invoke(this, new EventArgs());
+        }
+
+        public void ToggleVerboseLogging(bool enabled)
+        {
+            _config.verbose = enabled;
+            SaveConfig(_config);
+            if (VerboseChanged != null)
+                VerboseChanged.Invoke(this, new EventArgs());
         }
 
         public void SelectServerIndex(int index)

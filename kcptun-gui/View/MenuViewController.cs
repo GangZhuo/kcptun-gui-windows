@@ -23,6 +23,7 @@ namespace kcptun_gui.View
         private MenuItem restartItem;
         private MenuItem killAllItem;
         private MenuItem autoStartupItem;
+        private MenuItem verboseLoggingItem;
 
         private EidtServersForm editServersForm;
         private AboutForm aboutForm;
@@ -60,6 +61,7 @@ namespace kcptun_gui.View
             UpdateServersMenu();
             enableItem.Checked = config.enabled;
             autoStartupItem.Checked = AutoStartup.Check();
+            verboseLoggingItem.Checked = config.verbose;
         }
 
         private MenuItem CreateMenuItem(string text, EventHandler click)
@@ -81,15 +83,20 @@ namespace kcptun_gui.View
                     CreateMenuItem("Edit Servers...", new EventHandler(this.OnConfigItemClick))
                 }),
                 new MenuItem("-"),
-                CreateMenuGroup("Operations", new MenuItem[] {
+                CreateMenuGroup("Start/Stop/Restart", new MenuItem[] {
                     this.startItem = CreateMenuItem("Start", new EventHandler(this.OnStartItemClick)),
-                    this.stopItem = CreateMenuItem("Stop", new EventHandler(this.OnStopItemClick)),
                     this.restartItem = CreateMenuItem("Restart", new EventHandler(this.OnRestartItemClick)),
-                    this.killAllItem = CreateMenuItem("Kill All", new EventHandler(this.OnKillAllItemClick)),
+                    this.stopItem = CreateMenuItem("Stop", new EventHandler(this.OnStopItemClick)),
+                    new MenuItem("-"),
+                    this.killAllItem = CreateMenuItem("Stop All", new EventHandler(this.OnKillAllItemClick)),
                 }),
                 new MenuItem("-"),
                 this.autoStartupItem = CreateMenuItem("Start on Boot", new EventHandler(this.OnAutoStartupItemClick)),
                 new MenuItem("-"),
+                CreateMenuGroup("More", new MenuItem[] {
+                    this.verboseLoggingItem = CreateMenuItem("Verbose Logging", new EventHandler(this.OnVerboseLoggingItemClick))
+                }),
+                //new MenuItem("-"),
                 CreateMenuItem("Show Logs...", new EventHandler(this.OnShowLogItemClick)),
                 CreateMenuItem("About...", new EventHandler(this.OnAboutItemClick)),
                 new MenuItem("-"),
@@ -289,6 +296,11 @@ namespace kcptun_gui.View
             {
                 MessageBox.Show("Failed to update registry");
             }
+        }
+
+        private void OnVerboseLoggingItemClick(object sender, EventArgs e)
+        {
+            controller.ConfigController.ToggleVerboseLogging(!verboseLoggingItem.Checked);
         }
 
         private void OnShowLogItemClick(object sender, EventArgs e)

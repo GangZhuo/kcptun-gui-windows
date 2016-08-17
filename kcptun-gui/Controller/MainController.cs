@@ -18,10 +18,10 @@ namespace kcptun_gui.Controller
 
         public MainController()
         {
-            ConfigController = new Controller.ConfigurationController();
+            ConfigController = new ConfigurationController(this);
             ConfigController.ConfigChanged += OnConfigChanged;
 
-            KCPTunnelController = new KCPTunnelController();
+            KCPTunnelController = new KCPTunnelController(this);
 
         }
 
