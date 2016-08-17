@@ -6,7 +6,7 @@ namespace kcptun_gui.Controller
 {
     public class MainController
     {
-        public const string Version = "1.0.0.0";
+        public const string Version = "1.1";
 
         public ConfigurationController ConfigController { get; private set; }
         public KCPTunnelController KCPTunnelController { get; private set; }
