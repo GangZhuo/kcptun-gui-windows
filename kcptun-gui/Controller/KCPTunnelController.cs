@@ -70,24 +70,25 @@ namespace kcptun_gui.Controller
 
             try
             {
-                _process = new MyProcess(_server);
-                _process.StartInfo.FileName = Utils.GetTempPath(FILENAME);
-                _process.StartInfo.Arguments = BuildArguments(_server);
-                _process.StartInfo.WorkingDirectory = Utils.GetTempPath();
-                _process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                _process.StartInfo.UseShellExecute = false;
-                _process.StartInfo.CreateNoWindow = true;
-                _process.StartInfo.RedirectStandardError = true;
-                _process.StartInfo.RedirectStandardOutput = true;
-                _process.ErrorDataReceived += OnProcessErrorDataReceived;
-                _process.OutputDataReceived += OnProcessOutputDataReceived;
-                _process.Exited += OnProcessExited;
-                _process.EnableRaisingEvents = true;
-                _process.Start();
-                _process.BeginOutputReadLine();
-                _process.BeginErrorReadLine();
+                MyProcess p = new MyProcess(_server);
+                _process = p;
+                p.StartInfo.FileName = Utils.GetTempPath(FILENAME);
+                p.StartInfo.Arguments = BuildArguments(_server);
+                p.StartInfo.WorkingDirectory = Utils.GetTempPath();
+                p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                p.StartInfo.UseShellExecute = false;
+                p.StartInfo.CreateNoWindow = true;
+                p.StartInfo.RedirectStandardError = true;
+                p.StartInfo.RedirectStandardOutput = true;
+                p.ErrorDataReceived += OnProcessErrorDataReceived;
+                p.OutputDataReceived += OnProcessOutputDataReceived;
+                p.Exited += OnProcessExited;
+                p.EnableRaisingEvents = true;
+                p.Start();
+                p.BeginOutputReadLine();
+                p.BeginErrorReadLine();
 
-                Console.WriteLine("kcptun started " + _server.FriendlyName());
+                Console.WriteLine("kcptun started " + p.server.FriendlyName());
 
                 if (Started != null)
                     Started.Invoke(this, new EventArgs());
@@ -114,14 +115,29 @@ namespace kcptun_gui.Controller
             }
         }
 
+        private void WriteToLogFile(MyProcess process, string s)
+        {
+            if (s != null)
+            {
+                using (StringReader sr = new StringReader(s))
+                {
+                    string line;
+                    while ((line = sr.ReadLine()) != null)
+                    {
+                        Console.WriteLine(process.server.FriendlyName() + " - " + line);
+                    }
+                }
+            }
+        }
+
         private void OnProcessOutputDataReceived(object sender, DataReceivedEventArgs e)
         {
-            Logging.Info(e.Data);
+            WriteToLogFile(sender as MyProcess, e.Data);
         }
 
         private void OnProcessErrorDataReceived(object sender, DataReceivedEventArgs e)
         {
-            Logging.Info(e.Data);
+            WriteToLogFile(sender as MyProcess, e.Data);
         }
 
         private void OnProcessExited(object sender, EventArgs e)
