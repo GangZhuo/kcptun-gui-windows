@@ -36,12 +36,14 @@
             this.kcptunHomePageLinkLabel = new System.Windows.Forms.LinkLabel();
             this.KcptunHomePageLabel = new System.Windows.Forms.Label();
             this.HomePageLinkLabel = new System.Windows.Forms.LinkLabel();
+            this.GUIVersion = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LogoPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.GUIVersion);
             this.panel1.Controls.Add(this.LogoPictureBox);
             this.panel1.Controls.Add(this.KcptunVersion);
             this.panel1.Controls.Add(this.AboutLabel);
@@ -125,6 +127,15 @@
             this.HomePageLinkLabel.Text = "https://github.com/GangZhuo/kcptun-gui";
             this.HomePageLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.OnLinkClicked);
             // 
+            // GUIVersion
+            // 
+            this.GUIVersion.AutoSize = true;
+            this.GUIVersion.Location = new System.Drawing.Point(3, 241);
+            this.GUIVersion.Name = "GUIVersion";
+            this.GUIVersion.Size = new System.Drawing.Size(35, 13);
+            this.GUIVersion.TabIndex = 8;
+            this.GUIVersion.Text = "label1";
+            // 
             // AboutUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -149,5 +160,6 @@
         private System.Windows.Forms.LinkLabel kcptunHomePageLinkLabel;
         private System.Windows.Forms.Label KcptunHomePageLabel;
         private System.Windows.Forms.LinkLabel HomePageLinkLabel;
+        private System.Windows.Forms.Label GUIVersion;
     }
 }

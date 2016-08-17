@@ -19,6 +19,7 @@ namespace kcptun_gui.View
         {
             InitializeComponent();
             KcptunVersion.Text = KCPTunnelController.GetKcptunVersion();
+            GUIVersion.Text = "GUI version " + MainController.Version;
         }
 
         private void OnLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
