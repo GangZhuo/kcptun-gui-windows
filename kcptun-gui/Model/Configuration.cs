@@ -10,16 +10,21 @@ namespace kcptun_gui.Model
     [Serializable]
     public class Configuration
     {
-        public List<Server> configs;
+        public List<Server> servers;
 
         public int index;
+
+        public bool enabled;
+
+        [JsonIgnore]
+        public bool isDefault;
 
         private static string CONFIG_FILE = "kcptun-gui-config.json";
 
         public Server GetCurrentServer()
         {
-            if (index >= 0 && index < configs.Count)
-                return configs[index];
+            if (index >= 0 && index < servers.Count)
+                return servers[index];
             else
                 return GetDefaultServer();
         }
@@ -30,6 +35,7 @@ namespace kcptun_gui.Model
             {
                 string configContent = File.ReadAllText(CONFIG_FILE);
                 Configuration config = JsonConvert.DeserializeObject<Configuration>(configContent);
+                if (config.servers == null) config.servers = new List<Server>();
                 return config;
             }
             catch (Exception e)
@@ -39,7 +45,9 @@ namespace kcptun_gui.Model
                 return new Configuration
                 {
                     index = 0,
-                    configs = new List<Server>()
+                    enabled = false,
+                    isDefault = true,
+                    servers = new List<Server>()
                     {
                         GetDefaultServer()
                     }
@@ -49,8 +57,8 @@ namespace kcptun_gui.Model
 
         public static void Save(Configuration config)
         {
-            if (config.index >= config.configs.Count)
-                config.index = config.configs.Count - 1;
+            if (config.index >= config.servers.Count)
+                config.index = config.servers.Count - 1;
             if (config.index <= -1)
                 config.index = 0;
             try

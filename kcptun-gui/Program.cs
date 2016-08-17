@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using kcptun_gui.Controller;
@@ -26,8 +23,9 @@ namespace kcptun_gui
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
-            KcptunController controller = new KcptunController();
+            MainController controller = new MainController();
             MenuViewController viewController = new MenuViewController(controller);
+            controller.Start();
             Application.Run();
         }
     }

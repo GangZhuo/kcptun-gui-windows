@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Net;
-using System.Net.NetworkInformation;
-using System.Runtime.InteropServices;
 using System.Text;
 
 using kcptun_gui.Model;
@@ -13,14 +9,14 @@ using kcptun_gui.Util;
 
 namespace kcptun_gui.Controller
 {
-    public class KCPTunnel
+    public class KCPTunnelController
     {
         const string FILENAME = "kcptun-client.exe";
 
         private Process _process;
         private Server _server;
 
-        static KCPTunnel()
+        static KCPTunnelController()
         {
             try
             {
@@ -58,9 +54,9 @@ namespace kcptun_gui.Controller
         public event EventHandler Started;
         public event EventHandler Stoped;
 
-        public KCPTunnel() { }
+        public KCPTunnelController() { }
 
-        public KCPTunnel(Server server)
+        public KCPTunnelController(Server server)
         {
             _server = server;
         }
@@ -69,50 +65,27 @@ namespace kcptun_gui.Controller
         {
             if (IsRunning)
                 throw new Exception("Kcptun running");
-
-            StringBuilder arguments = new StringBuilder();
-            arguments.Append($" -l \"{_server.localaddr}\"");
-            arguments.Append($" -r \"{_server.remoteaddr}\"");
-            arguments.Append($" --crypt {_server.crypt}");
-            if (_server.crypt != kcptun_crypt.none)
-                arguments.Append($" --key \"{_server.key}\"");
-            arguments.Append($" --mode \"{_server.mode}\"");
-            arguments.Append($" --conn {_server.conn}");
-            arguments.Append($" --mtu {_server.mtu}");
-            arguments.Append($" --sndwnd {_server.sndwnd}");
-            arguments.Append($" --rcvwnd {_server.rcvwnd}");
-            if (_server.nocomp)
-                arguments.Append($" --nocomp");
-            arguments.Append($" --datashard {_server.datashard}");
-            arguments.Append($" --parityshard {_server.parityshard}");
-            arguments.Append($" --dscp {_server.dscp}");
-            if (_server.mode == kcptun_mode.manual)
-            {
-                arguments.Append($" --nodelay {_server.nodelay}");
-                arguments.Append($" --resend {_server.resend}");
-                arguments.Append($" --nc {_server.nc}");
-                arguments.Append($" --interval {_server.interval}");
-            }
-            if (!string.IsNullOrEmpty(_server.other_arguments))
-                arguments.Append($" {_server.other_arguments}");
+            if (_server == null)
+                throw new Exception("No Server");
 
             _process = new Process();
-            // Configure the process using the StartInfo properties.
             _process.StartInfo.FileName = Utils.GetTempPath(FILENAME);
-            _process.StartInfo.Arguments = arguments.ToString();
+            _process.StartInfo.Arguments = BuildArguments(_server);
             _process.StartInfo.WorkingDirectory = Utils.GetTempPath();
             _process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
             _process.StartInfo.UseShellExecute = false;
             _process.StartInfo.CreateNoWindow = true;
             _process.StartInfo.RedirectStandardError = true;
             _process.StartInfo.RedirectStandardOutput = true;
-            _process.ErrorDataReceived += _process_ErrorDataReceived;
-            _process.OutputDataReceived += _process_OutputDataReceived;
-            _process.Exited += _process_Exited;
+            _process.ErrorDataReceived += OnProcessErrorDataReceived;
+            _process.OutputDataReceived += OnProcessOutputDataReceived;
+            _process.Exited += OnProcessExited;
             _process.EnableRaisingEvents = true;
             _process.Start();
             _process.BeginOutputReadLine();
             _process.BeginErrorReadLine();
+
+            Console.WriteLine("kcptun started " + _server.FriendlyName());
 
             if (Started != null)
                 Started.Invoke(this, new EventArgs());
@@ -128,36 +101,32 @@ namespace kcptun_gui.Controller
                     _process.Dispose();
                     _process = null;
 
+                    Console.WriteLine("kcptun stoped " + _server.FriendlyName());
+
                     if (Stoped != null)
                         Stoped.Invoke(this, new EventArgs());
                 }
             }
         }
 
-        public void Reload()
-        {
-            if (!IsRunning)
-                throw new Exception("Kcptun stoped");
-            Stop();
-            Start();
-        }
-
-        private void _process_OutputDataReceived(object sender, DataReceivedEventArgs e)
+        private void OnProcessOutputDataReceived(object sender, DataReceivedEventArgs e)
         {
             Logging.Info(e.Data);
         }
 
-        private void _process_ErrorDataReceived(object sender, DataReceivedEventArgs e)
+        private void OnProcessErrorDataReceived(object sender, DataReceivedEventArgs e)
         {
             Logging.Info(e.Data);
         }
 
-        private void _process_Exited(object sender, EventArgs e)
+        private void OnProcessExited(object sender, EventArgs e)
         {
             if (_process != null)
             {
                 _process.Dispose();
                 _process = null;
+
+                Console.WriteLine("kcptun stoped " + _server.FriendlyName());
 
                 if (Stoped != null)
                     Stoped.Invoke(this, new EventArgs());
@@ -225,6 +194,37 @@ namespace kcptun_gui.Controller
                 Logging.LogUsefulException(e);
             }
             return version;
+        }
+
+        public static string BuildArguments(Server server)
+        {
+            StringBuilder arguments = new StringBuilder();
+            arguments.Append($" -l \"{server.localaddr}\"");
+            arguments.Append($" -r \"{server.remoteaddr}\"");
+            arguments.Append($" --crypt {server.crypt}");
+            if (server.crypt != kcptun_crypt.none)
+                arguments.Append($" --key \"{server.key}\"");
+            arguments.Append($" --mode \"{server.mode}\"");
+            arguments.Append($" --conn {server.conn}");
+            arguments.Append($" --mtu {server.mtu}");
+            arguments.Append($" --sndwnd {server.sndwnd}");
+            arguments.Append($" --rcvwnd {server.rcvwnd}");
+            if (server.nocomp)
+                arguments.Append($" --nocomp");
+            arguments.Append($" --datashard {server.datashard}");
+            arguments.Append($" --parityshard {server.parityshard}");
+            arguments.Append($" --dscp {server.dscp}");
+            if (server.mode == kcptun_mode.manual)
+            {
+                arguments.Append($" --nodelay {server.nodelay}");
+                arguments.Append($" --resend {server.resend}");
+                arguments.Append($" --nc {server.nc}");
+                arguments.Append($" --interval {server.interval}");
+            }
+            if (!string.IsNullOrEmpty(server.other_arguments))
+                arguments.Append($" {server.other_arguments}");
+
+            return arguments.ToString();
         }
     }
 }

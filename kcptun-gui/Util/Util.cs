@@ -105,5 +105,26 @@ namespace kcptun_gui.Util
             return bmp;
         }
 
+
+        private static Color flyBlue = Color.FromArgb(25, 125, 191);
+
+        public static Bitmap ToBlue(Bitmap bmp)
+        {
+            for (int i = 0; i < bmp.Width; i++)
+            {
+                for (int j = 0; j < bmp.Height; j++)
+                {
+                    Color color = bmp.GetPixel(i, j);
+                    // Muliply with flyBlue
+                    int red = color.R * flyBlue.R / 255;
+                    int green = color.G * flyBlue.G / 255;
+                    int blue = color.B * flyBlue.B / 255;
+                    Color newColor = Color.FromArgb(color.A, red, green, blue);
+                    bmp.SetPixel(i, j, newColor);
+                }
+            }
+            return bmp;
+        }
+
     }
 }

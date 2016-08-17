@@ -1,7 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Text;
-using System.Text.RegularExpressions;
 
 namespace kcptun_gui.Model
 {
@@ -29,6 +27,8 @@ namespace kcptun_gui.Model
     [DefaultProperty("remoteaddr")]
     public class Server
     {
+        #region Properties
+
         [Category(PropertyCategories.Base)]
         [Description("local listen address")]
         public string localaddr { get; set; }
@@ -106,21 +106,7 @@ namespace kcptun_gui.Model
         [Description("")]
         public string other_arguments { get; set; }
 
-        public override int GetHashCode()
-        {
-            return remoteaddr.GetHashCode();
-        }
-
-        public override bool Equals(object obj)
-        {
-            Server o2 = (Server)obj;
-            return remoteaddr == o2.remoteaddr;
-        }
-
-        public string FriendlyName()
-        {
-            return $"{remarks} ({remoteaddr})";
-        }
+        #endregion
 
         public Server()
         {
@@ -146,9 +132,28 @@ namespace kcptun_gui.Model
             remarks = "";
         }
 
-        public string Identifier()
+        public string FriendlyName()
         {
-            return remoteaddr;
+            if (string.IsNullOrEmpty(remarks))
+                return remoteaddr;
+            else
+                return $"{remarks} ({remoteaddr})";
+        }
+
+        public override int GetHashCode()
+        {
+            return remoteaddr.GetHashCode();
+        }
+
+        public override bool Equals(object obj)
+        {
+            Server o2 = (Server)obj;
+            return remoteaddr == o2.remoteaddr;
+        }
+
+        public override string ToString()
+        {
+            return FriendlyName();
         }
     }
 }
