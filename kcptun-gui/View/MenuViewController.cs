@@ -93,7 +93,7 @@ namespace kcptun_gui.View
                 new MenuItem("-"),
                 this.autoStartupItem = CreateMenuItem("Start on Boot", new EventHandler(this.OnAutoStartupItemClick)),
                 new MenuItem("-"),
-                CreateMenuGroup("More", new MenuItem[] {
+                CreateMenuGroup("More...", new MenuItem[] {
                     this.verboseLoggingItem = CreateMenuItem("Verbose Logging", new EventHandler(this.OnVerboseLoggingItemClick))
                 }),
                 //new MenuItem("-"),
