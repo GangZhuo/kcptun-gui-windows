@@ -13,7 +13,7 @@ namespace kcptun_gui.Controller
     {
         const string FILENAME = "kcptun-client.exe";
 
-        private Process _process;
+        private MyProcess _process;
         private Server _server;
 
         static KCPTunnelController()
@@ -68,44 +68,49 @@ namespace kcptun_gui.Controller
             if (_server == null)
                 throw new Exception("No Server");
 
-            _process = new Process();
-            _process.StartInfo.FileName = Utils.GetTempPath(FILENAME);
-            _process.StartInfo.Arguments = BuildArguments(_server);
-            _process.StartInfo.WorkingDirectory = Utils.GetTempPath();
-            _process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-            _process.StartInfo.UseShellExecute = false;
-            _process.StartInfo.CreateNoWindow = true;
-            _process.StartInfo.RedirectStandardError = true;
-            _process.StartInfo.RedirectStandardOutput = true;
-            _process.ErrorDataReceived += OnProcessErrorDataReceived;
-            _process.OutputDataReceived += OnProcessOutputDataReceived;
-            _process.Exited += OnProcessExited;
-            _process.EnableRaisingEvents = true;
-            _process.Start();
-            _process.BeginOutputReadLine();
-            _process.BeginErrorReadLine();
+            try
+            {
+                _process = new MyProcess(_server);
+                _process.StartInfo.FileName = Utils.GetTempPath(FILENAME);
+                _process.StartInfo.Arguments = BuildArguments(_server);
+                _process.StartInfo.WorkingDirectory = Utils.GetTempPath();
+                _process.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                _process.StartInfo.UseShellExecute = false;
+                _process.StartInfo.CreateNoWindow = true;
+                _process.StartInfo.RedirectStandardError = true;
+                _process.StartInfo.RedirectStandardOutput = true;
+                _process.ErrorDataReceived += OnProcessErrorDataReceived;
+                _process.OutputDataReceived += OnProcessOutputDataReceived;
+                _process.Exited += OnProcessExited;
+                _process.EnableRaisingEvents = true;
+                _process.Start();
+                _process.BeginOutputReadLine();
+                _process.BeginErrorReadLine();
 
-            Console.WriteLine("kcptun started " + _server.FriendlyName());
+                Console.WriteLine("kcptun started " + _server.FriendlyName());
 
-            if (Started != null)
-                Started.Invoke(this, new EventArgs());
+                if (Started != null)
+                    Started.Invoke(this, new EventArgs());
+            }
+            catch (Exception e)
+            {
+                Logging.LogUsefulException(e);
+            }
         }
 
         public void Stop()
         {
-            if (_process != null)
+            MyProcess p = _process;
+            if (p != null)
             {
-                KillProcess(_process);
-                if (_process != null)
-                {
-                    _process.Dispose();
-                    _process = null;
+                _process = null;
+                KillProcess(p);
+                p.Dispose();
 
-                    Console.WriteLine("kcptun stoped " + _server.FriendlyName());
+                Console.WriteLine("kcptun stoped " + p.server.FriendlyName());
 
-                    if (Stoped != null)
-                        Stoped.Invoke(this, new EventArgs());
-                }
+                if (Stoped != null)
+                    Stoped.Invoke(this, new EventArgs());
             }
         }
 
@@ -121,28 +126,23 @@ namespace kcptun_gui.Controller
 
         private void OnProcessExited(object sender, EventArgs e)
         {
-            if (_process != null)
-            {
-                _process.Dispose();
-                _process = null;
-
-                Console.WriteLine("kcptun stoped " + _server.FriendlyName());
-
-                if (Stoped != null)
-                    Stoped.Invoke(this, new EventArgs());
-            }
+            if (sender == _process)
+                Stop();
         }
 
         private static void KillProcess(Process p)
         {
             try
             {
-                p.CloseMainWindow();
-                p.WaitForExit(100);
                 if (!p.HasExited)
                 {
-                    p.Kill();
-                    p.WaitForExit();
+                    p.CloseMainWindow();
+                    p.WaitForExit(100);
+                    if (!p.HasExited)
+                    {
+                        p.Kill();
+                        p.WaitForExit();
+                    }
                 }
             }
             catch (Exception e)
@@ -225,6 +225,16 @@ namespace kcptun_gui.Controller
                 arguments.Append($" {server.extend_arguments}");
 
             return arguments.ToString().Trim();
+        }
+
+        class MyProcess: Process
+        {
+            public Server server { get; private set; }
+
+            public MyProcess(Server server)
+            {
+                this.server = server;
+            }
         }
     }
 }
