@@ -39,6 +39,8 @@
             this.changeFontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.resetFontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logViewerUserControl1 = new kcptun_gui.View.LogViewerUserControl();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.topMostToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -75,7 +77,9 @@
             this.toolStripSeparator2,
             this.wrapTextToolStripMenuItem,
             this.changeFontToolStripMenuItem,
-            this.resetFontToolStripMenuItem});
+            this.resetFontToolStripMenuItem,
+            this.toolStripSeparator1,
+            this.topMostToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(41, 20);
             this.viewToolStripMenuItem.Text = "View";
@@ -83,33 +87,33 @@
             // cleanLogsToolStripMenuItem
             // 
             this.cleanLogsToolStripMenuItem.Name = "cleanLogsToolStripMenuItem";
-            this.cleanLogsToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.cleanLogsToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.cleanLogsToolStripMenuItem.Text = "Clean Logs";
             this.cleanLogsToolStripMenuItem.Click += new System.EventHandler(this.cleanLogsToolStripMenuItem_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(133, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(149, 6);
             // 
             // wrapTextToolStripMenuItem
             // 
             this.wrapTextToolStripMenuItem.Name = "wrapTextToolStripMenuItem";
-            this.wrapTextToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.wrapTextToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.wrapTextToolStripMenuItem.Text = "Wrap Text";
             this.wrapTextToolStripMenuItem.Click += new System.EventHandler(this.wrapTextToolStripMenuItem_Click);
             // 
             // changeFontToolStripMenuItem
             // 
             this.changeFontToolStripMenuItem.Name = "changeFontToolStripMenuItem";
-            this.changeFontToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.changeFontToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.changeFontToolStripMenuItem.Text = "Change Font";
             this.changeFontToolStripMenuItem.Click += new System.EventHandler(this.changeFontToolStripMenuItem_Click);
             // 
             // resetFontToolStripMenuItem
             // 
             this.resetFontToolStripMenuItem.Name = "resetFontToolStripMenuItem";
-            this.resetFontToolStripMenuItem.Size = new System.Drawing.Size(136, 22);
+            this.resetFontToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.resetFontToolStripMenuItem.Text = "Reset Font";
             this.resetFontToolStripMenuItem.Click += new System.EventHandler(this.resetFontToolStripMenuItem_Click);
             // 
@@ -120,6 +124,18 @@
             this.logViewerUserControl1.Name = "logViewerUserControl1";
             this.logViewerUserControl1.Size = new System.Drawing.Size(426, 306);
             this.logViewerUserControl1.TabIndex = 3;
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
+            // 
+            // topMostToolStripMenuItem
+            // 
+            this.topMostToolStripMenuItem.Name = "topMostToolStripMenuItem";
+            this.topMostToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.topMostToolStripMenuItem.Text = "Top Most";
+            this.topMostToolStripMenuItem.Click += new System.EventHandler(this.topMostToolStripMenuItem_Click);
             // 
             // LogForm
             // 
@@ -152,5 +168,7 @@
         private System.Windows.Forms.ToolStripMenuItem resetFontToolStripMenuItem;
         private LogViewerUserControl logViewerUserControl1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem topMostToolStripMenuItem;
     }
 }

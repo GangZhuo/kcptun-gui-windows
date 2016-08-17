@@ -21,6 +21,7 @@ namespace kcptun_gui.View
             this.StartPosition = FormStartPosition.Manual;
             this.Left = GetBestLeft();
             this.Top = GetBestTop();
+            topMostToolStripMenuItem.Checked = this.TopMost;
         }
 
         private void LogForm_Load(object sender, EventArgs e)
@@ -67,6 +68,11 @@ namespace kcptun_gui.View
         private void resetFontToolStripMenuItem_Click(object sender, EventArgs e)
         {
             logViewerUserControl1.ResetViewerFont();
+        }
+
+        private void topMostToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TopMost = topMostToolStripMenuItem.Checked = !topMostToolStripMenuItem.Checked;
         }
     }
 }
