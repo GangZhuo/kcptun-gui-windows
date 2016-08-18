@@ -101,19 +101,19 @@
             this.HomePageLabel.AutoSize = true;
             this.HomePageLabel.Location = new System.Drawing.Point(3, 154);
             this.HomePageLabel.Name = "HomePageLabel";
-            this.HomePageLabel.Size = new System.Drawing.Size(38, 13);
+            this.HomePageLabel.Size = new System.Drawing.Size(105, 13);
             this.HomePageLabel.TabIndex = 2;
-            this.HomePageLabel.Text = "Home:";
+            this.HomePageLabel.Text = "Report GUI issues to";
             // 
             // kcptunHomePageLinkLabel
             // 
             this.kcptunHomePageLinkLabel.AutoSize = true;
-            this.kcptunHomePageLinkLabel.Location = new System.Drawing.Point(70, 184);
+            this.kcptunHomePageLinkLabel.Location = new System.Drawing.Point(124, 184);
             this.kcptunHomePageLinkLabel.Name = "kcptunHomePageLinkLabel";
-            this.kcptunHomePageLinkLabel.Size = new System.Drawing.Size(160, 13);
+            this.kcptunHomePageLinkLabel.Size = new System.Drawing.Size(194, 13);
             this.kcptunHomePageLinkLabel.TabIndex = 5;
             this.kcptunHomePageLinkLabel.TabStop = true;
-            this.kcptunHomePageLinkLabel.Text = "https://github.com/xtaci/kcptun";
+            this.kcptunHomePageLinkLabel.Text = "https://github.com/xtaci/kcptun/issues";
             this.kcptunHomePageLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.OnLinkClicked);
             // 
             // KcptunHomePageLabel
@@ -121,19 +121,19 @@
             this.KcptunHomePageLabel.AutoSize = true;
             this.KcptunHomePageLabel.Location = new System.Drawing.Point(3, 184);
             this.KcptunHomePageLabel.Name = "KcptunHomePageLabel";
-            this.KcptunHomePageLabel.Size = new System.Drawing.Size(44, 13);
+            this.KcptunHomePageLabel.Size = new System.Drawing.Size(122, 13);
             this.KcptunHomePageLabel.TabIndex = 3;
-            this.KcptunHomePageLabel.Text = "Kcptun:";
+            this.KcptunHomePageLabel.Text = "Report kcptun issues to ";
             // 
             // HomePageLinkLabel
             // 
             this.HomePageLinkLabel.AutoSize = true;
-            this.HomePageLinkLabel.Location = new System.Drawing.Point(70, 154);
+            this.HomePageLinkLabel.Location = new System.Drawing.Point(112, 154);
             this.HomePageLinkLabel.Name = "HomePageLinkLabel";
-            this.HomePageLinkLabel.Size = new System.Drawing.Size(250, 13);
+            this.HomePageLinkLabel.Size = new System.Drawing.Size(284, 13);
             this.HomePageLinkLabel.TabIndex = 4;
             this.HomePageLinkLabel.TabStop = true;
-            this.HomePageLinkLabel.Text = "https://github.com/GangZhuo/kcptun-gui-windows";
+            this.HomePageLinkLabel.Text = "https://github.com/GangZhuo/kcptun-gui-windows/issues";
             this.HomePageLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.OnLinkClicked);
             // 
             // AboutUserControl
