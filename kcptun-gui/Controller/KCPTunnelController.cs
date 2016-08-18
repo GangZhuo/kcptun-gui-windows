@@ -88,7 +88,7 @@ namespace kcptun_gui.Controller
                 p.BeginOutputReadLine();
                 p.BeginErrorReadLine();
 
-                Console.WriteLine("kcptun started " + p.server.FriendlyName());
+                Console.WriteLine("kcptun started - " + p.server.FriendlyName());
 
                 if (Started != null)
                     Started.Invoke(this, new EventArgs());
@@ -108,7 +108,7 @@ namespace kcptun_gui.Controller
                 KillProcess(p);
                 p.Dispose();
 
-                Console.WriteLine("kcptun stoped " + p.server.FriendlyName());
+                Console.WriteLine("kcptun stoped - " + p.server.FriendlyName());
 
                 if (Stoped != null)
                     Stoped.Invoke(this, new EventArgs());
