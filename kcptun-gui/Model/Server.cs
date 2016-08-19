@@ -10,17 +10,14 @@ namespace kcptun_gui.Model
 
     public enum kcptun_mode
     {
-        normal, fast3, fast2, fast, manual,
+        normal, fast3, fast2, fast, manual, manual_all,
     }
 
     public static class PropertyCategories
     {
-        public const string Base = "Base";
+        public const string General = "General";
         public const string Security = "Security";
         public const string Options = "Options";
-        public const string ReedSolomon = "Reed-Solomon";
-        public const string WindowSize = "Window Size";
-        public const string Advanced = "Advanced";
     }
 
     [Serializable]
@@ -29,79 +26,79 @@ namespace kcptun_gui.Model
     {
         #region Properties
 
-        [Category(PropertyCategories.Base)]
-        [Description("Local listen address.")]
-        public string localaddr { get; set; }
-
-        [Category(PropertyCategories.Base)]
-        [Description("KCP server address.")]
-        public string remoteaddr { get; set; }
-
-        [Category(PropertyCategories.Base)]
-        [Description("Mode for communication.")]
-        public kcptun_mode mode { get; set; }
-
-        [Category(PropertyCategories.Base)]
+        [Category(PropertyCategories.General)]
         [Description("Mnemonic-name for server.")]
         public string remarks { get; set; }
 
-        [Category(PropertyCategories.Security)]
-        [Description("Key for communcation. Must be same as KCP server.")]
-        public string key { get; set; }
+        [Category(PropertyCategories.General)]
+        [Description("Local listen address.")]
+        public string localaddr { get; set; }
+
+        [Category(PropertyCategories.General)]
+        [Description("KCP server address.")]
+        public string remoteaddr { get; set; }
+
+        [Category(PropertyCategories.General)]
+        [Description("Mode for communication.")]
+        public kcptun_mode mode { get; set; }
+
+        [Category(PropertyCategories.General)]
+        [Description("Establish N physical connections as specified by 'conn' to server.")]
+        public int conn { get; set; }
+
+        [Category(PropertyCategories.General)]
+        [Description("MTU of UDP packets, suggest 'tracepath' to discover path mtu.")]
+        public int mtu { get; set; }
+
+        [Category(PropertyCategories.General)]
+        [Description("No snappy compression. Must be same as KCP server.")]
+        public bool nocomp { get; set; }
+
+        [Category(PropertyCategories.General)]
+        [Description("DSCP(6bit). Ref https://en.wikipedia.org/wiki/Differentiated_services#Commonly_used_DSCP_values .")]
+        public int dscp { get; set; }
+
+        [Category(PropertyCategories.General)]
+        [Description("Send window size (num of packets).")]
+        public int sndwnd { get; set; }
+
+        [Category(PropertyCategories.General)]
+        [Description("Receive window size (num of packets).")]
+        public int rcvwnd { get; set; }
+
+        [Category(PropertyCategories.General)]
+        [Description("Reed-solomon erasure coding - datashard. Must be same as KCP server.")]
+        public int datashard { get; set; }
+
+        [Category(PropertyCategories.General)]
+        [Description("Reed-solomon erasure coding - parityshard. Must be same as KCP server.")]
+        public int parityshard { get; set; }
 
         [Category(PropertyCategories.Security)]
         [Description("Method for encryption. Must be same as KCP server.")]
         public kcptun_crypt crypt { get; set; }
 
-        [Category(PropertyCategories.WindowSize)]
-        [Description("Send window size (num of packets).")]
-        public int sndwnd { get; set; }
-
-        [Category(PropertyCategories.WindowSize)]
-        [Description("Receive window size (num of packets).")]
-        public int rcvwnd { get; set; }
-
-        [Category(PropertyCategories.ReedSolomon)]
-        [Description("Reed-solomon erasure coding - datashard. Must be same as KCP server.")]
-        public int datashard { get; set; }
-
-        [Category(PropertyCategories.ReedSolomon)]
-        [Description("Reed-solomon erasure coding - parityshard. Must be same as KCP server.")]
-        public int parityshard { get; set; }
+        [Category(PropertyCategories.Security)]
+        [Description("Key for communcation. Must be same as KCP server.")]
+        public string key { get; set; }
 
         [Category(PropertyCategories.Options)]
-        [Description("Establish N physical connections as specified by 'conn' to server.")]
-        public int conn { get; set; }
-
-        [Category(PropertyCategories.Options)]
-        [Description("MTU of UDP packets, suggest 'tracepath' to discover path mtu.")]
-        public int mtu { get; set; }
-
-        [Category(PropertyCategories.Options)]
-        [Description("No snappy compression. Must be same as KCP server.")]
-        public bool nocomp { get; set; }
-
-        [Category(PropertyCategories.Options)]
-        [Description("DSCP(6bit). Ref https://en.wikipedia.org/wiki/Differentiated_services#Commonly_used_DSCP_values .")]
-        public int dscp { get; set; }
-
-        [Category(PropertyCategories.Advanced)]
         [Description("Ref https://github.com/xtaci/kcptun .")]
         public int nodelay { get; set; }
 
-        [Category(PropertyCategories.Advanced)]
+        [Category(PropertyCategories.Options)]
         [Description("Ref https://github.com/xtaci/kcptun .")]
         public int resend { get; set; }
 
-        [Category(PropertyCategories.Advanced)]
+        [Category(PropertyCategories.Options)]
         [Description("Ref https://github.com/xtaci/kcptun .")]
         public int nc { get; set; }
 
-        [Category(PropertyCategories.Advanced)]
+        [Category(PropertyCategories.Options)]
         [Description("Ref https://github.com/xtaci/kcptun .")]
         public int interval { get; set; }
 
-        [Category(PropertyCategories.Advanced)]
+        [Category(PropertyCategories.Options)]
         [DisplayName("extend arguments")]
         [Description("Extend arguments append to end.")]
         public string extend_arguments { get; set; }

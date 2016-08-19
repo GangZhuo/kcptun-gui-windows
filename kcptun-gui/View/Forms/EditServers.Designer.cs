@@ -119,10 +119,9 @@
             this.ServerPropertyGrid.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.ServerPropertyGrid.Location = new System.Drawing.Point(3, 16);
             this.ServerPropertyGrid.Name = "ServerPropertyGrid";
-            this.ServerPropertyGrid.PropertySort = System.Windows.Forms.PropertySort.Alphabetical;
+            this.ServerPropertyGrid.PropertySort = System.Windows.Forms.PropertySort.Categorized;
             this.ServerPropertyGrid.Size = new System.Drawing.Size(237, 219);
             this.ServerPropertyGrid.TabIndex = 1;
-            this.ServerPropertyGrid.ToolbarVisible = false;
             // 
             // tableLayoutPanel2
             // 

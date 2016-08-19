@@ -230,30 +230,43 @@ namespace kcptun_gui.Controller
         public static string BuildArguments(Server server)
         {
             StringBuilder arguments = new StringBuilder();
-            arguments.Append($" -l \"{server.localaddr}\"");
-            arguments.Append($" -r \"{server.remoteaddr}\"");
-            arguments.Append($" --crypt {server.crypt}");
-            if (server.crypt != kcptun_crypt.none)
-                arguments.Append($" --key \"{server.key}\"");
-            arguments.Append($" --mode \"{server.mode}\"");
-            arguments.Append($" --conn {server.conn}");
-            arguments.Append($" --mtu {server.mtu}");
-            arguments.Append($" --sndwnd {server.sndwnd}");
-            arguments.Append($" --rcvwnd {server.rcvwnd}");
-            if (server.nocomp)
-                arguments.Append($" --nocomp");
-            arguments.Append($" --datashard {server.datashard}");
-            arguments.Append($" --parityshard {server.parityshard}");
-            arguments.Append($" --dscp {server.dscp}");
-            if (server.mode == kcptun_mode.manual)
+            if (server.mode == kcptun_mode.manual_all)
             {
-                arguments.Append($" --nodelay {server.nodelay}");
-                arguments.Append($" --resend {server.resend}");
-                arguments.Append($" --nc {server.nc}");
-                arguments.Append($" --interval {server.interval}");
-            }
-            if (!string.IsNullOrEmpty(server.extend_arguments))
+                arguments.Append($" -l \"{server.localaddr}\"");
+                arguments.Append($" -r \"{server.remoteaddr}\"");
                 arguments.Append($" {server.extend_arguments}");
+            }
+            else
+            {
+                arguments.Append($" -l \"{server.localaddr}\"");
+                arguments.Append($" -r \"{server.remoteaddr}\"");
+                arguments.Append($" --crypt {server.crypt}");
+                if (server.crypt != kcptun_crypt.none)
+                    arguments.Append($" --key \"{server.key}\"");
+                arguments.Append($" --mode \"{server.mode}\"");
+                arguments.Append($" --conn {server.conn}");
+                arguments.Append($" --mtu {server.mtu}");
+                arguments.Append($" --sndwnd {server.sndwnd}");
+                arguments.Append($" --rcvwnd {server.rcvwnd}");
+                if (server.nocomp)
+                    arguments.Append($" --nocomp");
+                arguments.Append($" --datashard {server.datashard}");
+                arguments.Append($" --parityshard {server.parityshard}");
+                arguments.Append($" --dscp {server.dscp}");
+                if (server.mode == kcptun_mode.manual)
+                {
+                    arguments.Append($" --nodelay {server.nodelay}");
+                    arguments.Append($" --resend {server.resend}");
+                    arguments.Append($" --nc {server.nc}");
+                    arguments.Append($" --interval {server.interval}");
+                }
+                else
+                {
+                    /*do nothing*/
+                }
+                if (!string.IsNullOrEmpty(server.extend_arguments))
+                    arguments.Append($" {server.extend_arguments}");
+            }
 
             return arguments.ToString().Trim();
         }
