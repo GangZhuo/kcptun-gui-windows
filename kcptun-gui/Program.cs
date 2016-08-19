@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows.Forms;
 
 using kcptun_gui.Controller;
@@ -14,6 +15,8 @@ namespace kcptun_gui
         [STAThread]
         static void Main()
         {
+            Directory.SetCurrentDirectory(Application.StartupPath);
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
