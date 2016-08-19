@@ -61,6 +61,15 @@ namespace kcptun_gui.Controller
             this.controller = controller;
         }
 
+        public string GetKCPTunPath()
+        {
+            Configuration config = controller.ConfigController.GetCurrentConfiguration();
+            if (string.IsNullOrEmpty(config.kcptun_path))
+                return Utils.GetTempPath(FILENAME);
+            else
+                return config.kcptun_path;
+        }
+
         public void Start()
         {
             if (IsRunning)
@@ -70,9 +79,11 @@ namespace kcptun_gui.Controller
 
             try
             {
+                string filename = GetKCPTunPath();
+                Console.WriteLine($"Executable: {filename}");
                 MyProcess p = new MyProcess(_server);
                 _process = p;
-                p.StartInfo.FileName = Utils.GetTempPath(FILENAME);
+                p.StartInfo.FileName = filename;
                 p.StartInfo.Arguments = BuildArguments(_server);
                 p.StartInfo.WorkingDirectory = Utils.GetTempPath();
                 p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
@@ -178,14 +189,16 @@ namespace kcptun_gui.Controller
             }
         }
 
-        public static string GetKcptunVersion()
+        public string GetKcptunVersion()
         {
             string version = "";
             try
             {
+                string filename = GetKCPTunPath();
+                Console.WriteLine($"Executable: {filename}");
                 Process p = new Process();
                 // Configure the process using the StartInfo properties.
-                p.StartInfo.FileName = Utils.GetTempPath(FILENAME);
+                p.StartInfo.FileName = filename;
                 p.StartInfo.Arguments = "-v";
                 p.StartInfo.WorkingDirectory = Utils.GetTempPath();
                 p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;

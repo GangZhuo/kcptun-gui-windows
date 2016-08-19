@@ -15,10 +15,15 @@ namespace kcptun_gui.View
 {
     public partial class AboutUserControl : UserControl
     {
+        public string KCPTunVersion
+        {
+            get { return KcptunVersion.Text; }
+            set { KcptunVersion.Text = value; }
+        }
+
         public AboutUserControl()
         {
             InitializeComponent();
-            KcptunVersion.Text = KCPTunnelController.GetKcptunVersion();
             GUIVersion.Text = "GUI version " + MainController.Version;
         }
 

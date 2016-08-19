@@ -8,13 +8,31 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using kcptun_gui.Controller;
+
 namespace kcptun_gui.View
 {
     public partial class AboutForm : Form
     {
-        public AboutForm()
+        private MainController controller;
+
+        public AboutForm(MainController controller)
         {
+            this.controller = controller;
             InitializeComponent();
+            this.aboutUserControl1.KCPTunVersion = controller.KCPTunnelController.GetKcptunVersion();
+            controller.ConfigController.KCPTunPathChanged += ConfigController_KCPTunPathChanged;
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            controller.ConfigController.KCPTunPathChanged -= ConfigController_KCPTunPathChanged;
+            base.OnClosing(e);
+        }
+
+        private void ConfigController_KCPTunPathChanged(object sender, EventArgs e)
+        {
+            this.aboutUserControl1.KCPTunVersion = controller.KCPTunnelController.GetKcptunVersion();
         }
     }
 }

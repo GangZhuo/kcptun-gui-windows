@@ -15,8 +15,10 @@ namespace kcptun_gui.View
 {
     public partial class LogForm : Form
     {
-        public LogForm()
+        private MainController controller;
+        public LogForm(MainController controller)
         {
+            this.controller = controller;
             InitializeComponent();
             this.StartPosition = FormStartPosition.Manual;
             this.Left = GetBestLeft();

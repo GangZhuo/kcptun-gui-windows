@@ -5,6 +5,7 @@ using System.Windows.Forms;
 using kcptun_gui.Model;
 using kcptun_gui.Controller;
 using kcptun_gui.Properties;
+using kcptun_gui.View.Forms;
 
 namespace kcptun_gui.View
 {
@@ -27,6 +28,7 @@ namespace kcptun_gui.View
 
         private EidtServersForm editServersForm;
         private AboutForm aboutForm;
+        private CustomKCPTunForm customKcptunForm;
 
         private bool _firstRun;
 
@@ -94,7 +96,8 @@ namespace kcptun_gui.View
                 this.autoStartupItem = CreateMenuItem("Start on Boot", new EventHandler(this.OnAutoStartupItemClick)),
                 new MenuItem("-"),
                 CreateMenuGroup("More...", new MenuItem[] {
-                    this.verboseLoggingItem = CreateMenuItem("Verbose Logging", new EventHandler(this.OnVerboseLoggingItemClick))
+                    this.verboseLoggingItem = CreateMenuItem("Verbose Logging", new EventHandler(this.OnVerboseLoggingItemClick)),
+                    CreateMenuItem("Custome KCPTun", new EventHandler(this.OnCustomeKCPTunItemClick))
                 }),
                 //new MenuItem("-"),
                 CreateMenuItem("Show Logs...", new EventHandler(this.OnShowLogItemClick)),
@@ -182,7 +185,7 @@ namespace kcptun_gui.View
             }
             else
             {
-                aboutForm = new AboutForm();
+                aboutForm = new AboutForm(controller);
                 aboutForm.Show();
                 aboutForm.FormClosed += OnAboutFormClosed;
             }
@@ -191,6 +194,25 @@ namespace kcptun_gui.View
         private void OnAboutFormClosed(object sender, FormClosedEventArgs e)
         {
             aboutForm = null;
+        }
+
+        private void ShowCustomKCPTunForm()
+        {
+            if (customKcptunForm != null)
+            {
+                customKcptunForm.Activate();
+            }
+            else
+            {
+                customKcptunForm = new CustomKCPTunForm(controller);
+                customKcptunForm.Show();
+                customKcptunForm.FormClosed += OnCustomKCPTunFormClosed;
+            }
+        }
+
+        private void OnCustomKCPTunFormClosed(object sender, FormClosedEventArgs e)
+        {
+            customKcptunForm = null;
         }
 
         private void ShowEditServicesForm()
@@ -303,9 +325,14 @@ namespace kcptun_gui.View
             controller.ConfigController.ToggleVerboseLogging(!verboseLoggingItem.Checked);
         }
 
+        private void OnCustomeKCPTunItemClick(object sender, EventArgs e)
+        {
+            ShowCustomKCPTunForm();
+        }
+
         private void OnShowLogItemClick(object sender, EventArgs e)
         {
-            new LogForm().Show();
+            new LogForm(controller).Show();
         }
 
         private void OnAboutItemClick(object sender, EventArgs e)

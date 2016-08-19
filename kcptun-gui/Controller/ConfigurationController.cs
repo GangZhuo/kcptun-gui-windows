@@ -14,6 +14,7 @@ namespace kcptun_gui.Controller
         public event EventHandler EnableChanged;
         public event EventHandler VerboseChanged;
         public event EventHandler ServerIndexChanged;
+        public event EventHandler KCPTunPathChanged;
 
         public ConfigurationController(MainController controller)
         {
@@ -65,6 +66,14 @@ namespace kcptun_gui.Controller
             SaveConfig(_config);
             if (ServerIndexChanged != null)
                 ServerIndexChanged.Invoke(this, new EventArgs());
+        }
+
+        public void ChangeKCPTunPath(string kcptunPath)
+        {
+            _config.kcptun_path = kcptunPath;
+            SaveConfig(_config);
+            if (KCPTunPathChanged != null)
+                KCPTunPathChanged.Invoke(this, new EventArgs());
         }
 
         public void SaveConfig(Configuration config)

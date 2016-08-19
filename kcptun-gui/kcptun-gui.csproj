@@ -70,6 +70,12 @@
     <Compile Include="View\Forms\AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="View\Forms\CustomKCPTunForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\Forms\CustomKCPTunForm.Designer.cs">
+      <DependentUpon>CustomKCPTunForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="View\UserControls\AboutUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -102,6 +108,9 @@
     </Compile>
     <EmbeddedResource Include="View\Forms\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Forms\CustomKCPTunForm.resx">
+      <DependentUpon>CustomKCPTunForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\Forms\EditServers.resx">
       <DependentUpon>EditServers.cs</DependentUpon>
