@@ -61,26 +61,6 @@ namespace kcptun_gui.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] client_windows_386_exe {
-            get {
-                object obj = ResourceManager.GetObject("client_windows_386_exe", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Byte[].
-        /// </summary>
-        internal static byte[] client_windows_amd64_exe {
-            get {
-                object obj = ResourceManager.GetObject("client_windows_amd64_exe", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap logo {

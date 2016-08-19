@@ -18,21 +18,6 @@ namespace kcptun_gui.Controller
         private MyProcess _process;
         private Server _server;
 
-        static KCPTunnelController()
-        {
-            try
-            {
-                if (Environment.Is64BitOperatingSystem)
-                    FileManager.UncompressFile(Utils.GetTempPath(FILENAME), Resources.client_windows_amd64_exe);
-                else
-                    FileManager.UncompressFile(Utils.GetTempPath(FILENAME), Resources.client_windows_386_exe);
-            }
-            catch (IOException e)
-            {
-                Logging.LogUsefulException(e);
-            }
-        }
-
         public Server Server
         {
             get
@@ -65,7 +50,16 @@ namespace kcptun_gui.Controller
         {
             Configuration config = controller.ConfigController.GetCurrentConfiguration();
             if (string.IsNullOrEmpty(config.kcptun_path))
-                return Utils.GetTempPath(FILENAME);
+            {
+                string path = null;
+                if (Environment.Is64BitOperatingSystem && File.Exists("client_windows_amd64.exe"))
+                    path = "client_windows_amd64.exe";
+                else if (File.Exists("client_windows_386.exe"))
+                    path = "client_windows_386.exe";
+                if (path == null)
+                    throw new Exception("client_windows_amd64.exe or client_windows_386.exe not exists, please download from https://github.com/xtaci/kcptun or specify absolute path through context menu (Right click task bar icon, then select 'More/Custom KCPTun').");
+                return path;
+            }
             else
                 return config.kcptun_path;
         }
@@ -82,7 +76,6 @@ namespace kcptun_gui.Controller
                 string filename = GetKCPTunPath();
                 Console.WriteLine($"Executable: {filename}");
                 MyProcess p = new MyProcess(_server);
-                _process = p;
                 p.StartInfo.FileName = filename;
                 p.StartInfo.Arguments = BuildArguments(_server);
                 p.StartInfo.WorkingDirectory = Utils.GetTempPath();
@@ -96,6 +89,7 @@ namespace kcptun_gui.Controller
                 p.Exited += OnProcessExited;
                 p.EnableRaisingEvents = true;
                 p.Start();
+                _process = p;
                 p.BeginOutputReadLine();
                 p.BeginErrorReadLine();
 
@@ -126,7 +120,7 @@ namespace kcptun_gui.Controller
             }
         }
 
-        private void WriteToLogFile(MyProcess process, string s)
+        private void WriteToLogFile(MyProcess process, string s, bool error)
         {
             if (s != null)
             {
@@ -135,7 +129,11 @@ namespace kcptun_gui.Controller
                     string line;
                     while ((line = sr.ReadLine()) != null)
                     {
-                        Console.WriteLine(process.server.FriendlyName() + " - " + line);
+                        string formatedMessage = process.server.FriendlyName() + " - " + line;
+                        if (error)
+                            Logging.Error(formatedMessage);
+                        else
+                            Logging.Info(formatedMessage);
                     }
                 }
             }
@@ -144,13 +142,12 @@ namespace kcptun_gui.Controller
         private void OnProcessOutputDataReceived(object sender, DataReceivedEventArgs e)
         {
             if (controller.ConfigController.GetCurrentConfiguration().verbose)
-                WriteToLogFile(sender as MyProcess, e.Data);
+                WriteToLogFile(sender as MyProcess, e.Data, false);
         }
 
         private void OnProcessErrorDataReceived(object sender, DataReceivedEventArgs e)
         {
-            if (controller.ConfigController.GetCurrentConfiguration().verbose)
-                WriteToLogFile(sender as MyProcess, e.Data);
+            WriteToLogFile(sender as MyProcess, e.Data, true);
         }
 
         private void OnProcessExited(object sender, EventArgs e)
