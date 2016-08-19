@@ -41,16 +41,25 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.ArgumentsTextBox = new System.Windows.Forms.TextBox();
             this.ArgumentsLabel = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.panel4 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.panel2.SuspendLayout();
+            this.panel3.SuspendLayout();
+            this.panel4.SuspendLayout();
             this.SuspendLayout();
             // 
             // ServerListBox
             // 
+            this.ServerListBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ServerListBox.FormattingEnabled = true;
-            this.ServerListBox.Location = new System.Drawing.Point(3, 11);
+            this.ServerListBox.Location = new System.Drawing.Point(6, 6);
             this.ServerListBox.Name = "ServerListBox";
-            this.ServerListBox.Size = new System.Drawing.Size(212, 342);
+            this.ServerListBox.Size = new System.Drawing.Size(203, 369);
             this.ServerListBox.TabIndex = 0;
             // 
             // MoveDownButton
@@ -95,8 +104,9 @@
             // 
             // MyCancelButton
             // 
+            this.MyCancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.MyCancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.MyCancelButton.Location = new System.Drawing.Point(370, 369);
+            this.MyCancelButton.Location = new System.Drawing.Point(446, 18);
             this.MyCancelButton.Name = "MyCancelButton";
             this.MyCancelButton.Size = new System.Drawing.Size(89, 31);
             this.MyCancelButton.TabIndex = 7;
@@ -106,7 +116,8 @@
             // 
             // OkButton
             // 
-            this.OkButton.Location = new System.Drawing.Point(275, 369);
+            this.OkButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.OkButton.Location = new System.Drawing.Point(351, 18);
             this.OkButton.Name = "OkButton";
             this.OkButton.Size = new System.Drawing.Size(89, 31);
             this.OkButton.TabIndex = 6;
@@ -116,11 +127,12 @@
             // 
             // ServerPropertyGrid
             // 
+            this.ServerPropertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ServerPropertyGrid.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.ServerPropertyGrid.Location = new System.Drawing.Point(3, 16);
             this.ServerPropertyGrid.Name = "ServerPropertyGrid";
             this.ServerPropertyGrid.PropertySort = System.Windows.Forms.PropertySort.Categorized;
-            this.ServerPropertyGrid.Size = new System.Drawing.Size(237, 219);
+            this.ServerPropertyGrid.Size = new System.Drawing.Size(314, 241);
             this.ServerPropertyGrid.TabIndex = 1;
             // 
             // tableLayoutPanel2
@@ -133,7 +145,7 @@
             this.tableLayoutPanel2.Controls.Add(this.AddButton, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.MoveUpButton, 0, 1);
             this.tableLayoutPanel2.Controls.Add(this.DeleteButton, 1, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 355);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(2, 4);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -143,12 +155,12 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.ArgumentsTextBox);
-            this.groupBox2.Controls.Add(this.ArgumentsLabel);
             this.groupBox2.Controls.Add(this.ServerPropertyGrid);
-            this.groupBox2.Location = new System.Drawing.Point(219, 11);
+            this.groupBox2.Controls.Add(this.panel4);
+            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox2.Location = new System.Drawing.Point(6, 6);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(243, 342);
+            this.groupBox2.Size = new System.Drawing.Size(320, 369);
             this.groupBox2.TabIndex = 3;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Server";
@@ -156,49 +168,92 @@
             // ArgumentsTextBox
             // 
             this.ArgumentsTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ArgumentsTextBox.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.ArgumentsTextBox.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.ArgumentsTextBox.Location = new System.Drawing.Point(3, 258);
+            this.ArgumentsTextBox.Location = new System.Drawing.Point(3, 27);
             this.ArgumentsTextBox.MaxLength = 2147483647;
             this.ArgumentsTextBox.Multiline = true;
             this.ArgumentsTextBox.Name = "ArgumentsTextBox";
             this.ArgumentsTextBox.ReadOnly = true;
             this.ArgumentsTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.ArgumentsTextBox.Size = new System.Drawing.Size(237, 79);
+            this.ArgumentsTextBox.Size = new System.Drawing.Size(308, 79);
             this.ArgumentsTextBox.TabIndex = 3;
             // 
             // ArgumentsLabel
             // 
             this.ArgumentsLabel.AutoSize = true;
-            this.ArgumentsLabel.Location = new System.Drawing.Point(2, 239);
+            this.ArgumentsLabel.Location = new System.Drawing.Point(6, 9);
             this.ArgumentsLabel.Name = "ArgumentsLabel";
             this.ArgumentsLabel.Size = new System.Drawing.Size(60, 13);
             this.ArgumentsLabel.TabIndex = 2;
             this.ArgumentsLabel.Text = "Arguments:";
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.tableLayoutPanel2);
+            this.panel1.Controls.Add(this.MyCancelButton);
+            this.panel1.Controls.Add(this.OkButton);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel1.Location = new System.Drawing.Point(0, 381);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(547, 68);
+            this.panel1.TabIndex = 8;
+            // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.ServerListBox);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel2.Location = new System.Drawing.Point(0, 0);
+            this.panel2.Name = "panel2";
+            this.panel2.Padding = new System.Windows.Forms.Padding(6);
+            this.panel2.Size = new System.Drawing.Size(215, 381);
+            this.panel2.TabIndex = 9;
+            // 
+            // panel3
+            // 
+            this.panel3.Controls.Add(this.groupBox2);
+            this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel3.Location = new System.Drawing.Point(215, 0);
+            this.panel3.Name = "panel3";
+            this.panel3.Padding = new System.Windows.Forms.Padding(6);
+            this.panel3.Size = new System.Drawing.Size(332, 381);
+            this.panel3.TabIndex = 10;
+            // 
+            // panel4
+            // 
+            this.panel4.Controls.Add(this.ArgumentsLabel);
+            this.panel4.Controls.Add(this.ArgumentsTextBox);
+            this.panel4.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel4.Location = new System.Drawing.Point(3, 257);
+            this.panel4.Name = "panel4";
+            this.panel4.Padding = new System.Windows.Forms.Padding(3);
+            this.panel4.Size = new System.Drawing.Size(314, 109);
+            this.panel4.TabIndex = 4;
             // 
             // EidtServersForm
             // 
             this.AcceptButton = this.OkButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(466, 417);
-            this.Controls.Add(this.MyCancelButton);
-            this.Controls.Add(this.ServerListBox);
-            this.Controls.Add(this.OkButton);
-            this.Controls.Add(this.tableLayoutPanel2);
-            this.Controls.Add(this.groupBox2);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.ClientSize = new System.Drawing.Size(547, 449);
+            this.Controls.Add(this.panel3);
+            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.panel1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(563, 487);
             this.Name = "EidtServersForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Edit Servers";
             this.Load += new System.EventHandler(this.ServerConfigForm_Load);
             this.tableLayoutPanel2.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel3.ResumeLayout(false);
+            this.panel4.ResumeLayout(false);
+            this.panel4.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -215,5 +270,9 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.TextBox ArgumentsTextBox;
         private System.Windows.Forms.Label ArgumentsLabel;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Panel panel4;
     }
 }
