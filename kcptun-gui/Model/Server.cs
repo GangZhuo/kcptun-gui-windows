@@ -1,25 +1,9 @@
 ﻿using System;
 using System.ComponentModel;
+using kcptun_gui.Common;
 
 namespace kcptun_gui.Model
 {
-    public enum kcptun_crypt
-    {
-        none, aes, tea, xor, 
-    }
-
-    public enum kcptun_mode
-    {
-        normal, fast3, fast2, fast, manual, manual_all,
-    }
-
-    public static class PropertyCategories
-    {
-        public const string General = "General";
-        public const string Security = "Security";
-        public const string Options = "Options";
-    }
-
     [Serializable]
     [DefaultProperty("remoteaddr")]
     public class Server
@@ -40,6 +24,7 @@ namespace kcptun_gui.Model
 
         [Category(PropertyCategories.General)]
         [Description("Mode for communication.")]
+        [TypeConverter(typeof(MyEnumConverter))]
         public kcptun_mode mode { get; set; }
 
         [Category(PropertyCategories.General)]
@@ -76,6 +61,7 @@ namespace kcptun_gui.Model
 
         [Category(PropertyCategories.Security)]
         [Description("Method for encryption. Must be same as KCP server.")]
+        [TypeConverter(typeof(MyEnumConverter))]
         public kcptun_crypt crypt { get; set; }
 
         [Category(PropertyCategories.Security)]

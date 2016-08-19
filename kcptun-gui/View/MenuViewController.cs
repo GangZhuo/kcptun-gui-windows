@@ -6,6 +6,7 @@ using kcptun_gui.Model;
 using kcptun_gui.Controller;
 using kcptun_gui.Properties;
 using kcptun_gui.View.Forms;
+using kcptun_gui.Common;
 
 namespace kcptun_gui.View
 {
@@ -96,7 +97,7 @@ namespace kcptun_gui.View
                 this.autoStartupItem = CreateMenuItem("Start on Boot", new EventHandler(this.OnAutoStartupItemClick)),
                 new MenuItem("-"),
                 CreateMenuGroup("More...", new MenuItem[] {
-                    this.verboseLoggingItem = CreateMenuItem("Verbose Logging", new EventHandler(this.OnVerboseLoggingItemClick)),
+                    this.verboseLoggingItem = CreateMenuItem("Turn on KCP Log", new EventHandler(this.OnVerboseLoggingItemClick)),
                     new MenuItem("-"),
                     CreateMenuItem("Custome KCPTun", new EventHandler(this.OnCustomeKCPTunItemClick))
                 }),
@@ -147,11 +148,11 @@ namespace kcptun_gui.View
             }
             else if (!config.enabled)
             {
-                iconCopy = Util.Utils.ToGray(iconCopy);
+                iconCopy = Utils.ToGray(iconCopy);
             }
             else
             {
-                iconCopy = Util.Utils.ToBlue(iconCopy);
+                iconCopy = Utils.ToBlue(iconCopy);
                 runningInfo = "Running\n";
             }
 

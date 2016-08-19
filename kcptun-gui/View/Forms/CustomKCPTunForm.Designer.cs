@@ -33,7 +33,7 @@
             this.KcpTunPathTextBox = new System.Windows.Forms.TextBox();
             this.BrowserButton = new System.Windows.Forms.Button();
             this.OkButton = new System.Windows.Forms.Button();
-            this.CancelButton = new System.Windows.Forms.Button();
+            this.MyCancelButton = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.SuspendLayout();
             // 
@@ -49,6 +49,7 @@
             // KcpTunPathTextBox
             // 
             this.KcpTunPathTextBox.Location = new System.Drawing.Point(91, 15);
+            this.KcpTunPathTextBox.MaxLength = 500;
             this.KcpTunPathTextBox.Name = "KcpTunPathTextBox";
             this.KcpTunPathTextBox.Size = new System.Drawing.Size(298, 20);
             this.KcpTunPathTextBox.TabIndex = 1;
@@ -73,16 +74,16 @@
             this.OkButton.UseVisualStyleBackColor = true;
             this.OkButton.Click += new System.EventHandler(this.OkButton_Click);
             // 
-            // CancelButton
+            // MyCancelButton
             // 
-            this.CancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.CancelButton.Location = new System.Drawing.Point(366, 54);
-            this.CancelButton.Name = "CancelButton";
-            this.CancelButton.Size = new System.Drawing.Size(75, 23);
-            this.CancelButton.TabIndex = 3;
-            this.CancelButton.Text = "Cancel";
-            this.CancelButton.UseVisualStyleBackColor = true;
-            this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
+            this.MyCancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.MyCancelButton.Location = new System.Drawing.Point(366, 54);
+            this.MyCancelButton.Name = "MyCancelButton";
+            this.MyCancelButton.Size = new System.Drawing.Size(75, 23);
+            this.MyCancelButton.TabIndex = 3;
+            this.MyCancelButton.Text = "Cancel";
+            this.MyCancelButton.UseVisualStyleBackColor = true;
+            this.MyCancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
             // openFileDialog1
             // 
@@ -96,9 +97,8 @@
             this.AcceptButton = this.OkButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.CancelButton;
             this.ClientSize = new System.Drawing.Size(467, 90);
-            this.Controls.Add(this.CancelButton);
+            this.Controls.Add(this.MyCancelButton);
             this.Controls.Add(this.OkButton);
             this.Controls.Add(this.BrowserButton);
             this.Controls.Add(this.KcpTunPathTextBox);
@@ -122,7 +122,7 @@
         private System.Windows.Forms.TextBox KcpTunPathTextBox;
         private System.Windows.Forms.Button BrowserButton;
         private System.Windows.Forms.Button OkButton;
-        private System.Windows.Forms.Button CancelButton;
+        private System.Windows.Forms.Button MyCancelButton;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
     }
 }

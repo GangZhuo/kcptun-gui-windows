@@ -9,7 +9,7 @@ using kcptun_gui.Controller;
 using System.Drawing;
 using Microsoft.Win32;
 
-namespace kcptun_gui.Util
+namespace kcptun_gui.Common
 {
     public class Utils
     {

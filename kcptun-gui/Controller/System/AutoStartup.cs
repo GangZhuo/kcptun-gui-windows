@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using Microsoft.Win32;
-using kcptun_gui.Util;
+using kcptun_gui.Common;
 
 namespace kcptun_gui.Controller
 {

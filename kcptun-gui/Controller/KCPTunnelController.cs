@@ -4,8 +4,7 @@ using System.IO;
 using System.Text;
 
 using kcptun_gui.Model;
-using kcptun_gui.Properties;
-using kcptun_gui.Util;
+using kcptun_gui.Common;
 
 namespace kcptun_gui.Controller
 {
@@ -147,7 +146,8 @@ namespace kcptun_gui.Controller
 
         private void OnProcessErrorDataReceived(object sender, DataReceivedEventArgs e)
         {
-            WriteToLogFile(sender as MyProcess, e.Data, true);
+            if (controller.ConfigController.GetCurrentConfiguration().verbose)
+                WriteToLogFile(sender as MyProcess, e.Data, true);
         }
 
         private void OnProcessExited(object sender, EventArgs e)
@@ -235,12 +235,14 @@ namespace kcptun_gui.Controller
             }
             else
             {
+                MyEnumConverter cryptConverter = new MyEnumConverter(typeof(kcptun_crypt));
+                MyEnumConverter modeConverter = new MyEnumConverter(typeof(kcptun_mode));
                 arguments.Append($" -l \"{server.localaddr}\"");
                 arguments.Append($" -r \"{server.remoteaddr}\"");
-                arguments.Append($" --crypt {server.crypt}");
+                arguments.Append($" --crypt \"{cryptConverter.ConvertToString(server.crypt)}\"");
                 if (server.crypt != kcptun_crypt.none)
                     arguments.Append($" --key \"{server.key}\"");
-                arguments.Append($" --mode \"{server.mode}\"");
+                arguments.Append($" --mode \"{modeConverter.ConvertToString(server.mode)}\"");
                 arguments.Append($" --conn {server.conn}");
                 arguments.Append($" --mtu {server.mtu}");
                 arguments.Append($" --sndwnd {server.sndwnd}");

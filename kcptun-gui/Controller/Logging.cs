@@ -2,7 +2,7 @@
 using System.IO;
 using System.Diagnostics;
 
-using kcptun_gui.Util;
+using kcptun_gui.Common;
 
 namespace kcptun_gui.Controller
 {
