@@ -97,6 +97,7 @@ namespace kcptun_gui.View
                 new MenuItem("-"),
                 CreateMenuGroup("More...", new MenuItem[] {
                     this.verboseLoggingItem = CreateMenuItem("Verbose Logging", new EventHandler(this.OnVerboseLoggingItemClick)),
+                    new MenuItem("-"),
                     CreateMenuItem("Custome KCPTun", new EventHandler(this.OnCustomeKCPTunItemClick))
                 }),
                 //new MenuItem("-"),
