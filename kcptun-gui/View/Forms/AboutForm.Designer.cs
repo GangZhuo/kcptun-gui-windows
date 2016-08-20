@@ -35,16 +35,17 @@
             // aboutUserControl1
             // 
             this.aboutUserControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.aboutUserControl1.KCPTunVersion = "kcptun version 20160811";
             this.aboutUserControl1.Location = new System.Drawing.Point(0, 0);
             this.aboutUserControl1.Name = "aboutUserControl1";
-            this.aboutUserControl1.Size = new System.Drawing.Size(428, 281);
+            this.aboutUserControl1.Size = new System.Drawing.Size(502, 259);
             this.aboutUserControl1.TabIndex = 0;
             // 
             // AboutForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(428, 281);
+            this.ClientSize = new System.Drawing.Size(502, 259);
             this.Controls.Add(this.aboutUserControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

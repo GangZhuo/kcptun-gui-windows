@@ -55,15 +55,15 @@
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(401, 268);
+            this.panel1.Size = new System.Drawing.Size(481, 247);
             this.panel1.TabIndex = 9;
             // 
             // GUIVersion
             // 
             this.GUIVersion.AutoSize = true;
-            this.GUIVersion.Location = new System.Drawing.Point(3, 241);
+            this.GUIVersion.Location = new System.Drawing.Point(3, 222);
             this.GUIVersion.Name = "GUIVersion";
-            this.GUIVersion.Size = new System.Drawing.Size(90, 13);
+            this.GUIVersion.Size = new System.Drawing.Size(107, 12);
             this.GUIVersion.TabIndex = 8;
             this.GUIVersion.Text = "GUI version 1.1.1";
             // 
@@ -81,36 +81,36 @@
             // KcptunVersion
             // 
             this.KcptunVersion.AutoSize = true;
-            this.KcptunVersion.Location = new System.Drawing.Point(3, 213);
+            this.KcptunVersion.Location = new System.Drawing.Point(3, 197);
             this.KcptunVersion.Name = "KcptunVersion";
-            this.KcptunVersion.Size = new System.Drawing.Size(128, 13);
+            this.KcptunVersion.Size = new System.Drawing.Size(143, 12);
             this.KcptunVersion.TabIndex = 7;
             this.KcptunVersion.Text = "kcptun version 20160811";
             // 
             // AboutLabel
             // 
             this.AboutLabel.AutoSize = true;
-            this.AboutLabel.Location = new System.Drawing.Point(3, 125);
+            this.AboutLabel.Location = new System.Drawing.Point(3, 115);
             this.AboutLabel.Name = "AboutLabel";
-            this.AboutLabel.Size = new System.Drawing.Size(80, 13);
+            this.AboutLabel.Size = new System.Drawing.Size(95, 12);
             this.AboutLabel.TabIndex = 1;
             this.AboutLabel.Text = "GUI for kcptun.";
             // 
             // HomePageLabel
             // 
             this.HomePageLabel.AutoSize = true;
-            this.HomePageLabel.Location = new System.Drawing.Point(3, 154);
+            this.HomePageLabel.Location = new System.Drawing.Point(3, 142);
             this.HomePageLabel.Name = "HomePageLabel";
-            this.HomePageLabel.Size = new System.Drawing.Size(105, 13);
+            this.HomePageLabel.Size = new System.Drawing.Size(125, 12);
             this.HomePageLabel.TabIndex = 2;
             this.HomePageLabel.Text = "Report GUI issues to";
             // 
             // kcptunHomePageLinkLabel
             // 
             this.kcptunHomePageLinkLabel.AutoSize = true;
-            this.kcptunHomePageLinkLabel.Location = new System.Drawing.Point(124, 184);
+            this.kcptunHomePageLinkLabel.Location = new System.Drawing.Point(158, 170);
             this.kcptunHomePageLinkLabel.Name = "kcptunHomePageLinkLabel";
-            this.kcptunHomePageLinkLabel.Size = new System.Drawing.Size(194, 13);
+            this.kcptunHomePageLinkLabel.Size = new System.Drawing.Size(233, 12);
             this.kcptunHomePageLinkLabel.TabIndex = 5;
             this.kcptunHomePageLinkLabel.TabStop = true;
             this.kcptunHomePageLinkLabel.Text = "https://github.com/xtaci/kcptun/issues";
@@ -119,18 +119,18 @@
             // KcptunHomePageLabel
             // 
             this.KcptunHomePageLabel.AutoSize = true;
-            this.KcptunHomePageLabel.Location = new System.Drawing.Point(3, 184);
+            this.KcptunHomePageLabel.Location = new System.Drawing.Point(3, 170);
             this.KcptunHomePageLabel.Name = "KcptunHomePageLabel";
-            this.KcptunHomePageLabel.Size = new System.Drawing.Size(122, 13);
+            this.KcptunHomePageLabel.Size = new System.Drawing.Size(149, 12);
             this.KcptunHomePageLabel.TabIndex = 3;
             this.KcptunHomePageLabel.Text = "Report kcptun issues to ";
             // 
             // HomePageLinkLabel
             // 
             this.HomePageLinkLabel.AutoSize = true;
-            this.HomePageLinkLabel.Location = new System.Drawing.Point(112, 154);
+            this.HomePageLinkLabel.Location = new System.Drawing.Point(144, 142);
             this.HomePageLinkLabel.Name = "HomePageLinkLabel";
-            this.HomePageLinkLabel.Size = new System.Drawing.Size(284, 13);
+            this.HomePageLinkLabel.Size = new System.Drawing.Size(323, 12);
             this.HomePageLinkLabel.TabIndex = 4;
             this.HomePageLinkLabel.TabStop = true;
             this.HomePageLinkLabel.Text = "https://github.com/GangZhuo/kcptun-gui-windows/issues";
@@ -138,11 +138,11 @@
             // 
             // AboutUserControl
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.panel1);
             this.Name = "AboutUserControl";
-            this.Size = new System.Drawing.Size(401, 268);
+            this.Size = new System.Drawing.Size(481, 247);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LogoPictureBox)).EndInit();
