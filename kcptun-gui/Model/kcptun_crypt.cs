@@ -17,5 +17,8 @@ namespace kcptun_gui.Model
         _3des,
         tea,
         xor,
+        salsa20,
+        xtea,
+
     }
 }
