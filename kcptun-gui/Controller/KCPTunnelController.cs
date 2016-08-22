@@ -128,11 +128,15 @@ namespace kcptun_gui.Controller
                     string line;
                     while ((line = sr.ReadLine()) != null)
                     {
-                        string formatedMessage = process.server.FriendlyName() + " - " + line;
-                        if (error)
-                            Logging.Error(formatedMessage);
-                        else
-                            Logging.Info(formatedMessage);
+                        error = line.IndexOf("[ERR]") >= 0;
+                        if (controller.ConfigController.GetCurrentConfiguration().verbose || error)
+                        {
+                            string formatedMessage = process.server.FriendlyName() + " - " + line;
+                            if (error)
+                                Logging.Error(formatedMessage);
+                            else
+                                Logging.Info(formatedMessage);
+                        }
                     }
                 }
             }
@@ -146,8 +150,7 @@ namespace kcptun_gui.Controller
 
         private void OnProcessErrorDataReceived(object sender, DataReceivedEventArgs e)
         {
-            if (controller.ConfigController.GetCurrentConfiguration().verbose)
-                WriteToLogFile(sender as MyProcess, e.Data, true);
+            WriteToLogFile(sender as MyProcess, e.Data, true);
         }
 
         private void OnProcessExited(object sender, EventArgs e)
@@ -239,10 +242,10 @@ namespace kcptun_gui.Controller
                 MyEnumConverter modeConverter = new MyEnumConverter(typeof(kcptun_mode));
                 arguments.Append($" -l \"{server.localaddr}\"");
                 arguments.Append($" -r \"{server.remoteaddr}\"");
-                arguments.Append($" --crypt \"{cryptConverter.ConvertToString(server.crypt)}\"");
+                arguments.Append($" --crypt {cryptConverter.ConvertToString(server.crypt)}");
                 if (server.crypt != kcptun_crypt.none)
                     arguments.Append($" --key \"{server.key}\"");
-                arguments.Append($" --mode \"{modeConverter.ConvertToString(server.mode)}\"");
+                arguments.Append($" --mode {modeConverter.ConvertToString(server.mode)}");
                 arguments.Append($" --conn {server.conn}");
                 arguments.Append($" --mtu {server.mtu}");
                 arguments.Append($" --sndwnd {server.sndwnd}");
