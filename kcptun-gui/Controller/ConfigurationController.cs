@@ -47,42 +47,57 @@ namespace kcptun_gui.Controller
 
         public void ToggleEnable(bool enabled)
         {
-            _config.enabled = enabled;
-            SaveConfig(_config);
-            if (EnableChanged != null)
-                EnableChanged.Invoke(this, new EventArgs());
+            if (_config.enabled != enabled)
+            {
+                _config.enabled = enabled;
+                SaveConfig(_config);
+                if (EnableChanged != null)
+                    EnableChanged.Invoke(this, new EventArgs());
+            }
         }
 
         public void ToggleVerboseLogging(bool enabled)
         {
-            _config.verbose = enabled;
-            SaveConfig(_config);
-            if (VerboseChanged != null)
-                VerboseChanged.Invoke(this, new EventArgs());
+            if (_config.verbose != enabled)
+            {
+                _config.verbose = enabled;
+                SaveConfig(_config);
+                if (VerboseChanged != null)
+                    VerboseChanged.Invoke(this, new EventArgs());
+            }
         }
 
         public void SelectServerIndex(int index)
         {
-            _config.index = index;
-            SaveConfig(_config);
-            if (ServerIndexChanged != null)
-                ServerIndexChanged.Invoke(this, new EventArgs());
+            if (_config.index != index)
+            {
+                _config.index = index;
+                SaveConfig(_config);
+                if (ServerIndexChanged != null)
+                    ServerIndexChanged.Invoke(this, new EventArgs());
+            }
         }
 
         public void ChangeKCPTunPath(string kcptunPath)
         {
-            _config.kcptun_path = kcptunPath;
-            SaveConfig(_config);
-            if (KCPTunPathChanged != null)
-                KCPTunPathChanged.Invoke(this, new EventArgs());
+            if (_config.kcptun_path != kcptunPath)
+            {
+                _config.kcptun_path = kcptunPath;
+                SaveConfig(_config);
+                if (KCPTunPathChanged != null)
+                    KCPTunPathChanged.Invoke(this, new EventArgs());
+            }
         }
 
         public void ToggleStatisticsEnable(bool enabled)
         {
-            _config.statistics_enabled = enabled;
-            SaveConfig(_config);
-            if (StatisticsEnableChanged != null)
-                StatisticsEnableChanged.Invoke(this, new EventArgs());
+            if (_config.statistics_enabled != enabled)
+            {
+                _config.statistics_enabled = enabled;
+                SaveConfig(_config);
+                if (StatisticsEnableChanged != null)
+                    StatisticsEnableChanged.Invoke(this, new EventArgs());
+            }
         }
 
         public void SaveConfig(Configuration config)
