@@ -20,6 +20,8 @@ namespace kcptun_gui.Model
 
         public string kcptun_path;
 
+        public bool statistics_enabled;
+
         [JsonIgnore]
         public bool isDefault;
 
@@ -52,6 +54,7 @@ namespace kcptun_gui.Model
                     enabled = false,
                     isDefault = true,
                     kcptun_path = "",
+                    statistics_enabled = false,
                     servers = new List<Server>()
                     {
                         GetDefaultServer()

@@ -64,6 +64,11 @@
     <Compile Include="Controller\KCPTunnelController.cs" />
     <Compile Include="Controller\Logging.cs" />
     <Compile Include="Common\MyEnumConverter.cs" />
+    <Compile Include="Controller\Relay\IRelay.cs" />
+    <Compile Include="Controller\Relay\TCPRelay.cs" />
+    <Compile Include="Controller\Relay\TCPPipe.cs" />
+    <Compile Include="Controller\Relay\UDPRelay.cs" />
+    <Compile Include="Controller\Relay\UDPPipe.cs" />
     <Compile Include="Controller\System\AutoStartup.cs" />
     <Compile Include="Model\kcptun_crypt.cs" />
     <Compile Include="Model\kcptun_mode.cs" />
@@ -79,6 +84,12 @@
     </Compile>
     <Compile Include="View\Forms\CustomKCPTunForm.Designer.cs">
       <DependentUpon>CustomKCPTunForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Forms\StatisticsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\Forms\StatisticsForm.Designer.cs">
+      <DependentUpon>StatisticsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="View\UserControls\AboutUserControl.cs">
       <SubType>UserControl</SubType>
@@ -118,6 +129,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\Forms\EditServersForm.resx">
       <DependentUpon>EditServersForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Forms\StatisticsForm.resx">
+      <DependentUpon>StatisticsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\UserControls\AboutUserControl.resx">
       <DependentUpon>AboutUserControl.cs</DependentUpon>

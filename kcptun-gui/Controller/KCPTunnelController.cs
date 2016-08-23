@@ -37,6 +37,9 @@ namespace kcptun_gui.Controller
             }
         }
 
+        public string localaddr { get; set; }
+        public string remoteaddr { get; set; }
+
         public event EventHandler Started;
         public event EventHandler Stoped;
 
@@ -76,7 +79,7 @@ namespace kcptun_gui.Controller
                 Console.WriteLine($"Executable: {filename}");
                 MyProcess p = new MyProcess(_server);
                 p.StartInfo.FileName = filename;
-                p.StartInfo.Arguments = BuildArguments(_server);
+                p.StartInfo.Arguments = BuildArguments(_server, localaddr, remoteaddr);
                 p.StartInfo.WorkingDirectory = Utils.GetTempPath();
                 p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                 p.StartInfo.UseShellExecute = false;
@@ -105,17 +108,24 @@ namespace kcptun_gui.Controller
 
         public void Stop()
         {
-            MyProcess p = _process;
-            if (p != null)
+            try
             {
-                _process = null;
-                KillProcess(p);
-                p.Dispose();
+                MyProcess p = _process;
+                if (p != null)
+                {
+                    _process = null;
+                    KillProcess(p);
+                    p.Dispose();
 
-                Console.WriteLine("kcptun stoped - " + p.server.FriendlyName());
+                    Console.WriteLine("kcptun stoped - " + p.server.FriendlyName());
 
-                if (Stoped != null)
-                    Stoped.Invoke(this, new EventArgs());
+                    if (Stoped != null)
+                        Stoped.Invoke(this, new EventArgs());
+                }
+            }
+            catch (Exception e)
+            {
+                Logging.LogUsefulException(e);
             }
         }
 
@@ -229,19 +239,28 @@ namespace kcptun_gui.Controller
 
         public static string BuildArguments(Server server)
         {
+            return BuildArguments(server, null, null);
+        }
+
+        private static string BuildArguments(Server server, string localaddr, string remoteaddr)
+        {
+            if (string.IsNullOrEmpty(localaddr))
+                localaddr = server.localaddr;
+            if (string.IsNullOrEmpty(remoteaddr))
+                remoteaddr = server.remoteaddr;
             StringBuilder arguments = new StringBuilder();
             if (server.mode == kcptun_mode.manual_all)
             {
-                arguments.Append($" -l \"{server.localaddr}\"");
-                arguments.Append($" -r \"{server.remoteaddr}\"");
+                arguments.Append($" -l \"{localaddr}\"");
+                arguments.Append($" -r \"{remoteaddr}\"");
                 arguments.Append($" {server.extend_arguments}");
             }
             else
             {
                 MyEnumConverter cryptConverter = new MyEnumConverter(typeof(kcptun_crypt));
                 MyEnumConverter modeConverter = new MyEnumConverter(typeof(kcptun_mode));
-                arguments.Append($" -l \"{server.localaddr}\"");
-                arguments.Append($" -r \"{server.remoteaddr}\"");
+                arguments.Append($" -l \"{localaddr}\"");
+                arguments.Append($" -r \"{remoteaddr}\"");
                 arguments.Append($" --crypt {cryptConverter.ConvertToString(server.crypt)}");
                 if (server.crypt != kcptun_crypt.none)
                     arguments.Append($" --key \"{server.key}\"");

@@ -8,6 +8,7 @@ using System.Net.NetworkInformation;
 using kcptun_gui.Controller;
 using System.Drawing;
 using Microsoft.Win32;
+using System.Net.Sockets;
 
 namespace kcptun_gui.Common
 {
@@ -62,15 +63,15 @@ namespace kcptun_gui.Common
             }
         }
 
-        public static int GetFreePort(int defaultPort = 12948)
+        public static int GetFreePort(ProtocolType protocol, int defaultPort = 12948)
         {
             try
             {
                 IPGlobalProperties properties = IPGlobalProperties.GetIPGlobalProperties();
-                IPEndPoint[] tcpEndPoints = properties.GetActiveTcpListeners();
+                IPEndPoint[] activeEndPoints = protocol == ProtocolType.Tcp ? properties.GetActiveTcpListeners() : properties.GetActiveUdpListeners();
 
                 List<int> usedPorts = new List<int>();
-                foreach (IPEndPoint endPoint in IPGlobalProperties.GetIPGlobalProperties().GetActiveTcpListeners())
+                foreach (IPEndPoint endPoint in activeEndPoints)
                 {
                     usedPorts.Add(endPoint.Port);
                 }
@@ -91,6 +92,68 @@ namespace kcptun_gui.Common
             throw new Exception("No free port found.");
         }
 
+        public static bool CheckIfTcpPortInUse(int port)
+        {
+            IPGlobalProperties ipProperties = IPGlobalProperties.GetIPGlobalProperties();
+            IPEndPoint[] ipEndPoints = ipProperties.GetActiveTcpListeners();
+
+            foreach (IPEndPoint endPoint in ipEndPoints)
+            {
+                if (endPoint.Port == port)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static bool CheckIfUdpPortInUse(int port)
+        {
+            IPGlobalProperties ipProperties = IPGlobalProperties.GetIPGlobalProperties();
+            IPEndPoint[] ipEndPoints = ipProperties.GetActiveUdpListeners();
+
+            foreach (IPEndPoint endPoint in ipEndPoints)
+            {
+                if (endPoint.Port == port)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static string FormatSize(long n)
+        {
+            long scale = 1;
+            float f = n;
+            string unit = "B";
+            if (f > 1024)
+            {
+                f = f / 1024;
+                scale <<= 10;
+                unit = "KiB";
+            }
+            if (f > 1024)
+            {
+                f = f / 1024;
+                scale <<= 10;
+                unit = "MiB";
+            }
+            if (f > 1024)
+            {
+                f = f / 1024;
+                scale <<= 10;
+                unit = "GiB";
+            }
+            if (f > 1024)
+            {
+                f = f / 1024;
+                scale <<= 10;
+                unit = "TiB";
+            }
+            return f.ToString("F2") + unit;
+        }
+
         public static Bitmap ToGray(Bitmap bmp)
         {
             for (int i = 0; i < bmp.Width; i++)
@@ -105,7 +168,6 @@ namespace kcptun_gui.Common
             }
             return bmp;
         }
-
 
         private static Color flyBlue = Color.FromArgb(25, 125, 191);
 

@@ -30,6 +30,7 @@ namespace kcptun_gui.View
         private EidtServersForm editServersForm;
         private AboutForm aboutForm;
         private CustomKCPTunForm customKcptunForm;
+        private StatisticsForm statisticsForm;
 
         private bool _firstRun;
 
@@ -99,7 +100,9 @@ namespace kcptun_gui.View
                 CreateMenuGroup("More...", new MenuItem[] {
                     this.verboseLoggingItem = CreateMenuItem("Turn on KCP Log", new EventHandler(this.OnVerboseLoggingItemClick)),
                     new MenuItem("-"),
-                    CreateMenuItem("Custome KCPTun", new EventHandler(this.OnCustomeKCPTunItemClick))
+                    CreateMenuItem("Custome KCPTun", new EventHandler(this.OnCustomeKCPTunItemClick)),
+                    new MenuItem("-"),
+                    CreateMenuItem("Statistics", new EventHandler(this.OnStatisticsItemClick)),
                 }),
                 //new MenuItem("-"),
                 CreateMenuItem("Show Logs...", new EventHandler(this.OnShowLogItemClick)),
@@ -241,6 +244,25 @@ namespace kcptun_gui.View
             }
         }
 
+        private void ShowStatisticsForm()
+        {
+            if (statisticsForm != null)
+            {
+                statisticsForm.Activate();
+            }
+            else
+            {
+                statisticsForm = new StatisticsForm(controller);
+                statisticsForm.Show();
+                statisticsForm.FormClosed += OnStatisticsFormClosed;
+            }
+        }
+
+        private void OnStatisticsFormClosed(object sender, FormClosedEventArgs e)
+        {
+            statisticsForm = null;
+        }
+
         private void OnEnableItemClick(object sender, EventArgs e)
         {
             controller.ConfigController.ToggleEnable(!enableItem.Checked);
@@ -330,6 +352,11 @@ namespace kcptun_gui.View
         private void OnCustomeKCPTunItemClick(object sender, EventArgs e)
         {
             ShowCustomKCPTunForm();
+        }
+
+        private void OnStatisticsItemClick(object sender, EventArgs e)
+        {
+            ShowStatisticsForm();
         }
 
         private void OnShowLogItemClick(object sender, EventArgs e)

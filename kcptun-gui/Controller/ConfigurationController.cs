@@ -15,6 +15,7 @@ namespace kcptun_gui.Controller
         public event EventHandler VerboseChanged;
         public event EventHandler ServerIndexChanged;
         public event EventHandler KCPTunPathChanged;
+        public event EventHandler StatisticsEnableChanged;
 
         public ConfigurationController(MainController controller)
         {
@@ -74,6 +75,14 @@ namespace kcptun_gui.Controller
             SaveConfig(_config);
             if (KCPTunPathChanged != null)
                 KCPTunPathChanged.Invoke(this, new EventArgs());
+        }
+
+        public void ToggleStatisticsEnable(bool enabled)
+        {
+            _config.statistics_enabled = enabled;
+            SaveConfig(_config);
+            if (StatisticsEnableChanged != null)
+                StatisticsEnableChanged.Invoke(this, new EventArgs());
         }
 
         public void SaveConfig(Configuration config)
