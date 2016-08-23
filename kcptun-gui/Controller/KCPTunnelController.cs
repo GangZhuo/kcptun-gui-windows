@@ -169,7 +169,7 @@ namespace kcptun_gui.Controller
                 Stop();
         }
 
-        private static void KillProcess(Process p)
+        private void KillProcess(Process p)
         {
             try
             {
@@ -190,9 +190,10 @@ namespace kcptun_gui.Controller
             }
         }
 
-        public static void KillAll()
+        public void KillAll()
         {
-            Process[] processes = Process.GetProcessesByName("kcptun-client");
+            string filename = Path.GetFileNameWithoutExtension(GetKCPTunPath());
+            Process[] processes = Process.GetProcessesByName(filename);
             foreach (Process p in processes)
             {
                 KillProcess(p);

@@ -326,7 +326,7 @@ namespace kcptun_gui.View
         {
             try
             {
-                KCPTunnelController.KillAll();
+                controller.KCPTunnelController.KillAll();
             }
             catch (Exception ex)
             {
