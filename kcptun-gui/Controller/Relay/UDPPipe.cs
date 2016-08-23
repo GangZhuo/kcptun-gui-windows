@@ -151,7 +151,7 @@ namespace kcptun_gui.Controller.Relay
                 {
                     _remote = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
                     _remote.SetSocketOption(SocketOptionLevel.Udp, SocketOptionName.NoDelay, true);
-                    _remote.BeginConnect(_remoteEP, new AsyncCallback(RemoteConnectCallback), null);
+                    _remote.BeginConnect(_remoteEP, new AsyncCallback(remoteConnectCallback), null);
                     Delay();
                 }
                 catch (Exception e)
@@ -163,10 +163,7 @@ namespace kcptun_gui.Controller.Relay
 
             public void Handle(byte[] buffer, int length)
             {
-                if (_closed)
-                {
-                    return;
-                }
+                if (_closed) return;
                 try
                 {
                     if (length > 0)
@@ -191,12 +188,9 @@ namespace kcptun_gui.Controller.Relay
                 }
             }
 
-            private void RemoteConnectCallback(IAsyncResult ar)
+            private void remoteConnectCallback(IAsyncResult ar)
             {
-                if (_closed)
-                {
-                    return;
-                }
+                if (_closed) return;
                 try
                 {
                     _remote.EndConnect(ar);
@@ -214,17 +208,13 @@ namespace kcptun_gui.Controller.Relay
 
             private void StartPipe()
             {
-                if (_closed)
-                {
-                    return;
-                }
+                if (_closed) return;
                 try
                 {
-                    EndPoint remoteEP = (EndPoint)(new IPEndPoint(((IPEndPoint)_remoteEP).Address, ((IPEndPoint)_remoteEP).Port));
-                    _remote.BeginReceiveFrom(this.remoteRecvBuffer, 0, RecvSize, 0, ref remoteEP,
-                        new AsyncCallback(PipeRemoteReceiveCallback), null);
-                    StartSend();
+                    _remote.BeginReceive(this.remoteRecvBuffer, 0, RecvSize, 0,
+                        new AsyncCallback(remoteReceiveCallback), null);
                     Delay();
+                    StartSend();
                 }
                 catch (Exception e)
                 {
@@ -235,10 +225,7 @@ namespace kcptun_gui.Controller.Relay
 
             private void StartSend()
             {
-                if (_closed)
-                {
-                    return;
-                }
+                if (_closed) return;
                 try
                 {
                     lock (_packages)
@@ -251,11 +238,8 @@ namespace kcptun_gui.Controller.Relay
                             byte[] bytes = _packages.First.Value;
                             _packages.RemoveFirst();
                             _relay.onOutbound(bytes.Length);
-                            _remote.BeginSendTo(bytes, 0, bytes.Length, 0, _remoteEP, new AsyncCallback(PipeRemoteSendCallback), null);
-                        }
-                        else
-                        {
-                            _sending = false;
+                            _remote.BeginSend(bytes, 0, bytes.Length, 0, new AsyncCallback(remoteSendCallback), null);
+                            Delay();
                         }
                     }
                 }
@@ -266,19 +250,15 @@ namespace kcptun_gui.Controller.Relay
                 }
             }
 
-            private void PipeRemoteSendCallback(IAsyncResult ar)
+            private void remoteSendCallback(IAsyncResult ar)
             {
-                if (_closed)
-                {
-                    return;
-                }
+                if (_closed) return;
                 try
                 {
-                    _remote.EndSendTo(ar);
+                    _remote.EndSend(ar);
                     lock (_packages)
                         _sending = false;
                     StartSend();
-                    Delay();
                 }
                 catch (Exception e)
                 {
@@ -287,19 +267,17 @@ namespace kcptun_gui.Controller.Relay
                 }
             }
 
-            private void PipeRemoteReceiveCallback(IAsyncResult ar)
+            private void remoteReceiveCallback(IAsyncResult ar)
             {
-                if (_closed)
-                {
-                    return;
-                }
+                if (_closed) return;
                 try
                 {
                     int bytesRead = _remote.EndReceive(ar);
                     if (bytesRead > 0)
                     {
                         _relay.onInbound(bytesRead);
-                        _local.BeginSendTo(remoteRecvBuffer, 0, bytesRead, 0, _localEP, new AsyncCallback(PipeConnectionSendCallback), null);
+                        _local.BeginSendTo(remoteRecvBuffer, 0, bytesRead, 0, _localEP, new AsyncCallback(localSendCallback), null);
+                        Delay();
                     }
                     else
                     {
@@ -314,18 +292,14 @@ namespace kcptun_gui.Controller.Relay
                 }
             }
 
-            private void PipeConnectionSendCallback(IAsyncResult ar)
+            private void localSendCallback(IAsyncResult ar)
             {
-                if (_closed)
-                {
-                    return;
-                }
+                if (_closed) return;
                 try
                 {
                     _local.EndSendTo(ar);
-                    EndPoint remoteEP = (EndPoint)(new IPEndPoint(((IPEndPoint)_remoteEP).Address, ((IPEndPoint)_remoteEP).Port));
-                    _remote.BeginReceiveFrom(this.remoteRecvBuffer, 0, RecvSize, 0, ref remoteEP,
-                        new AsyncCallback(PipeRemoteReceiveCallback), null);
+                    _remote.BeginReceive(this.remoteRecvBuffer, 0, RecvSize, 0,
+                        new AsyncCallback(remoteReceiveCallback), null);
                     Delay();
                 }
                 catch (Exception e)
@@ -345,14 +319,8 @@ namespace kcptun_gui.Controller.Relay
 
             public void Close(bool reportClose = true)
             {
-                lock (this)
-                {
-                    if (_closed)
-                    {
-                        return;
-                    }
-                    _closed = true;
-                }
+                if (_closed) return;
+                _closed = true;
                 if (_remote != null)
                 {
                     try
