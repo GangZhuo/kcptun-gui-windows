@@ -113,14 +113,14 @@ namespace kcptun_gui.Controller.Relay
 
                     if (bytesRead > 0)
                     {
-                        _local.BeginSend(remoteRecvBuffer, 0, bytesRead, 0, new AsyncCallback(PipeConnectionSendCallback), null);
                         _relay.onInbound(bytesRead);
+                        _local.BeginSend(remoteRecvBuffer, 0, bytesRead, 0, new AsyncCallback(PipeConnectionSendCallback), null);
                     }
                     else
                     {
                         //Console.WriteLine("bytesRead: " + bytesRead.ToString());
-                        _local.Shutdown(SocketShutdown.Send);
-                        _localShutdown = true;
+                        _remote.Shutdown(SocketShutdown.Send);
+                        _remoteShutdown = true;
                         CheckClose();
                     }
                 }
@@ -143,13 +143,13 @@ namespace kcptun_gui.Controller.Relay
 
                     if (bytesRead > 0)
                     {
-                        _remote.BeginSend(connetionRecvBuffer, 0, bytesRead, 0, new AsyncCallback(PipeRemoteSendCallback), null);
                         _relay.onOutbound(bytesRead);
+                        _remote.BeginSend(connetionRecvBuffer, 0, bytesRead, 0, new AsyncCallback(PipeRemoteSendCallback), null);
                     }
                     else
                     {
-                        _remote.Shutdown(SocketShutdown.Send);
-                        _remoteShutdown = true;
+                        _local.Shutdown(SocketShutdown.Send);
+                        _localShutdown = true;
                         CheckClose();
                     }
                 }

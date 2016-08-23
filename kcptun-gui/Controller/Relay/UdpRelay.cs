@@ -11,7 +11,7 @@ namespace kcptun_gui.Controller
     public class UDPRelay : IRelay
     {
 
-        private Socket _socket;
+        private Socket _local;
         private UDPPipe _pipe;
 
         private MainController _controller;
@@ -34,34 +34,34 @@ namespace kcptun_gui.Controller
             try
             {
                 // Create a TCP/IP socket.
-                _socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-                _socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+                _local = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+                _local.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
                 // Bind the socket to the local endpoint and listen for incoming connections.
-                _socket.Bind(_localEP);
+                _local.Bind(_localEP);
 
                 // Start an asynchronous socket to listen for connections.
                 Console.WriteLine("UDPRelay listen on " + _localEP.ToString());
                 EndPoint remoteEP = (EndPoint)(new IPEndPoint(IPAddress.Any, 0));
                 byte[] buf = new byte[4096];
                 object[] state = new object[] {
-                    _socket,
+                    _local,
                     buf
                 };
-                _socket.BeginReceiveFrom(buf, 0, buf.Length, SocketFlags.None, ref remoteEP, new AsyncCallback(receiveFrom), state);
+                _local.BeginReceiveFrom(buf, 0, buf.Length, SocketFlags.None, ref remoteEP, new AsyncCallback(receiveFrom), state);
             }
             catch (SocketException)
             {
-                _socket.Close();
+                _local.Close();
                 throw;
             }
         }
 
         public void Stop()
         {
-            if (_socket != null)
+            if (_local != null)
             {
-                _socket.Close();
-                _socket = null;
+                _local.Close();
+                _local = null;
             }
         }
 

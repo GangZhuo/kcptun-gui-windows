@@ -128,7 +128,7 @@ namespace kcptun_gui.Controller.Relay
             // remote receive buffer
             private byte[] remoteRecvBuffer = new byte[RecvSize];
 
-            private List<byte[]> _packages = new List<byte[]>(1024);
+            private LinkedList<byte[]> _packages = new LinkedList<byte[]>();
             private bool _connected = false;
             private bool _sending = false;
 
@@ -175,7 +175,7 @@ namespace kcptun_gui.Controller.Relay
                         {
                             byte[] bytes = new byte[length];
                             Buffer.BlockCopy(buffer, 0, bytes, 0, length);
-                            _packages.Add(bytes);
+                            _packages.AddLast(bytes);
                         }
                         StartSend();
                     }
@@ -248,10 +248,10 @@ namespace kcptun_gui.Controller.Relay
                         if (_packages.Count > 0)
                         {
                             _sending = true;
-                            byte[] bytes = _packages[0];
-                            _packages.RemoveAt(0);
-                            _remote.BeginSendTo(bytes, 0, bytes.Length, 0, _remoteEP, new AsyncCallback(PipeRemoteSendCallback), null);
+                            byte[] bytes = _packages.First.Value;
+                            _packages.RemoveFirst();
                             _relay.onOutbound(bytes.Length);
+                            _remote.BeginSendTo(bytes, 0, bytes.Length, 0, _remoteEP, new AsyncCallback(PipeRemoteSendCallback), null);
                         }
                         else
                         {
@@ -298,8 +298,8 @@ namespace kcptun_gui.Controller.Relay
                     int bytesRead = _remote.EndReceive(ar);
                     if (bytesRead > 0)
                     {
-                        _local.BeginSendTo(remoteRecvBuffer, 0, bytesRead, 0, _localEP, new AsyncCallback(PipeConnectionSendCallback), null);
                         _relay.onInbound(bytesRead);
+                        _local.BeginSendTo(remoteRecvBuffer, 0, bytesRead, 0, _localEP, new AsyncCallback(PipeConnectionSendCallback), null);
                     }
                     else
                     {
@@ -361,6 +361,7 @@ namespace kcptun_gui.Controller.Relay
                         _remote.Close();
                         _remote = null;
                         remoteRecvBuffer = null;
+                        _packages.Clear();
                         _packages = null;
                     }
                     catch (SocketException e)
