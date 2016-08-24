@@ -313,7 +313,7 @@ namespace kcptun_gui.Controller.Relay
             {
                 lock (this)
                 {
-                    _expires = DateTime.Now.AddMinutes(1);
+                    _expires = DateTime.Now.AddMilliseconds(30000);
                 }
             }
 

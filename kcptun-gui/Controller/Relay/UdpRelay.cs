@@ -10,6 +10,17 @@ namespace kcptun_gui.Controller
 {
     public class UDPRelay : IRelay
     {
+        public class State
+        {
+            public byte[] buffer;
+            public EndPoint remoteEP;
+
+            public State()
+            {
+                buffer = new byte[4096];
+                remoteEP = (EndPoint)(new IPEndPoint(IPAddress.Any, 0));
+            }
+        }
 
         private Socket _local;
         private UDPPipe _pipe;
@@ -41,18 +52,12 @@ namespace kcptun_gui.Controller
 
                 // Start an asynchronous socket to listen for connections.
                 Console.WriteLine("UDPRelay listen on " + _localEP.ToString());
-                EndPoint remoteEP = (EndPoint)(new IPEndPoint(IPAddress.Any, 0));
-                byte[] buf = new byte[4096];
-                object[] state = new object[] {
-                    _local,
-                    buf
-                };
-                _local.BeginReceiveFrom(buf, 0, buf.Length, SocketFlags.None, ref remoteEP, new AsyncCallback(receiveFrom), state);
+                localStartReceive();
             }
-            catch (SocketException)
+            catch (SocketException e)
             {
-                _local.Close();
-                throw;
+                Stop();
+                Logging.LogUsefulException(e);
             }
         }
 
@@ -75,16 +80,27 @@ namespace kcptun_gui.Controller
             Outbound?.Invoke(this, new Controller.RelayEventArgs(n));
         }
 
-        private void receiveFrom(IAsyncResult ar)
+        private void localStartReceive()
         {
-            object[] state = (object[])ar.AsyncState;
-            Socket socket = (Socket)state[0];
-            byte[] buf = (byte[])state[1];
-            EndPoint remoteEP = (EndPoint)(new IPEndPoint(IPAddress.Any, 0));
             try
             {
-                int bytesRead = socket.EndReceiveFrom(ar, ref remoteEP);
-                if (_pipe.CreatePipe(buf, bytesRead, socket, remoteEP))
+                State state = new State();
+                _local.BeginReceiveFrom(state.buffer, 0, state.buffer.Length, SocketFlags.None,
+                    ref state.remoteEP, new AsyncCallback(localReceiveCallback), state);
+            }
+            catch (Exception e)
+            {
+                Logging.LogUsefulException(e);
+            }
+        }
+
+        private void localReceiveCallback(IAsyncResult ar)
+        {
+            State state = (State)ar.AsyncState;
+            try
+            {
+                int bytesRead = _local.EndReceiveFrom(ar, ref state.remoteEP);
+                if (_pipe.CreatePipe(state.buffer, bytesRead, _local, state.remoteEP))
                     return;
                 // do nothing
             }
@@ -97,19 +113,7 @@ namespace kcptun_gui.Controller
             }
             finally
             {
-                try
-                {
-                    remoteEP = (EndPoint)(new IPEndPoint(IPAddress.Any, 0));
-                    socket.BeginReceiveFrom(buf, 0, buf.Length, SocketFlags.None, ref remoteEP, new AsyncCallback(receiveFrom), state);
-                }
-                catch (ObjectDisposedException)
-                {
-                    // do nothing
-                }
-                catch (Exception e)
-                {
-                    Logging.LogUsefulException(e);
-                }
+                localStartReceive();
             }
         }
 
