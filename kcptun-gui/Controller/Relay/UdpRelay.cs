@@ -24,6 +24,7 @@ namespace kcptun_gui.Controller
 
         private Socket _local;
         private UDPPipe _pipe;
+        private State state = new State();
 
         private MainController _controller;
         private EndPoint _localEP;
@@ -84,7 +85,6 @@ namespace kcptun_gui.Controller
         {
             try
             {
-                State state = new State();
                 _local.BeginReceiveFrom(state.buffer, 0, state.buffer.Length, SocketFlags.None,
                     ref state.remoteEP, new AsyncCallback(localReceiveCallback), state);
             }
@@ -99,8 +99,9 @@ namespace kcptun_gui.Controller
             State state = (State)ar.AsyncState;
             try
             {
-                int bytesRead = _local.EndReceiveFrom(ar, ref state.remoteEP);
-                if (_pipe.CreatePipe(state.buffer, bytesRead, _local, state.remoteEP))
+                EndPoint remoteEP = (EndPoint)(new IPEndPoint(IPAddress.Any, 0));
+                int bytesRead = _local.EndReceiveFrom(ar, ref remoteEP);
+                if (_pipe.CreatePipe(state.buffer, bytesRead, _local, remoteEP))
                     return;
                 // do nothing
             }
