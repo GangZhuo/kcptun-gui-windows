@@ -32,8 +32,6 @@ namespace kcptun_gui.Controller.Relay
             private Socket _local;
             private Socket _remote;
             private bool _closed = false;
-            private bool _localShutdown = false;
-            private bool _remoteShutdown = false;
             public const int RecvSize = 16384;
             // remote receive buffer
             private byte[] remoteRecvBuffer = new byte[RecvSize];
@@ -67,10 +65,7 @@ namespace kcptun_gui.Controller.Relay
 
             private void ConnectCallback(IAsyncResult ar)
             {
-                if (_closed)
-                {
-                    return;
-                }
+                if (_closed) return;
                 try
                 {
                     _remote.EndConnect(ar);
@@ -85,10 +80,7 @@ namespace kcptun_gui.Controller.Relay
 
             private void StartPipe()
             {
-                if (_closed)
-                {
-                    return;
-                }
+                if (_closed) return;
                 try
                 {
                     _remote.BeginReceive(remoteRecvBuffer, 0, RecvSize, 0, new AsyncCallback(PipeRemoteReceiveCallback), null);
@@ -103,10 +95,7 @@ namespace kcptun_gui.Controller.Relay
 
             private void PipeRemoteReceiveCallback(IAsyncResult ar)
             {
-                if (_closed)
-                {
-                    return;
-                }
+                if (_closed) return;
                 try
                 {
                     int bytesRead = _remote.EndReceive(ar);
@@ -118,10 +107,7 @@ namespace kcptun_gui.Controller.Relay
                     }
                     else
                     {
-                        //Console.WriteLine("bytesRead: " + bytesRead.ToString());
-                        _remote.Shutdown(SocketShutdown.Send);
-                        _remoteShutdown = true;
-                        CheckClose();
+                        this.Close();
                     }
                 }
                 catch (Exception e)
@@ -133,10 +119,7 @@ namespace kcptun_gui.Controller.Relay
 
             private void PipeConnectionReceiveCallback(IAsyncResult ar)
             {
-                if (_closed)
-                {
-                    return;
-                }
+                if (_closed) return;
                 try
                 {
                     int bytesRead = _local.EndReceive(ar);
@@ -148,9 +131,7 @@ namespace kcptun_gui.Controller.Relay
                     }
                     else
                     {
-                        _local.Shutdown(SocketShutdown.Send);
-                        _localShutdown = true;
-                        CheckClose();
+                        this.Close();
                     }
                 }
                 catch (Exception e)
@@ -162,10 +143,7 @@ namespace kcptun_gui.Controller.Relay
 
             private void PipeRemoteSendCallback(IAsyncResult ar)
             {
-                if (_closed)
-                {
-                    return;
-                }
+                if (_closed) return;
                 try
                 {
                     _remote.EndSend(ar);
@@ -181,10 +159,7 @@ namespace kcptun_gui.Controller.Relay
 
             private void PipeConnectionSendCallback(IAsyncResult ar)
             {
-                if (_closed)
-                {
-                    return;
-                }
+                if (_closed) return;
                 try
                 {
                     _local.EndSend(ar);
@@ -198,24 +173,10 @@ namespace kcptun_gui.Controller.Relay
                 }
             }
 
-            private void CheckClose()
-            {
-                if (_localShutdown && _remoteShutdown)
-                {
-                    this.Close();
-                }
-            }
-
             public void Close()
             {
-                lock (this)
-                {
-                    if (_closed)
-                    {
-                        return;
-                    }
-                    _closed = true;
-                }
+                if (_closed) return;
+                _closed = true;
                 if (_local != null)
                 {
                     try
