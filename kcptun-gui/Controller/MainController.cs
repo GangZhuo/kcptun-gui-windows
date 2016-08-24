@@ -10,7 +10,7 @@ namespace kcptun_gui.Controller
 {
     public class MainController
     {
-        public const string Version = "1.2";
+        public const string Version = "1.3";
 
         private IRelay _tcpRelay;
         private IRelay _udpRelay;
