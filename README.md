@@ -9,6 +9,12 @@ GUI for kcptun (https://github.com/xtaci/kcptun).  (.NET framework 4.5)
 * Double click kcptun-gui.exe, and add a new server.
 * ...
 
+### 功能
+
+* 可视化参数设置
+* 多服务器切换
+* 开机启动
+* 流量统计（实验性）
 
 
 [Appveyor]:       https://ci.appveyor.com/project/GangZhuo/kcptun-gui-windows/branch/master
