@@ -190,10 +190,7 @@ namespace kcptun_gui.Controller
                 trafficLogList.Clear();
             for (int i = 0; i < TrafficLogSize; i++)
             {
-                TrafficLog item = new TrafficLog();
-                item.raw = new Traffic();
-                item.kcp = new Traffic();
-                trafficLogList.AddLast(item);
+                trafficLogList.AddLast(new TrafficLog());
             }
             if (timer == null)
             {
@@ -213,17 +210,12 @@ namespace kcptun_gui.Controller
 
         private void UpdateTrafficList()
         {
-            TrafficLog current = new TrafficLog();
-            current.raw = new Traffic
-            {
-                inboundCounter = rawTrafficStatistics.inboundCounter,
-                outboundCounter = rawTrafficStatistics.outboundCounter
-            };
-            current.kcp = new Traffic
-            {
-                inboundCounter = kcpTrafficStatistics.inboundCounter,
-                outboundCounter = kcpTrafficStatistics.outboundCounter
-            };
+            TrafficLog previous = trafficLogList.Last.Value;
+            TrafficLog current = new TrafficLog(
+                new Traffic(rawTrafficStatistics),
+                new Traffic(rawTrafficStatistics, previous.raw),
+                new Traffic(kcpTrafficStatistics),
+                new Traffic(kcpTrafficStatistics, previous.kcp));
             trafficLogList.AddLast(current);
 
             if (trafficLogList.Count > TrafficLogSize)
@@ -232,30 +224,62 @@ namespace kcptun_gui.Controller
 
         public class Traffic
         {
-            public long inboundCounter = 0;
-            public long outboundCounter = 0;
+            public long inbound = 0;
+            public long outbound = 0;
+
+            public Traffic() { }
+
+            public Traffic(Traffic t)
+            {
+                inbound = t.inbound;
+                outbound = t.outbound;
+            }
+
+            public Traffic(Traffic t1, Traffic t2)
+            {
+                inbound = t1.inbound - t2.inbound;
+                outbound = t1.outbound - t2.outbound;
+            }
 
             public void onInbound(long n)
             {
-                Interlocked.Add(ref inboundCounter, n);
+                Interlocked.Add(ref inbound, n);
             }
 
             public void onOutbound(long n)
             {
-                Interlocked.Add(ref outboundCounter, n);
+                Interlocked.Add(ref outbound, n);
             }
 
             public void reset()
             {
-                Interlocked.Exchange(ref inboundCounter, 0);
-                Interlocked.Exchange(ref outboundCounter, 0);
+                Interlocked.Exchange(ref inbound, 0);
+                Interlocked.Exchange(ref outbound, 0);
             }
         }
 
         public class TrafficLog
         {
             public Traffic raw;
+            public Traffic rawSpeed;
             public Traffic kcp;
+            public Traffic kcpSpeed;
+
+            public TrafficLog()
+            {
+                raw = new Traffic();
+                rawSpeed = new Traffic();
+                kcp = new Traffic();
+                kcpSpeed = new Traffic();
+            }
+
+            public TrafficLog(Traffic raw, Traffic rawspeed, Traffic kcp, Traffic kcpspeed)
+            {
+                this.raw = raw;
+                this.rawSpeed = rawspeed;
+                this.kcp = kcp;
+                this.kcpSpeed = kcpspeed;
+            }
         }
 
     }

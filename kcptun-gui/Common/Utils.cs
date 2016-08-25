@@ -124,7 +124,7 @@ namespace kcptun_gui.Common
 
         public static string FormatSize(long n)
         {
-            MySize size = new MySize(n);
+            TrafficSize size = new TrafficSize(n);
             return size.ToString();
         }
 

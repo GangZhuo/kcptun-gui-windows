@@ -2,9 +2,9 @@
 
 namespace kcptun_gui.Common
 {
-    public class MySize
+    public class TrafficSize
     {
-        private readonly static string[] units = new string[] { "B", "K", "M", "G", "T" };
+        private readonly static string[] units = new string[] { "B", "KiB", "MiB", "GiB", "TiB" };
 
         private long _rawValue;
 
@@ -18,14 +18,14 @@ namespace kcptun_gui.Common
         public float value { get; private set; }
         public string unit { get; private set; }
 
-        public MySize() { }
+        public TrafficSize() { }
 
-        public MySize(long n)
+        public TrafficSize(long n)
         {
             SetRawValue(n);
         }
 
-        private void SetRawValue(long n)
+        protected virtual void SetRawValue(long n)
         {
             _rawValue = n;
             long scale = 1;
@@ -39,7 +39,12 @@ namespace kcptun_gui.Common
             }
             this.scale = scale;
             this.value = f;
-            this.unit = units[unit];
+            this.unit = GetUnitName(unit);
+        }
+
+        protected virtual string GetUnitName(int index)
+        {
+            return units[index];
         }
 
         public override string ToString()

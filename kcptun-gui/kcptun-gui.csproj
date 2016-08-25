@@ -59,7 +59,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\MySize.cs" />
+    <Compile Include="Common\TrafficSize.cs" />
+    <Compile Include="Common\TrafficSpeed.cs" />
     <Compile Include="Controller\ConfigurationController.cs" />
     <Compile Include="Controller\FileManager.cs" />
     <Compile Include="Controller\MainController.cs" />

@@ -124,16 +124,16 @@ namespace kcptun_gui.View.Forms
 
         private void UpdateTrafficStatistics()
         {
-            RawInbound.Text = Utils.FormatSize(controller.rawTrafficStatistics.inboundCounter);
-            RawOutbound.Text = Utils.FormatSize(controller.rawTrafficStatistics.outboundCounter);
-            KCPInbound.Text = Utils.FormatSize(controller.kcpTrafficStatistics.inboundCounter);
-            KCPOutbound.Text = Utils.FormatSize(controller.kcpTrafficStatistics.outboundCounter);
-            if (controller.rawTrafficStatistics.inboundCounter > 0)
-                InboundPercent.Text = $"{((double)controller.kcpTrafficStatistics.inboundCounter / (double)controller.rawTrafficStatistics.inboundCounter).ToString("F2")} times";
+            RawInbound.Text = Utils.FormatSize(controller.rawTrafficStatistics.inbound);
+            RawOutbound.Text = Utils.FormatSize(controller.rawTrafficStatistics.outbound);
+            KCPInbound.Text = Utils.FormatSize(controller.kcpTrafficStatistics.inbound);
+            KCPOutbound.Text = Utils.FormatSize(controller.kcpTrafficStatistics.outbound);
+            if (controller.rawTrafficStatistics.inbound > 0)
+                InboundPercent.Text = $"{((double)controller.kcpTrafficStatistics.inbound / (double)controller.rawTrafficStatistics.inbound).ToString("F2")} times";
             else
                 InboundPercent.Text = "";
-            if (controller.rawTrafficStatistics.outboundCounter > 0)
-                OutboundPercent.Text = $"{((double)controller.kcpTrafficStatistics.outboundCounter / (double)controller.rawTrafficStatistics.outboundCounter).ToString("F2")} times";
+            if (controller.rawTrafficStatistics.outbound > 0)
+                OutboundPercent.Text = $"{((double)controller.kcpTrafficStatistics.outbound / (double)controller.rawTrafficStatistics.outbound).ToString("F2")} times";
             else
                 OutboundPercent.Text = "";
         }
@@ -157,12 +157,9 @@ namespace kcptun_gui.View.Forms
         private List<float> rawOutboundPoints = new List<float>();
         private List<float> kcpInboundPoints = new List<float>();
         private List<float> kcpOutboundPoints = new List<float>();
-        private string[] units = new string[] { "B", "KiB", "MiB", "GiB" };
 
         private void UpdateTrafficChart()
         {
-            TrafficLog previous = null;
-            int i = 0;
             long maxSpeedValue = 0;
             rawInboundPoints.Clear();
             rawOutboundPoints.Clear();
@@ -170,42 +167,25 @@ namespace kcptun_gui.View.Forms
             kcpOutboundPoints.Clear();
             foreach (TrafficLog item in controller.trafficLogList)
             {
-                if (previous == null)
-                {
-                    rawInboundPoints.Add(item.raw.inboundCounter);
-                    rawOutboundPoints.Add(item.raw.outboundCounter);
-                    kcpInboundPoints.Add(item.kcp.inboundCounter);
-                    kcpOutboundPoints.Add(item.kcp.outboundCounter);
-                }
-                else
-                {
-                    rawInboundPoints.Add(item.raw.inboundCounter - previous.raw.inboundCounter);
-                    rawOutboundPoints.Add(item.raw.outboundCounter - previous.raw.outboundCounter);
-                    kcpInboundPoints.Add(item.kcp.inboundCounter - previous.kcp.inboundCounter);
-                    kcpOutboundPoints.Add(item.kcp.outboundCounter - previous.kcp.outboundCounter);
-                }
+                rawInboundPoints.Add(item.rawSpeed.inbound);
+                rawOutboundPoints.Add(item.rawSpeed.outbound);
+                kcpInboundPoints.Add(item.kcpSpeed.inbound);
+                kcpOutboundPoints.Add(item.kcpSpeed.outbound);
 
                 maxSpeedValue = Math.Max(maxSpeedValue,
                     Math.Max(
-                        (long)Math.Max(rawInboundPoints[i], rawOutboundPoints[i]),
-                        (long)Math.Max(kcpInboundPoints[i], kcpOutboundPoints[i])
+                        Math.Max(item.rawSpeed.inbound, item.rawSpeed.outbound),
+                        Math.Max(item.kcpSpeed.inbound, item.kcpSpeed.outbound)
                     )
                 );
-
-                previous = item;
-                i++;
             }
 
-            MySize maxSpeed = new MySize(maxSpeedValue);
+            TrafficSpeed maxSpeed = new TrafficSpeed(maxSpeedValue);
+            TrafficLog last = controller.trafficLogList.Last.Value;
+            SpeedStatusLabel.Text = SpeedStatusLabel.ToolTipText
+                = $"Raw: [In {new TrafficSpeed(last.rawSpeed.inbound)}, Out {new TrafficSpeed(last.rawSpeed.outbound)}], KCP: [In {new TrafficSpeed(last.kcpSpeed.inbound)}, Out {new TrafficSpeed(last.kcpSpeed.outbound)}]";
 
-            if (rawInboundPoints.Count > 0)
-            {
-                i = rawInboundPoints.Count - 1;
-                SpeedStatusLabel.Text = SpeedStatusLabel.ToolTipText
-                    = $"Raw: [In {new MySize((long)rawInboundPoints[i]).ToString()}/s Out {new MySize((long)rawOutboundPoints[i]).ToString()}/s] KCP: [In {new MySize((long)kcpInboundPoints[i]).ToString()}/s Out {new MySize((long)kcpOutboundPoints[i]).ToString()}/s]";
-            }
-
-            for (i = 0; i < rawInboundPoints.Count; i++)
+            for (int i = 0; i < rawInboundPoints.Count; i++)
             {
                 rawInboundPoints[i] /= maxSpeed.scale;
                 rawOutboundPoints[i] /= maxSpeed.scale;
