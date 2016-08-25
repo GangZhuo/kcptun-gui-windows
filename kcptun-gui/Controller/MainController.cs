@@ -2,6 +2,7 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using System.Collections.Generic;
 
 using kcptun_gui.Model;
 using kcptun_gui.Common;
@@ -11,15 +12,20 @@ namespace kcptun_gui.Controller
     public class MainController
     {
         public const string Version = "1.3";
+        public const int TrafficLogSize = 60; // 1 minutes
 
         private IRelay _tcpRelay;
         private IRelay _udpRelay;
 
-        public TrafficStatistics rawTrafficStatistics = new TrafficStatistics();
-        public TrafficStatistics kcpTrafficStatistics = new TrafficStatistics();
+        public Traffic rawTrafficStatistics = new Traffic();
+        public Traffic kcpTrafficStatistics = new Traffic();
+        public LinkedList<TrafficLog> trafficLogList = new LinkedList<TrafficLog>();
+        private System.Timers.Timer timer;
 
         public ConfigurationController ConfigController { get; private set; }
         public KCPTunnelController KCPTunnelController { get; private set; }
+
+        public event EventHandler TrafficChanged;
 
         public bool IsKcptunRunning
         {
@@ -42,6 +48,12 @@ namespace kcptun_gui.Controller
 
         public void Stop()
         {
+            if (timer != null)
+            {
+                timer.Stop();
+                timer.Dispose();
+                timer = null;
+            }
             if (_tcpRelay != null)
             {
                 _tcpRelay.Stop();
@@ -60,6 +72,12 @@ namespace kcptun_gui.Controller
         {
             try
             {
+                if (timer != null)
+                {
+                    timer.Stop();
+                    timer.Dispose();
+                    timer = null;
+                }
                 if (_tcpRelay != null)
                 {
                     _tcpRelay.Stop();
@@ -81,7 +99,10 @@ namespace kcptun_gui.Controller
                     KCPTunnelController.localaddr = null;
                     KCPTunnelController.remoteaddr = null;
                     if (config.statistics_enabled)
+                    {
                         RegistStatistics();
+                        StartTrafficLogger();
+                    }
                     KCPTunnelController.Start();
                 }
             }
@@ -161,7 +182,55 @@ namespace kcptun_gui.Controller
             Reload();
         }
 
-        public class TrafficStatistics
+        private void StartTrafficLogger()
+        {
+            if (trafficLogList == null)
+                trafficLogList = new LinkedList<TrafficLog>();
+            else
+                trafficLogList.Clear();
+            for (int i = 0; i < TrafficLogSize; i++)
+            {
+                TrafficLog item = new TrafficLog();
+                item.raw = new Traffic();
+                item.kcp = new Traffic();
+                trafficLogList.AddLast(item);
+            }
+            if (timer == null)
+            {
+                timer = new System.Timers.Timer(1000);
+                timer.Elapsed += Timer_Elapsed;
+                timer.AutoReset = true;
+                timer.Enabled = true;
+            }
+            timer.Start();
+       }
+
+        private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            UpdateTrafficList();
+            TrafficChanged?.Invoke(this, new EventArgs());
+        }
+
+        private void UpdateTrafficList()
+        {
+            TrafficLog current = new TrafficLog();
+            current.raw = new Traffic
+            {
+                inboundCounter = rawTrafficStatistics.inboundCounter,
+                outboundCounter = rawTrafficStatistics.outboundCounter
+            };
+            current.kcp = new Traffic
+            {
+                inboundCounter = kcpTrafficStatistics.inboundCounter,
+                outboundCounter = kcpTrafficStatistics.outboundCounter
+            };
+            trafficLogList.AddLast(current);
+
+            if (trafficLogList.Count > TrafficLogSize)
+                trafficLogList.RemoveFirst();
+        }
+
+        public class Traffic
         {
             public long inboundCounter = 0;
             public long outboundCounter = 0;
@@ -182,5 +251,12 @@ namespace kcptun_gui.Controller
                 Interlocked.Exchange(ref outboundCounter, 0);
             }
         }
+
+        public class TrafficLog
+        {
+            public Traffic raw;
+            public Traffic kcp;
+        }
+
     }
 }

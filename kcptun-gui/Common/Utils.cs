@@ -124,34 +124,8 @@ namespace kcptun_gui.Common
 
         public static string FormatSize(long n)
         {
-            long scale = 1;
-            float f = n;
-            string unit = "B";
-            if (f > 1024)
-            {
-                f = f / 1024;
-                scale <<= 10;
-                unit = "KiB";
-            }
-            if (f > 1024)
-            {
-                f = f / 1024;
-                scale <<= 10;
-                unit = "MiB";
-            }
-            if (f > 1024)
-            {
-                f = f / 1024;
-                scale <<= 10;
-                unit = "GiB";
-            }
-            if (f > 1024)
-            {
-                f = f / 1024;
-                scale <<= 10;
-                unit = "TiB";
-            }
-            return f.ToString("F2") + unit;
+            MySize size = new MySize(n);
+            return size.ToString();
         }
 
         public static Bitmap ToGray(Bitmap bmp)
