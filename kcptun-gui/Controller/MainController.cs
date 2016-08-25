@@ -238,8 +238,10 @@ namespace kcptun_gui.Controller
 
             public Traffic(Traffic t1, Traffic t2)
             {
-                inbound = t1.inbound - t2.inbound;
-                outbound = t1.outbound - t2.outbound;
+                if (t1.inbound >= t2.inbound)
+                    inbound = t1.inbound - t2.inbound;
+                if (t1.outbound >= t2.outbound)
+                    outbound = t1.outbound - t2.outbound;
             }
 
             public void onInbound(long n)
