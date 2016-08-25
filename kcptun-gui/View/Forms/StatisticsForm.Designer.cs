@@ -67,6 +67,15 @@
             this.toolbarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.topMostToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.chartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.minutesMenuItem_1 = new kcptun_gui.View.Forms.MyToolStripMenuItem();
+            this.minutesMenuItem_2 = new kcptun_gui.View.Forms.MyToolStripMenuItem();
+            this.minutesMenuItem_3 = new kcptun_gui.View.Forms.MyToolStripMenuItem();
+            this.minutesMenuItem_4 = new kcptun_gui.View.Forms.MyToolStripMenuItem();
+            this.minutesMenuItem_5 = new kcptun_gui.View.Forms.MyToolStripMenuItem();
+            this.minutesMenuItem_10 = new kcptun_gui.View.Forms.MyToolStripMenuItem();
+            this.minutesMenuItem_15 = new kcptun_gui.View.Forms.MyToolStripMenuItem();
+            this.minutesMenuItem_30 = new kcptun_gui.View.Forms.MyToolStripMenuItem();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.TrafficChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
@@ -342,7 +351,8 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.viewToolStripMenuItem});
+            this.viewToolStripMenuItem,
+            this.chartToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(442, 24);
@@ -414,6 +424,85 @@
             this.topMostToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
             this.topMostToolStripMenuItem.Text = "Top most";
             this.topMostToolStripMenuItem.Click += new System.EventHandler(this.topMostToolStripMenuItem_Click);
+            // 
+            // chartToolStripMenuItem
+            // 
+            this.chartToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.minutesMenuItem_1,
+            this.minutesMenuItem_2,
+            this.minutesMenuItem_3,
+            this.minutesMenuItem_4,
+            this.minutesMenuItem_5,
+            this.minutesMenuItem_10,
+            this.minutesMenuItem_15,
+            this.minutesMenuItem_30});
+            this.chartToolStripMenuItem.Name = "chartToolStripMenuItem";
+            this.chartToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
+            this.chartToolStripMenuItem.Text = "Chart";
+            // 
+            // minutesMenuItem_1
+            // 
+            this.minutesMenuItem_1.Name = "minutesMenuItem_1";
+            this.minutesMenuItem_1.Size = new System.Drawing.Size(238, 22);
+            this.minutesMenuItem_1.Text = "Display data for last 1 minutes";
+            this.minutesMenuItem_1.TrafficLogSize = 60;
+            this.minutesMenuItem_1.Click += new System.EventHandler(this.minutesMenuItem_Click);
+            // 
+            // minutesMenuItem_2
+            // 
+            this.minutesMenuItem_2.Name = "minutesMenuItem_2";
+            this.minutesMenuItem_2.Size = new System.Drawing.Size(238, 22);
+            this.minutesMenuItem_2.Text = "Display data for last 2 minutes";
+            this.minutesMenuItem_2.TrafficLogSize = 120;
+            this.minutesMenuItem_2.Click += new System.EventHandler(this.minutesMenuItem_Click);
+            // 
+            // minutesMenuItem_3
+            // 
+            this.minutesMenuItem_3.Name = "minutesMenuItem_3";
+            this.minutesMenuItem_3.Size = new System.Drawing.Size(238, 22);
+            this.minutesMenuItem_3.Text = "Display data for last 3 minutes";
+            this.minutesMenuItem_3.TrafficLogSize = 180;
+            this.minutesMenuItem_3.Click += new System.EventHandler(this.minutesMenuItem_Click);
+            // 
+            // minutesMenuItem_4
+            // 
+            this.minutesMenuItem_4.Name = "minutesMenuItem_4";
+            this.minutesMenuItem_4.Size = new System.Drawing.Size(238, 22);
+            this.minutesMenuItem_4.Text = "Display data for last 4 minutes";
+            this.minutesMenuItem_4.TrafficLogSize = 240;
+            this.minutesMenuItem_4.Click += new System.EventHandler(this.minutesMenuItem_Click);
+            // 
+            // minutesMenuItem_5
+            // 
+            this.minutesMenuItem_5.Name = "minutesMenuItem_5";
+            this.minutesMenuItem_5.Size = new System.Drawing.Size(238, 22);
+            this.minutesMenuItem_5.Text = "Display data for last 5 minutes";
+            this.minutesMenuItem_5.TrafficLogSize = 300;
+            this.minutesMenuItem_5.Click += new System.EventHandler(this.minutesMenuItem_Click);
+            // 
+            // minutesMenuItem_10
+            // 
+            this.minutesMenuItem_10.Name = "minutesMenuItem_10";
+            this.minutesMenuItem_10.Size = new System.Drawing.Size(238, 22);
+            this.minutesMenuItem_10.Text = "Display data for last 10 minutes";
+            this.minutesMenuItem_10.TrafficLogSize = 600;
+            this.minutesMenuItem_10.Click += new System.EventHandler(this.minutesMenuItem_Click);
+            // 
+            // minutesMenuItem_15
+            // 
+            this.minutesMenuItem_15.Name = "minutesMenuItem_15";
+            this.minutesMenuItem_15.Size = new System.Drawing.Size(238, 22);
+            this.minutesMenuItem_15.Text = "Display data for last 15 minutes";
+            this.minutesMenuItem_15.TrafficLogSize = 900;
+            this.minutesMenuItem_15.Click += new System.EventHandler(this.minutesMenuItem_Click);
+            // 
+            // minutesMenuItem_30
+            // 
+            this.minutesMenuItem_30.Name = "minutesMenuItem_30";
+            this.minutesMenuItem_30.Size = new System.Drawing.Size(238, 22);
+            this.minutesMenuItem_30.Text = "Display data for last 30 minutes";
+            this.minutesMenuItem_30.TrafficLogSize = 1800;
+            this.minutesMenuItem_30.Click += new System.EventHandler(this.minutesMenuItem_Click);
             // 
             // groupBox1
             // 
@@ -584,5 +673,14 @@
         private System.Windows.Forms.DataVisualization.Charting.Chart TrafficChart;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel SpeedStatusLabel;
+        private System.Windows.Forms.ToolStripMenuItem chartToolStripMenuItem;
+        private MyToolStripMenuItem minutesMenuItem_1;
+        private MyToolStripMenuItem minutesMenuItem_2;
+        private MyToolStripMenuItem minutesMenuItem_3;
+        private MyToolStripMenuItem minutesMenuItem_4;
+        private MyToolStripMenuItem minutesMenuItem_5;
+        private MyToolStripMenuItem minutesMenuItem_10;
+        private MyToolStripMenuItem minutesMenuItem_15;
+        private MyToolStripMenuItem minutesMenuItem_30;
     }
 }

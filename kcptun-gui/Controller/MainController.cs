@@ -12,14 +12,15 @@ namespace kcptun_gui.Controller
     public class MainController
     {
         public const string Version = "1.3";
-        public const int TrafficLogSize = 60; // 1 minutes
 
         private IRelay _tcpRelay;
         private IRelay _udpRelay;
 
-        public Traffic rawTrafficStatistics = new Traffic();
-        public Traffic kcpTrafficStatistics = new Traffic();
-        public LinkedList<TrafficLog> trafficLogList = new LinkedList<TrafficLog>();
+        public Traffic rawTrafficStatistics { get; private set; } = new Traffic();
+        public Traffic kcpTrafficStatistics { get; private set; } = new Traffic();
+        public LinkedList<TrafficLog> trafficLogList { get; private set; } = new LinkedList<TrafficLog>();
+        public int trafficLogSize { get; set; } = 60; // 1 minutes
+
         private System.Timers.Timer timer;
 
         public ConfigurationController ConfigController { get; private set; }
@@ -188,7 +189,7 @@ namespace kcptun_gui.Controller
                 trafficLogList = new LinkedList<TrafficLog>();
             else
                 trafficLogList.Clear();
-            for (int i = 0; i < TrafficLogSize; i++)
+            for (int i = 0; i < trafficLogSize; i++)
             {
                 trafficLogList.AddLast(new TrafficLog());
             }
@@ -218,8 +219,8 @@ namespace kcptun_gui.Controller
                 new Traffic(kcpTrafficStatistics, previous.kcp));
             trafficLogList.AddLast(current);
 
-            if (trafficLogList.Count > TrafficLogSize)
-                trafficLogList.RemoveFirst();
+            while (trafficLogList.Count > trafficLogSize) trafficLogList.RemoveFirst();
+            while (trafficLogList.Count < trafficLogSize) trafficLogList.AddFirst(new TrafficLog());
         }
 
         public class Traffic

@@ -22,6 +22,7 @@ namespace kcptun_gui.View.Forms
         {
             this.controller = controller;
             InitializeComponent();
+
             controller.ConfigController.ConfigChanged += ConfigController_ConfigChanged;
             controller.TrafficChanged += Controller_TrafficChanged;
         }
@@ -32,17 +33,28 @@ namespace kcptun_gui.View.Forms
             topMostToolStripMenuItem.Checked = TopMostheckBox.Checked = TopMost;
             toolbarToolStripMenuItem.Checked = ToolbarPanel.Visible = false;
 
+            refreshChartToolStripMenuItems();
+
             SpeedStatusLabel.Text = "";
 
             timer1.Enabled = true;
             timer1.Start();
         }
 
+        private void refreshChartToolStripMenuItems()
+        {
+            foreach (MyToolStripMenuItem item in chartToolStripMenuItem.DropDownItems)
+            {
+                item.Checked = (item.TrafficLogSize == controller.trafficLogSize);
+            }
+        }
+
         private void ConfigController_ConfigChanged(object sender, EventArgs e)
         {
             if (EnabledCheckBox.InvokeRequired)
             {
-                EnabledCheckBox.Invoke(new EventHandler((sender1, e1) => {
+                EnabledCheckBox.Invoke(new EventHandler((sender1, e1) =>
+                {
                     enabledToolStripMenuItem.Checked = EnabledCheckBox.Checked = controller.ConfigController.GetConfigurationCopy().statistics_enabled;
                     //topMostToolStripMenuItem.Checked = TopMostheckBox.Checked = TopMost;
                 }), sender, e);
@@ -205,6 +217,20 @@ namespace kcptun_gui.View.Forms
 
         }
 
-
+        private void minutesMenuItem_Click(object sender, EventArgs e)
+        {
+            MyToolStripMenuItem menuitem = sender as MyToolStripMenuItem;
+            if (menuitem != null)
+            {
+                controller.trafficLogSize = menuitem.TrafficLogSize;
+                refreshChartToolStripMenuItems();
+            }
+        }
     }
+
+    class MyToolStripMenuItem : ToolStripMenuItem
+    {
+        public int TrafficLogSize { get; set; } = 60;
+    }
+
 }
