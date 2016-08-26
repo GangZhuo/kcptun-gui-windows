@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 using kcptun_gui.Controller;
 using kcptun_gui.Common;
-using TrafficLog = kcptun_gui.Controller.MainController.TrafficLog;
+using kcptun_gui.Model;
 
 namespace kcptun_gui.View.Forms
 {
@@ -99,8 +99,8 @@ namespace kcptun_gui.View.Forms
 
         private void resetToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            controller.rawTrafficStatistics.reset();
-            controller.kcpTrafficStatistics.reset();
+            controller.traffic.raw.reset();
+            controller.traffic.kcp.reset();
         }
 
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -115,8 +115,8 @@ namespace kcptun_gui.View.Forms
 
         private void ResetButton_Click(object sender, EventArgs e)
         {
-            controller.rawTrafficStatistics.reset();
-            controller.kcpTrafficStatistics.reset();
+            controller.traffic.raw.reset();
+            controller.traffic.kcp.reset();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -136,16 +136,16 @@ namespace kcptun_gui.View.Forms
 
         private void UpdateTrafficStatistics()
         {
-            RawInbound.Text = Utils.FormatSize(controller.rawTrafficStatistics.inbound);
-            RawOutbound.Text = Utils.FormatSize(controller.rawTrafficStatistics.outbound);
-            KCPInbound.Text = Utils.FormatSize(controller.kcpTrafficStatistics.inbound);
-            KCPOutbound.Text = Utils.FormatSize(controller.kcpTrafficStatistics.outbound);
-            if (controller.rawTrafficStatistics.inbound > 0)
-                InboundPercent.Text = $"{((double)controller.kcpTrafficStatistics.inbound / (double)controller.rawTrafficStatistics.inbound).ToString("F2")} times";
+            RawInbound.Text = Utils.FormatSize(controller.traffic.raw.inbound);
+            RawOutbound.Text = Utils.FormatSize(controller.traffic.raw.outbound);
+            KCPInbound.Text = Utils.FormatSize(controller.traffic.kcp.inbound);
+            KCPOutbound.Text = Utils.FormatSize(controller.traffic.kcp.outbound);
+            if (controller.traffic.raw.inbound > 0)
+                InboundPercent.Text = $"{((double)controller.traffic.kcp.inbound / (double)controller.traffic.raw.inbound).ToString("F2")} times";
             else
                 InboundPercent.Text = "";
-            if (controller.rawTrafficStatistics.outbound > 0)
-                OutboundPercent.Text = $"{((double)controller.kcpTrafficStatistics.outbound / (double)controller.rawTrafficStatistics.outbound).ToString("F2")} times";
+            if (controller.traffic.raw.outbound > 0)
+                OutboundPercent.Text = $"{((double)controller.traffic.kcp.outbound / (double)controller.traffic.raw.outbound).ToString("F2")} times";
             else
                 OutboundPercent.Text = "";
         }

@@ -9,6 +9,8 @@ namespace kcptun_gui
 {
     static class Program
     {
+        static MainController controller;
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -26,10 +28,20 @@ namespace kcptun_gui
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
-            MainController controller = new MainController();
+            controller = new MainController();
             MenuViewController viewController = new MenuViewController(controller);
             controller.Start();
+            Application.ApplicationExit += Application_ApplicationExit;
             Application.Run();
+        }
+
+        private static void Application_ApplicationExit(object sender, EventArgs e)
+        {
+            if (controller != null)
+            {
+                controller.Stop();
+                controller = null;
+            }
         }
     }
 }

@@ -16,8 +16,9 @@ namespace kcptun_gui.Controller
         private IRelay _tcpRelay;
         private IRelay _udpRelay;
 
-        public Traffic rawTrafficStatistics { get; private set; } = new Traffic();
-        public Traffic kcpTrafficStatistics { get; private set; } = new Traffic();
+        private TrafficStatistics _trafficStatistics;
+
+        public TrafficLog traffic { get; private set; } = new TrafficLog();
         public LinkedList<TrafficLog> trafficLogList { get; private set; } = new LinkedList<TrafficLog>();
         public int trafficLogSize { get; set; } = 60; // 1 minutes
 
@@ -40,6 +41,7 @@ namespace kcptun_gui.Controller
 
             KCPTunnelController = new KCPTunnelController(this);
 
+            _trafficStatistics = TrafficStatistics.Load();
         }
 
         public void Start()
@@ -49,24 +51,33 @@ namespace kcptun_gui.Controller
 
         public void Stop()
         {
-            if (timer != null)
+            try
             {
-                timer.Stop();
-                timer.Dispose();
-                timer = null;
+                if (timer != null)
+                {
+                    timer.Stop();
+                    timer.Dispose();
+                    timer = null;
+                }
+                if (_tcpRelay != null)
+                {
+                    _tcpRelay.Stop();
+                    _tcpRelay = null;
+                }
+                if (_udpRelay != null)
+                {
+                    _udpRelay.Stop();
+                    _udpRelay = null;
+                }
+                if (KCPTunnelController.IsRunning)
+                    KCPTunnelController.Stop();
+
+                TrafficStatistics.Save(_trafficStatistics);
             }
-            if (_tcpRelay != null)
+            catch(Exception e)
             {
-                _tcpRelay.Stop();
-                _tcpRelay = null;
+                Logging.LogUsefulException(e);
             }
-            if (_udpRelay != null)
-            {
-                _udpRelay.Stop();
-                _udpRelay = null;
-            }
-            if (KCPTunnelController.IsRunning)
-                KCPTunnelController.Stop();
         }
 
         public void Reload()
@@ -94,9 +105,11 @@ namespace kcptun_gui.Controller
                     KCPTunnelController.Stop();
                 }
                 Configuration config = ConfigController.GetCurrentConfiguration();
+                Server server = config.GetCurrentServer();
+                traffic = _trafficStatistics.GetTrafficLog(server);
                 if (config.enabled)
                 {
-                    KCPTunnelController.Server = config.GetCurrentServer();
+                    KCPTunnelController.Server = server;
                     KCPTunnelController.localaddr = null;
                     KCPTunnelController.remoteaddr = null;
                     if (config.statistics_enabled)
@@ -154,22 +167,22 @@ namespace kcptun_gui.Controller
 
         private void _tcpRelay_Inbound(object sender, RelayEventArgs e)
         {
-            rawTrafficStatistics.onInbound(e.Value);
+            traffic.raw.onInbound(e.Value);
         }
 
         private void _tcpRelay_Outbound(object sender, RelayEventArgs e)
         {
-            rawTrafficStatistics.onOutbound(e.Value);
+            traffic.raw.onOutbound(e.Value);
         }
 
         private void _udpRelay_Inbound(object sender, RelayEventArgs e)
         {
-            kcpTrafficStatistics.onInbound(e.Value);
+            traffic.kcp.onInbound(e.Value);
         }
 
         private void _udpRelay_Outbound(object sender, RelayEventArgs e)
         {
-            kcpTrafficStatistics.onOutbound(e.Value);
+            traffic.kcp.onOutbound(e.Value);
         }
 
         private void RegistStatistics()
@@ -213,77 +226,14 @@ namespace kcptun_gui.Controller
         {
             TrafficLog previous = trafficLogList.Last.Value;
             TrafficLog current = new TrafficLog(
-                new Traffic(rawTrafficStatistics),
-                new Traffic(rawTrafficStatistics, previous.raw),
-                new Traffic(kcpTrafficStatistics),
-                new Traffic(kcpTrafficStatistics, previous.kcp));
+                new Traffic(traffic.raw),
+                new Traffic(traffic.raw, previous.raw),
+                new Traffic(traffic.kcp),
+                new Traffic(traffic.kcp, previous.kcp));
             trafficLogList.AddLast(current);
 
             while (trafficLogList.Count > trafficLogSize) trafficLogList.RemoveFirst();
             while (trafficLogList.Count < trafficLogSize) trafficLogList.AddFirst(new TrafficLog());
         }
-
-        public class Traffic
-        {
-            public long inbound = 0;
-            public long outbound = 0;
-
-            public Traffic() { }
-
-            public Traffic(Traffic t)
-            {
-                inbound = t.inbound;
-                outbound = t.outbound;
-            }
-
-            public Traffic(Traffic t1, Traffic t2)
-            {
-                if (t1.inbound >= t2.inbound)
-                    inbound = t1.inbound - t2.inbound;
-                if (t1.outbound >= t2.outbound)
-                    outbound = t1.outbound - t2.outbound;
-            }
-
-            public void onInbound(long n)
-            {
-                Interlocked.Add(ref inbound, n);
-            }
-
-            public void onOutbound(long n)
-            {
-                Interlocked.Add(ref outbound, n);
-            }
-
-            public void reset()
-            {
-                Interlocked.Exchange(ref inbound, 0);
-                Interlocked.Exchange(ref outbound, 0);
-            }
-        }
-
-        public class TrafficLog
-        {
-            public Traffic raw;
-            public Traffic rawSpeed;
-            public Traffic kcp;
-            public Traffic kcpSpeed;
-
-            public TrafficLog()
-            {
-                raw = new Traffic();
-                rawSpeed = new Traffic();
-                kcp = new Traffic();
-                kcpSpeed = new Traffic();
-            }
-
-            public TrafficLog(Traffic raw, Traffic rawspeed, Traffic kcp, Traffic kcpspeed)
-            {
-                this.raw = raw;
-                this.rawSpeed = rawspeed;
-                this.kcp = kcp;
-                this.kcpSpeed = kcpspeed;
-            }
-        }
-
     }
 }
