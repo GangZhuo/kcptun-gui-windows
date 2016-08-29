@@ -127,6 +127,7 @@ namespace kcptun_gui.Controller
 
         private void localStartReceive()
         {
+            if (_local == null) return;
             try
             {
                 _local.BeginReceiveFrom(state.buffer, 0, state.buffer.Length, SocketFlags.None,
@@ -141,6 +142,7 @@ namespace kcptun_gui.Controller
 
         private void localReceiveCallback(IAsyncResult ar)
         {
+            if (_local == null) return;
             State state = (State)ar.AsyncState;
             try
             {
