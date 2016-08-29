@@ -22,6 +22,7 @@ namespace kcptun_gui.View.Forms
         {
             this.controller = controller;
             InitializeComponent();
+            TrafficChart.Resize += TrafficChart_Resize;
 
             controller.ConfigController.ConfigChanged += ConfigController_ConfigChanged;
             controller.TrafficChanged += Controller_TrafficChanged;
@@ -66,6 +67,25 @@ namespace kcptun_gui.View.Forms
             }
         }
 
+        protected override void OnResize(EventArgs e)
+        {
+            base.OnResize(e);
+            if (Height <= 280)
+            {
+                panel2.Visible = false;
+                menuStrip1.Visible = false;
+                ToolbarPanel.Visible = false;
+                statusStrip1.Visible = false;
+            }
+            else
+            {
+                panel2.Visible = true;
+                menuStrip1.Visible = true;
+                ToolbarPanel.Visible = toolbarToolStripMenuItem.Checked;
+                statusStrip1.Visible = true;
+            }
+        }
+
         protected override void OnClosing(CancelEventArgs e)
         {
             controller.TrafficChanged -= Controller_TrafficChanged;
@@ -73,6 +93,18 @@ namespace kcptun_gui.View.Forms
             timer1.Enabled = false;
             timer1.Stop();
             base.OnClosing(e);
+        }
+
+        private void TrafficChart_Resize(object sender, EventArgs e)
+        {
+            if (TrafficChart.Height <= 80)
+            {
+                TrafficChart.Legends[0].Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Bottom;
+            }
+            else
+            {
+                TrafficChart.Legends[0].Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Right;
+            }
         }
 
         private void EnabledCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -148,6 +180,10 @@ namespace kcptun_gui.View.Forms
                 OutboundPercent.Text = $"{((double)controller.traffic.kcp.outbound / (double)controller.traffic.raw.outbound).ToString("F2")} times";
             else
                 OutboundPercent.Text = "";
+            if ((controller.traffic.raw.inbound + controller.traffic.raw.outbound) > 0)
+                TotalTimes.Text = $"Total {((double)(controller.traffic.kcp.inbound + controller.traffic.kcp.outbound) / (double)(controller.traffic.raw.inbound + controller.traffic.raw.outbound)).ToString("F2")} times";
+            else
+                TotalTimes.Text = "";
         }
 
         private void Controller_TrafficChanged(object sender, EventArgs e)
