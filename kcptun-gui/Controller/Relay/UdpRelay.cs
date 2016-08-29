@@ -57,8 +57,8 @@ namespace kcptun_gui.Controller
             }
             catch (SocketException e)
             {
-                Stop();
                 Logging.LogUsefulException(e);
+                Stop();
             }
         }
 
@@ -66,7 +66,15 @@ namespace kcptun_gui.Controller
         {
             if (_local != null)
             {
-                _local.Close();
+                try
+                {
+                    _local.Shutdown(SocketShutdown.Both);
+                    _local.Close();
+                }
+                catch (Exception e)
+                {
+                    Logging.LogUsefulException(e);
+                }
                 _local = null;
             }
         }
@@ -81,6 +89,42 @@ namespace kcptun_gui.Controller
             Outbound?.Invoke(this, new Controller.RelayEventArgs(n));
         }
 
+        private void Restart()
+        {
+            Console.WriteLine("Restart UDP server");
+            if (_local != null)
+            {
+                try
+                {
+                    _local.Shutdown(SocketShutdown.Both);
+                    _local.Close();
+                }
+                catch (Exception e)
+                {
+                    Logging.LogUsefulException(e);
+                }
+                _local = null;
+            }
+
+            try
+            {
+                // Create a TCP/IP socket.
+                _local = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+                _local.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+                // Bind the socket to the local endpoint and listen for incoming connections.
+                _local.Bind(_localEP);
+
+                // Start an asynchronous socket to listen for connections.
+                Console.WriteLine("Restart UDPRelay on " + _localEP.ToString());
+                localStartReceive();
+            }
+            catch (SocketException e)
+            {
+                Logging.LogUsefulException(e);
+                Stop();
+            }
+        }
+
         private void localStartReceive()
         {
             try
@@ -91,6 +135,7 @@ namespace kcptun_gui.Controller
             catch (Exception e)
             {
                 Logging.LogUsefulException(e);
+                Restart();
             }
         }
 
@@ -101,20 +146,13 @@ namespace kcptun_gui.Controller
             {
                 EndPoint remoteEP = (EndPoint)(new IPEndPoint(IPAddress.Any, 0));
                 int bytesRead = _local.EndReceiveFrom(ar, ref remoteEP);
-                if (_pipe.CreatePipe(state.buffer, bytesRead, _local, remoteEP))
-                    return;
-                // do nothing
-            }
-            catch (ObjectDisposedException)
-            {
+                _pipe.CreatePipe(state.buffer, bytesRead, _local, remoteEP);
+                localStartReceive();
             }
             catch (Exception e)
             {
                 Logging.LogUsefulException(e);
-            }
-            finally
-            {
-                localStartReceive();
+                Restart();
             }
         }
 
