@@ -102,7 +102,7 @@ namespace kcptun_gui.View
                     new MenuItem("-"),
                     CreateMenuItem("Custome KCPTun", new EventHandler(this.OnCustomeKCPTunItemClick)),
                     new MenuItem("-"),
-                    CreateMenuItem("Statistics", new EventHandler(this.OnStatisticsItemClick)),
+                    CreateMenuItem("Traffic Statistics", new EventHandler(this.OnStatisticsItemClick)),
                 }),
                 //new MenuItem("-"),
                 CreateMenuItem("Show Logs...", new EventHandler(this.OnShowLogItemClick)),
