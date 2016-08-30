@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CustomKCPTunForm));
-            this.label1 = new System.Windows.Forms.Label();
+            this.KcptunClientPathLabel = new System.Windows.Forms.Label();
             this.KcpTunPathTextBox = new System.Windows.Forms.TextBox();
             this.BrowserButton = new System.Windows.Forms.Button();
             this.OkButton = new System.Windows.Forms.Button();
@@ -37,14 +37,14 @@
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.SuspendLayout();
             // 
-            // label1
+            // KcptunClientPathLabel
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(12, 19);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(73, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Kcptun Client:";
+            this.KcptunClientPathLabel.AutoSize = true;
+            this.KcptunClientPathLabel.Location = new System.Drawing.Point(12, 19);
+            this.KcptunClientPathLabel.Name = "KcptunClientPathLabel";
+            this.KcptunClientPathLabel.Size = new System.Drawing.Size(73, 13);
+            this.KcptunClientPathLabel.TabIndex = 0;
+            this.KcptunClientPathLabel.Text = "Kcptun Client:";
             // 
             // KcpTunPathTextBox
             // 
@@ -102,7 +102,7 @@
             this.Controls.Add(this.OkButton);
             this.Controls.Add(this.BrowserButton);
             this.Controls.Add(this.KcpTunPathTextBox);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.KcptunClientPathLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
@@ -118,7 +118,7 @@
 
         #endregion
 
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label KcptunClientPathLabel;
         private System.Windows.Forms.TextBox KcpTunPathTextBox;
         private System.Windows.Forms.Button BrowserButton;
         private System.Windows.Forms.Button OkButton;

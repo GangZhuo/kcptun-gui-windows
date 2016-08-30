@@ -23,7 +23,17 @@ namespace kcptun_gui.View.Forms
             this.controller = controller;
             config = controller.ConfigController.GetConfigurationCopy();
             InitializeComponent();
+            UpdateText();
             controller.ConfigController.ConfigChanged += OnConfigChanged;
+        }
+
+        private void UpdateText()
+        {
+            Text = I18N.GetString("Set your kcptun path...");
+            KcptunClientPathLabel.Text = I18N.GetString("Kcptun Client:");
+            BrowserButton.Text = I18N.GetString("Browser");
+            OkButton.Text = I18N.GetString("OK");
+            MyCancelButton.Text = I18N.GetString("Cancel");
         }
 
         private void CustomKCPTunForm_Load(object sender, EventArgs e)

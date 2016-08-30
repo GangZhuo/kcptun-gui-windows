@@ -1,0 +1,92 @@
+﻿
+# Context menu
+
+Enable=启用/禁用
+Servers=服务器
+Edit Servers...=配置服务器...
+Start/Stop/Restart kcptun client...=启动/停止/重启 kcptun 客户端...
+Start=启动
+Restart=重启
+Stop=停止
+Kill all kcptun clients=杀死所有 kcptun 客户端
+Start on Boot=开机启动
+More...=更多...
+Turn on KCP Log=启用/禁用 kcptun 日志
+Custome KCPTun=自定义 kcptun 客户端路径
+Traffic Statistics=流量统计
+Show Logs...=查看日志...
+About...=关于...
+Quit=退出
+
+# Message
+
+Running...=运行中...
+Local:=本地端点：
+Remote:=远程端点：
+kcptun is here=kcptun 在这里
+You can turn on/off kcptun in the context menu.=右击此图标可管理 kcptun 客户端。
+GUI version =GUI 版本
+
+# About
+About=关于
+GUI for kcptun.=kcptun-gui 是 kcptun 客户端的一个可视化配置工具。
+Report GUI issues to=汇报 GUI 的错误到：
+Report kcptun issues to=汇报 kcptun 的错误到：
+
+# Custom kcptun path
+Set your kcptun path...=自定义 kcptun 客户端路径...
+Kcptun Client:=客户端：
+
+# Edit Servers Form
+Edit Servers=配置服务器
+Server=服务器
+Arguments:=客户端参数：
+
+# Log Viewer Form
+Log Viewer=日志浏览器
+
+# Traffic Statistics Form
+Display data for last {0} minutes=显示最近 {0} 分钟的统计数据
+Raw=原始流量
+KCP=KCP 流量
+Traffic Chart=流量图表
+Inbound:=入站：
+Outbound:=出站：
+{0} times={0} 倍原始流量
+Total {0} times=总计 {0} 倍原始流量
+Raw: [In {0}, Out {1}], KCP: [In {2}, Out {3}]=原始速度: [In {0}, Out {1}], KCP 速度: [In {2}, Out {3}]
+Raw Inbound=入站 - 原始
+Raw Outbound=出站 - 原始
+KCP Inbound=入站 - KCP
+KCP Outbound=出站 - KCP
+
+# Buttons
+Browser=浏览
+OK=确定
+Cancel=取消
+Add=添加
+Delete=删除
+Move Up=上移
+Move Down=下移
+
+# Context Menu
+File=文件
+View=查看
+Chart=图表
+Open Location=打开文件位置
+Clean Logs=清空日志文件
+Wrap Text=文本自动换行
+Change Font=修改字体
+Reset Font=重置字体
+Top Most=窗体置顶
+Reset=重置
+Exit=退出
+Toolbar=工具栏
+
+
+# Error
+
+Error=错误
+Can't access the file '{0}', it is maybe used by another process.=无法打开文件 '{0}'，可能已经被其他程序打开
+Failed to update registry=更新注册表失败
+

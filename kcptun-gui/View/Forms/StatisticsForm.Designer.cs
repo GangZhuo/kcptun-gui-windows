@@ -36,24 +36,20 @@
             System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(StatisticsForm));
-            this.EnabledCheckBox = new System.Windows.Forms.CheckBox();
-            this.ToolbarPanel = new System.Windows.Forms.Panel();
-            this.ResetButton = new System.Windows.Forms.Button();
-            this.TopMostheckBox = new System.Windows.Forms.CheckBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.RawGroupBox = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.label1 = new System.Windows.Forms.Label();
+            this.RawInboundLabel = new System.Windows.Forms.Label();
             this.RawInbound = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.RawOutboundLabel = new System.Windows.Forms.Label();
             this.RawOutbound = new System.Windows.Forms.Label();
             this.TotalTimes = new System.Windows.Forms.Label();
             this.KCPGroupBox = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.OutboundPercent = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
+            this.KCPInboundLabel = new System.Windows.Forms.Label();
+            this.KCPOutboundLabel = new System.Windows.Forms.Label();
             this.InboundPercent = new System.Windows.Forms.Label();
             this.KCPOutbound = new System.Windows.Forms.Label();
             this.KCPInbound = new System.Windows.Forms.Label();
@@ -65,11 +61,9 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolbarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.topMostToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.chartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.TrafficChartGroupBox = new System.Windows.Forms.GroupBox();
             this.TrafficChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.SpeedStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
@@ -81,7 +75,6 @@
             this.minutesMenuItem_10 = new kcptun_gui.View.Forms.MyToolStripMenuItem();
             this.minutesMenuItem_15 = new kcptun_gui.View.Forms.MyToolStripMenuItem();
             this.minutesMenuItem_30 = new kcptun_gui.View.Forms.MyToolStripMenuItem();
-            this.ToolbarPanel.SuspendLayout();
             this.panel2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.RawGroupBox.SuspendLayout();
@@ -89,61 +82,16 @@
             this.KCPGroupBox.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.menuStrip1.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.TrafficChartGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TrafficChart)).BeginInit();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // EnabledCheckBox
-            // 
-            this.EnabledCheckBox.AutoSize = true;
-            this.EnabledCheckBox.Location = new System.Drawing.Point(10, 20);
-            this.EnabledCheckBox.Name = "EnabledCheckBox";
-            this.EnabledCheckBox.Size = new System.Drawing.Size(65, 17);
-            this.EnabledCheckBox.TabIndex = 0;
-            this.EnabledCheckBox.Text = "Enabled";
-            this.EnabledCheckBox.UseVisualStyleBackColor = true;
-            this.EnabledCheckBox.CheckedChanged += new System.EventHandler(this.EnabledCheckBox_CheckedChanged);
-            // 
-            // ToolbarPanel
-            // 
-            this.ToolbarPanel.Controls.Add(this.ResetButton);
-            this.ToolbarPanel.Controls.Add(this.TopMostheckBox);
-            this.ToolbarPanel.Controls.Add(this.EnabledCheckBox);
-            this.ToolbarPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.ToolbarPanel.Location = new System.Drawing.Point(0, 24);
-            this.ToolbarPanel.Name = "ToolbarPanel";
-            this.ToolbarPanel.Size = new System.Drawing.Size(442, 57);
-            this.ToolbarPanel.TabIndex = 2;
-            // 
-            // ResetButton
-            // 
-            this.ResetButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.ResetButton.Location = new System.Drawing.Point(527, 10);
-            this.ResetButton.Name = "ResetButton";
-            this.ResetButton.Size = new System.Drawing.Size(110, 37);
-            this.ResetButton.TabIndex = 1;
-            this.ResetButton.Text = "Reset Statistics";
-            this.ResetButton.UseVisualStyleBackColor = true;
-            this.ResetButton.Click += new System.EventHandler(this.ResetButton_Click);
-            // 
-            // TopMostheckBox
-            // 
-            this.TopMostheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.TopMostheckBox.AutoSize = true;
-            this.TopMostheckBox.Location = new System.Drawing.Point(449, 20);
-            this.TopMostheckBox.Name = "TopMostheckBox";
-            this.TopMostheckBox.Size = new System.Drawing.Size(70, 17);
-            this.TopMostheckBox.TabIndex = 2;
-            this.TopMostheckBox.Text = "Top most";
-            this.TopMostheckBox.UseVisualStyleBackColor = true;
-            this.TopMostheckBox.CheckedChanged += new System.EventHandler(this.TopMostheckBox_CheckedChanged);
             // 
             // panel2
             // 
             this.panel2.Controls.Add(this.tableLayoutPanel1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel2.Location = new System.Drawing.Point(0, 81);
+            this.panel2.Location = new System.Drawing.Point(0, 24);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(442, 105);
             this.panel2.TabIndex = 3;
@@ -180,9 +128,9 @@
             this.tableLayoutPanel2.ColumnCount = 2;
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33F));
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 67F));
-            this.tableLayoutPanel2.Controls.Add(this.label1, 0, 0);
+            this.tableLayoutPanel2.Controls.Add(this.RawInboundLabel, 0, 0);
             this.tableLayoutPanel2.Controls.Add(this.RawInbound, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.label2, 0, 2);
+            this.tableLayoutPanel2.Controls.Add(this.RawOutboundLabel, 0, 2);
             this.tableLayoutPanel2.Controls.Add(this.RawOutbound, 1, 2);
             this.tableLayoutPanel2.Controls.Add(this.TotalTimes, 1, 3);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -196,16 +144,16 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(209, 80);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
-            // label1
+            // RawInboundLabel
             // 
-            this.label1.AutoEllipsis = true;
-            this.label1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label1.Location = new System.Drawing.Point(3, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(62, 20);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Inbound:";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.RawInboundLabel.AutoEllipsis = true;
+            this.RawInboundLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.RawInboundLabel.Location = new System.Drawing.Point(3, 0);
+            this.RawInboundLabel.Name = "RawInboundLabel";
+            this.RawInboundLabel.Size = new System.Drawing.Size(62, 20);
+            this.RawInboundLabel.TabIndex = 0;
+            this.RawInboundLabel.Text = "Inbound:";
+            this.RawInboundLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // RawInbound
             // 
@@ -218,16 +166,16 @@
             this.RawInbound.Text = "Raw Inbound";
             this.RawInbound.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // label2
+            // RawOutboundLabel
             // 
-            this.label2.AutoEllipsis = true;
-            this.label2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label2.Location = new System.Drawing.Point(3, 40);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(62, 20);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Outbound:";
-            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.RawOutboundLabel.AutoEllipsis = true;
+            this.RawOutboundLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.RawOutboundLabel.Location = new System.Drawing.Point(3, 40);
+            this.RawOutboundLabel.Name = "RawOutboundLabel";
+            this.RawOutboundLabel.Size = new System.Drawing.Size(62, 20);
+            this.RawOutboundLabel.TabIndex = 1;
+            this.RawOutboundLabel.Text = "Outbound:";
+            this.RawOutboundLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // RawOutbound
             // 
@@ -270,8 +218,8 @@
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 67F));
             this.tableLayoutPanel3.Controls.Add(this.OutboundPercent, 1, 3);
-            this.tableLayoutPanel3.Controls.Add(this.label6, 0, 0);
-            this.tableLayoutPanel3.Controls.Add(this.label5, 0, 2);
+            this.tableLayoutPanel3.Controls.Add(this.KCPInboundLabel, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.KCPOutboundLabel, 0, 2);
             this.tableLayoutPanel3.Controls.Add(this.InboundPercent, 1, 1);
             this.tableLayoutPanel3.Controls.Add(this.KCPOutbound, 1, 2);
             this.tableLayoutPanel3.Controls.Add(this.KCPInbound, 1, 0);
@@ -299,27 +247,27 @@
             this.OutboundPercent.Text = "1.0 times";
             this.OutboundPercent.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // label6
+            // KCPInboundLabel
             // 
-            this.label6.AutoEllipsis = true;
-            this.label6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label6.Location = new System.Drawing.Point(3, 0);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(62, 20);
-            this.label6.TabIndex = 4;
-            this.label6.Text = "Inbound:";
-            this.label6.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.KCPInboundLabel.AutoEllipsis = true;
+            this.KCPInboundLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.KCPInboundLabel.Location = new System.Drawing.Point(3, 0);
+            this.KCPInboundLabel.Name = "KCPInboundLabel";
+            this.KCPInboundLabel.Size = new System.Drawing.Size(62, 20);
+            this.KCPInboundLabel.TabIndex = 4;
+            this.KCPInboundLabel.Text = "Inbound:";
+            this.KCPInboundLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // label5
+            // KCPOutboundLabel
             // 
-            this.label5.AutoEllipsis = true;
-            this.label5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.label5.Location = new System.Drawing.Point(3, 40);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(62, 20);
-            this.label5.TabIndex = 5;
-            this.label5.Text = "Outbound:";
-            this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.KCPOutboundLabel.AutoEllipsis = true;
+            this.KCPOutboundLabel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.KCPOutboundLabel.Location = new System.Drawing.Point(3, 40);
+            this.KCPOutboundLabel.Name = "KCPOutboundLabel";
+            this.KCPOutboundLabel.Size = new System.Drawing.Size(62, 20);
+            this.KCPOutboundLabel.TabIndex = 5;
+            this.KCPOutboundLabel.Text = "Outbound:";
+            this.KCPOutboundLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // InboundPercent
             // 
@@ -414,29 +362,15 @@
             // viewToolStripMenuItem
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolbarToolStripMenuItem,
-            this.toolStripSeparator2,
             this.topMostToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.viewToolStripMenuItem.Text = "View";
             // 
-            // toolbarToolStripMenuItem
-            // 
-            this.toolbarToolStripMenuItem.Name = "toolbarToolStripMenuItem";
-            this.toolbarToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
-            this.toolbarToolStripMenuItem.Text = "Toolbar";
-            this.toolbarToolStripMenuItem.Click += new System.EventHandler(this.toolbarToolStripMenuItem_Click);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(122, 6);
-            // 
             // topMostToolStripMenuItem
             // 
             this.topMostToolStripMenuItem.Name = "topMostToolStripMenuItem";
-            this.topMostToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
+            this.topMostToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.topMostToolStripMenuItem.Text = "Top most";
             this.topMostToolStripMenuItem.Click += new System.EventHandler(this.topMostToolStripMenuItem_Click);
             // 
@@ -455,17 +389,17 @@
             this.chartToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
             this.chartToolStripMenuItem.Text = "Chart";
             // 
-            // groupBox1
+            // TrafficChartGroupBox
             // 
-            this.groupBox1.Controls.Add(this.TrafficChart);
-            this.groupBox1.Controls.Add(this.statusStrip1);
-            this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox1.Location = new System.Drawing.Point(0, 186);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(442, 146);
-            this.groupBox1.TabIndex = 5;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Traffic Chart";
+            this.TrafficChartGroupBox.Controls.Add(this.TrafficChart);
+            this.TrafficChartGroupBox.Controls.Add(this.statusStrip1);
+            this.TrafficChartGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.TrafficChartGroupBox.Location = new System.Drawing.Point(0, 129);
+            this.TrafficChartGroupBox.Name = "TrafficChartGroupBox";
+            this.TrafficChartGroupBox.Size = new System.Drawing.Size(442, 203);
+            this.TrafficChartGroupBox.TabIndex = 5;
+            this.TrafficChartGroupBox.TabStop = false;
+            this.TrafficChartGroupBox.Text = "Traffic Chart";
             // 
             // TrafficChart
             // 
@@ -528,7 +462,7 @@
             this.TrafficChart.Series.Add(series2);
             this.TrafficChart.Series.Add(series3);
             this.TrafficChart.Series.Add(series4);
-            this.TrafficChart.Size = new System.Drawing.Size(436, 105);
+            this.TrafficChart.Size = new System.Drawing.Size(436, 162);
             this.TrafficChart.TabIndex = 0;
             this.TrafficChart.Text = "Traffic Chart";
             // 
@@ -536,7 +470,7 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.SpeedStatusLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(3, 121);
+            this.statusStrip1.Location = new System.Drawing.Point(3, 178);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(436, 22);
             this.statusStrip1.SizingGrip = false;
@@ -621,9 +555,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(442, 332);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.TrafficChartGroupBox);
             this.Controls.Add(this.panel2);
-            this.Controls.Add(this.ToolbarPanel);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
@@ -631,8 +564,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Traffic Statistics";
             this.Load += new System.EventHandler(this.StatisticsForm_Load);
-            this.ToolbarPanel.ResumeLayout(false);
-            this.ToolbarPanel.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.RawGroupBox.ResumeLayout(false);
@@ -641,8 +572,8 @@
             this.tableLayoutPanel3.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.TrafficChartGroupBox.ResumeLayout(false);
+            this.TrafficChartGroupBox.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.TrafficChart)).EndInit();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
@@ -652,24 +583,19 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.CheckBox EnabledCheckBox;
-        private System.Windows.Forms.Panel ToolbarPanel;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.GroupBox RawGroupBox;
         private System.Windows.Forms.GroupBox KCPGroupBox;
         private System.Windows.Forms.Label RawOutbound;
         private System.Windows.Forms.Label RawInbound;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label RawOutboundLabel;
+        private System.Windows.Forms.Label RawInboundLabel;
         private System.Windows.Forms.Label KCPOutbound;
         private System.Windows.Forms.Label KCPInbound;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label KCPOutboundLabel;
+        private System.Windows.Forms.Label KCPInboundLabel;
         private System.Windows.Forms.Timer timer1;
-        private System.Windows.Forms.Button ResetButton;
-        private System.Windows.Forms.CheckBox TopMostheckBox;
         private System.Windows.Forms.Label InboundPercent;
         private System.Windows.Forms.Label OutboundPercent;
         private System.Windows.Forms.MenuStrip menuStrip1;
@@ -679,12 +605,10 @@
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem resetToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem toolbarToolStripMenuItem;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripMenuItem topMostToolStripMenuItem;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox TrafficChartGroupBox;
         private System.Windows.Forms.DataVisualization.Charting.Chart TrafficChart;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel SpeedStatusLabel;

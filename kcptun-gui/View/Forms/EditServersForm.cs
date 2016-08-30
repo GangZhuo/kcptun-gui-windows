@@ -25,11 +25,26 @@ namespace kcptun_gui.View
             this.controller = controller;
 
             InitializeComponent();
+            UpdateText();
 
             ServerListBox.SelectedIndexChanged += ServerListBox_SelectedIndexChanged;
             ServerPropertyGrid.PropertyValueChanged += ServerPropertyGrid_PropertyValueChanged;
 
             controller.ConfigController.ConfigChanged += OnConfigChanged;
+        }
+
+        private void UpdateText()
+        {
+            Text = I18N.GetString("Edit Servers");
+            ServerGroupBox.Text = I18N.GetString("Server");
+            ArgumentsLabel.Text = I18N.GetString("Arguments:");
+
+            AddButton.Text = I18N.GetString("Add");
+            DeleteButton.Text = I18N.GetString("Delete");
+            MoveUpButton.Text = I18N.GetString("Move Up");
+            MoveDownButton.Text = I18N.GetString("Move Down");
+            OkButton.Text = I18N.GetString("OK");
+            MyCancelButton.Text = I18N.GetString("Cancel");
         }
 
         private void LoadServerList()

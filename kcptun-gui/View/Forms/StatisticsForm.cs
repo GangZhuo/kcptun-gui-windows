@@ -22,17 +22,49 @@ namespace kcptun_gui.View.Forms
         {
             this.controller = controller;
             InitializeComponent();
+            UpdateText();
             TrafficChart.Resize += TrafficChart_Resize;
 
             controller.ConfigController.ConfigChanged += ConfigController_ConfigChanged;
             controller.TrafficChanged += Controller_TrafficChanged;
         }
 
+        private void UpdateText()
+        {
+            Text = I18N.GetString("Traffic Statistics");
+            fileToolStripMenuItem.Text = I18N.GetString("File");
+            viewToolStripMenuItem.Text = I18N.GetString("View");
+            chartToolStripMenuItem.Text = I18N.GetString("Chart");
+
+            enabledToolStripMenuItem.Text = I18N.GetString("Enable");
+            resetToolStripMenuItem.Text = I18N.GetString("Reset");
+            exitToolStripMenuItem.Text = I18N.GetString("Exit");
+            topMostToolStripMenuItem.Text = I18N.GetString("Top Most");
+            minutesMenuItem_1.Text = string.Format(I18N.GetString("Display data for last {0} minutes"), 1);
+            minutesMenuItem_2.Text = string.Format(I18N.GetString("Display data for last {0} minutes"), 2);
+            minutesMenuItem_3.Text = string.Format(I18N.GetString("Display data for last {0} minutes"), 3);
+            minutesMenuItem_4.Text = string.Format(I18N.GetString("Display data for last {0} minutes"), 4);
+            minutesMenuItem_5.Text = string.Format(I18N.GetString("Display data for last {0} minutes"), 5);
+            minutesMenuItem_10.Text = string.Format(I18N.GetString("Display data for last {0} minutes"), 10);
+            minutesMenuItem_15.Text = string.Format(I18N.GetString("Display data for last {0} minutes"), 15);
+            minutesMenuItem_30.Text = string.Format(I18N.GetString("Display data for last {0} minutes"), 30);
+            RawGroupBox.Text = I18N.GetString("Raw");
+            KCPGroupBox.Text = I18N.GetString("KCP");
+            TrafficChartGroupBox.Text = I18N.GetString("Traffic Chart");
+            RawInboundLabel.Text = I18N.GetString("Inbound:");
+            RawOutboundLabel.Text = I18N.GetString("Outbound:");
+            KCPInboundLabel.Text = I18N.GetString("Inbound:");
+            KCPOutboundLabel.Text = I18N.GetString("Outbound:");
+            TrafficChart.Series[0].LegendText = I18N.GetString("Raw Inbound");
+            TrafficChart.Series[1].LegendText = I18N.GetString("Raw Outbound");
+            TrafficChart.Series[2].LegendText = I18N.GetString("KCP Inbound");
+            TrafficChart.Series[3].LegendText = I18N.GetString("KCP Outbound");
+        }
+
         private void StatisticsForm_Load(object sender, EventArgs e)
         {
-            enabledToolStripMenuItem.Checked = EnabledCheckBox.Checked = controller.ConfigController.GetConfigurationCopy().statistics_enabled;
-            topMostToolStripMenuItem.Checked = TopMostheckBox.Checked = TopMost;
-            toolbarToolStripMenuItem.Checked = ToolbarPanel.Visible = false;
+            enabledToolStripMenuItem.Checked = controller.ConfigController.GetConfigurationCopy().statistics_enabled;
+            topMostToolStripMenuItem.Checked = TopMost;
 
             refreshChartToolStripMenuItems();
 
@@ -52,18 +84,16 @@ namespace kcptun_gui.View.Forms
 
         private void ConfigController_ConfigChanged(object sender, EventArgs e)
         {
-            if (EnabledCheckBox.InvokeRequired)
+            if (this.InvokeRequired)
             {
-                EnabledCheckBox.Invoke(new EventHandler((sender1, e1) =>
+                this.Invoke(new EventHandler((sender1, e1) =>
                 {
-                    enabledToolStripMenuItem.Checked = EnabledCheckBox.Checked = controller.ConfigController.GetConfigurationCopy().statistics_enabled;
-                    //topMostToolStripMenuItem.Checked = TopMostheckBox.Checked = TopMost;
+                    enabledToolStripMenuItem.Checked = controller.ConfigController.GetConfigurationCopy().statistics_enabled;
                 }), sender, e);
             }
             else
             {
-                enabledToolStripMenuItem.Checked = EnabledCheckBox.Checked = controller.ConfigController.GetConfigurationCopy().statistics_enabled;
-                //topMostToolStripMenuItem.Checked = TopMostheckBox.Checked = TopMost;
+                enabledToolStripMenuItem.Checked = controller.ConfigController.GetConfigurationCopy().statistics_enabled;
             }
         }
 
@@ -74,14 +104,12 @@ namespace kcptun_gui.View.Forms
             {
                 panel2.Visible = false;
                 menuStrip1.Visible = false;
-                ToolbarPanel.Visible = false;
                 statusStrip1.Visible = false;
             }
             else
             {
                 panel2.Visible = true;
                 menuStrip1.Visible = true;
-                ToolbarPanel.Visible = toolbarToolStripMenuItem.Checked;
                 statusStrip1.Visible = true;
             }
         }
@@ -107,26 +135,15 @@ namespace kcptun_gui.View.Forms
             }
         }
 
-        private void EnabledCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            controller.ConfigController.ToggleStatisticsEnable(EnabledCheckBox.Checked);
-        }
-
         private void enabledToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            controller.ConfigController.ToggleStatisticsEnable(!EnabledCheckBox.Checked);
-        }
-
-        private void TopMostheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            TopMost = TopMostheckBox.Checked;
-            topMostToolStripMenuItem.Checked = TopMost;
+            controller.ConfigController.ToggleStatisticsEnable(!enabledToolStripMenuItem.Checked);
         }
 
         private void topMostToolStripMenuItem_Click(object sender, EventArgs e)
         {
             TopMost = !TopMost;
-            topMostToolStripMenuItem.Checked = TopMostheckBox.Checked = TopMost;
+            topMostToolStripMenuItem.Checked = TopMost;
         }
 
         private void resetToolStripMenuItem_Click(object sender, EventArgs e)
@@ -138,11 +155,6 @@ namespace kcptun_gui.View.Forms
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
-        }
-
-        private void toolbarToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            toolbarToolStripMenuItem.Checked = ToolbarPanel.Visible = !ToolbarPanel.Visible;
         }
 
         private void ResetButton_Click(object sender, EventArgs e)
@@ -173,15 +185,15 @@ namespace kcptun_gui.View.Forms
             KCPInbound.Text = Utils.FormatSize(controller.traffic.kcp.inbound);
             KCPOutbound.Text = Utils.FormatSize(controller.traffic.kcp.outbound);
             if (controller.traffic.raw.inbound > 0)
-                InboundPercent.Text = $"{((double)controller.traffic.kcp.inbound / (double)controller.traffic.raw.inbound).ToString("F2")} times";
+                InboundPercent.Text = string.Format(I18N.GetString("{0} times"), ((double)controller.traffic.kcp.inbound / (double)controller.traffic.raw.inbound).ToString("F2"));
             else
                 InboundPercent.Text = "";
             if (controller.traffic.raw.outbound > 0)
-                OutboundPercent.Text = $"{((double)controller.traffic.kcp.outbound / (double)controller.traffic.raw.outbound).ToString("F2")} times";
+                OutboundPercent.Text = string.Format(I18N.GetString("{0} times"), ((double)controller.traffic.kcp.outbound / (double)controller.traffic.raw.outbound).ToString("F2"));
             else
                 OutboundPercent.Text = "";
             if ((controller.traffic.raw.inbound + controller.traffic.raw.outbound) > 0)
-                TotalTimes.Text = $"Total {((double)(controller.traffic.kcp.inbound + controller.traffic.kcp.outbound) / (double)(controller.traffic.raw.inbound + controller.traffic.raw.outbound)).ToString("F2")} times";
+                TotalTimes.Text = string.Format(I18N.GetString("Total {0} times"), ((double)(controller.traffic.kcp.inbound + controller.traffic.kcp.outbound) / (double)(controller.traffic.raw.inbound + controller.traffic.raw.outbound)).ToString("F2"));
             else
                 TotalTimes.Text = "";
         }
@@ -231,7 +243,11 @@ namespace kcptun_gui.View.Forms
             TrafficSpeed maxSpeed = new TrafficSpeed(maxSpeedValue);
             TrafficLog last = controller.trafficLogList.Last.Value;
             SpeedStatusLabel.Text = SpeedStatusLabel.ToolTipText
-                = $"Raw: [In {new TrafficSpeed(last.rawSpeed.inbound)}, Out {new TrafficSpeed(last.rawSpeed.outbound)}], KCP: [In {new TrafficSpeed(last.kcpSpeed.inbound)}, Out {new TrafficSpeed(last.kcpSpeed.outbound)}]";
+                = string.Format(I18N.GetString("Raw: [In {0}, Out {1}], KCP: [In {2}, Out {3}]"),
+                new TrafficSpeed(last.rawSpeed.inbound),
+                new TrafficSpeed(last.rawSpeed.outbound),
+                new TrafficSpeed(last.kcpSpeed.inbound),
+                new TrafficSpeed(last.kcpSpeed.outbound));
 
             for (int i = 0; i < rawInboundPoints.Count; i++)
             {
@@ -241,14 +257,14 @@ namespace kcptun_gui.View.Forms
                 kcpOutboundPoints[i] /= maxSpeed.scale;
             }
 
-            TrafficChart.Series["Raw Inbound"].Points.DataBindY(rawInboundPoints);
-            TrafficChart.Series["Raw Outbound"].Points.DataBindY(rawOutboundPoints);
-            TrafficChart.Series["KCP Inbound"].Points.DataBindY(kcpInboundPoints);
-            TrafficChart.Series["KCP Outbound"].Points.DataBindY(kcpOutboundPoints);
-            TrafficChart.Series["Raw Inbound"].ToolTip = "#SERIESNAME #VALY{F2} " + maxSpeed.unit;
-            TrafficChart.Series["Raw Outbound"].ToolTip = "#SERIESNAME #VALY{F2} " + maxSpeed.unit;
-            TrafficChart.Series["KCP Inbound"].ToolTip = "#SERIESNAME #VALY{F2} " + maxSpeed.unit;
-            TrafficChart.Series["KCP Outbound"].ToolTip = "#SERIESNAME #VALY{F2} " + maxSpeed.unit;
+            TrafficChart.Series[0].Points.DataBindY(rawInboundPoints);
+            TrafficChart.Series[1].Points.DataBindY(rawOutboundPoints);
+            TrafficChart.Series[2].Points.DataBindY(kcpInboundPoints);
+            TrafficChart.Series[3].Points.DataBindY(kcpOutboundPoints);
+            TrafficChart.Series[0].ToolTip = "#SERIESNAME #VALY{F2} " + maxSpeed.unit;
+            TrafficChart.Series[1].ToolTip = "#SERIESNAME #VALY{F2} " + maxSpeed.unit;
+            TrafficChart.Series[2].ToolTip = "#SERIESNAME #VALY{F2} " + maxSpeed.unit;
+            TrafficChart.Series[3].ToolTip = "#SERIESNAME #VALY{F2} " + maxSpeed.unit;
             TrafficChart.ChartAreas[0].AxisY.LabelStyle.Format = "{0:0.##} " + maxSpeed.unit;
 
         }

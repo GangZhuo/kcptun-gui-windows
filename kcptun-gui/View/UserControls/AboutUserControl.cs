@@ -24,7 +24,15 @@ namespace kcptun_gui.View
         public AboutUserControl()
         {
             InitializeComponent();
-            GUIVersion.Text = "GUI version " + MainController.Version;
+            UpdateText();
+            GUIVersion.Text = I18N.GetString("GUI version ") + MainController.Version;
+        }
+
+        private void UpdateText()
+        {
+            AboutLabel.Text = I18N.GetString("GUI for kcptun.");
+            HomePageLabel.Text = I18N.GetString("Report GUI issues to");
+            KcptunHomePageLabel.Text = I18N.GetString("Report kcptun issues to");
         }
 
         private void OnLinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

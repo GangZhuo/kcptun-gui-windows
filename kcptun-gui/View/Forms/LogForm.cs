@@ -20,10 +20,25 @@ namespace kcptun_gui.View
         {
             this.controller = controller;
             InitializeComponent();
+            UpdateText();
             this.StartPosition = FormStartPosition.Manual;
             this.Left = GetBestLeft();
             this.Top = GetBestTop();
             topMostToolStripMenuItem.Checked = this.TopMost;
+        }
+
+        private void UpdateText()
+        {
+            Text = I18N.GetString("Log Viewer");
+            fileToolStripMenuItem.Text = I18N.GetString("File");
+            viewToolStripMenuItem.Text = I18N.GetString("View");
+
+            openLocationToolStripMenuItem.Text = I18N.GetString("Open Location");
+            cleanLogsToolStripMenuItem.Text = I18N.GetString("Clean Logs");
+            wrapTextToolStripMenuItem.Text = I18N.GetString("Wrap Text");
+            changeFontToolStripMenuItem.Text = I18N.GetString("Change Font");
+            resetFontToolStripMenuItem.Text = I18N.GetString("Reset Font");
+            topMostToolStripMenuItem.Text = I18N.GetString("Top Most");
         }
 
         private void LogForm_Load(object sender, EventArgs e)

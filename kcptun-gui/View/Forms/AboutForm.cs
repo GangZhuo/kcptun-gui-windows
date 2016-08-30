@@ -20,8 +20,14 @@ namespace kcptun_gui.View
         {
             this.controller = controller;
             InitializeComponent();
+            UpdateText();
             this.aboutUserControl1.KCPTunVersion = controller.KCPTunnelController.GetKcptunVersion();
             controller.ConfigController.KCPTunPathChanged += ConfigController_KCPTunPathChanged;
+        }
+
+        private void UpdateText()
+        {
+            Text = I18N.GetString("About");
         }
 
         protected override void OnClosing(CancelEventArgs e)

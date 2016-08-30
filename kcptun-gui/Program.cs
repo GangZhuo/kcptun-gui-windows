@@ -24,8 +24,8 @@ namespace kcptun_gui
 
             if (!Logging.OpenLogFile())
             {
-                MessageBox.Show($"Can't access the file '{Logging.LogFilePath}', it is maybe used by another process.",
-                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show(string.Format(I18N.GetString("Can't access the file '{0}', it is maybe used by another process."), Logging.LogFilePath),
+                    I18N.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
             controller = new MainController();

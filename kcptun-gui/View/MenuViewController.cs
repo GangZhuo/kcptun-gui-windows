@@ -81,34 +81,34 @@ namespace kcptun_gui.View
         private void LoadMenu()
         {
             this.contextMenu1 = new ContextMenu(new MenuItem[] {
-                this.enableItem = CreateMenuItem("Enable", new EventHandler(this.OnEnableItemClick)),
-                this.ServersItem = CreateMenuGroup("Servers", new MenuItem[] {
+                this.enableItem = CreateMenuItem(I18N.GetString("Enable"), new EventHandler(this.OnEnableItemClick)),
+                this.ServersItem = CreateMenuGroup(I18N.GetString("Servers"), new MenuItem[] {
                     this.seperatorItem = new MenuItem("-"),
-                    CreateMenuItem("Edit Servers...", new EventHandler(this.OnConfigItemClick))
+                    CreateMenuItem(I18N.GetString("Edit Servers..."), new EventHandler(this.OnConfigItemClick)),
+                    this.seperatorItem = new MenuItem("-"),
+                    CreateMenuGroup(I18N.GetString("Start/Stop/Restart kcptun client..."), new MenuItem[] {
+                        this.startItem = CreateMenuItem(I18N.GetString("Start"), new EventHandler(this.OnStartItemClick)),
+                        this.restartItem = CreateMenuItem(I18N.GetString("Restart"), new EventHandler(this.OnRestartItemClick)),
+                        this.stopItem = CreateMenuItem(I18N.GetString("Stop"), new EventHandler(this.OnStopItemClick)),
+                        new MenuItem("-"),
+                        this.killAllItem = CreateMenuItem(I18N.GetString("Kill all kcptun clients"), new EventHandler(this.OnKillAllItemClick)),
+                    }),
                 }),
                 new MenuItem("-"),
-                CreateMenuGroup("Start/Stop/Restart", new MenuItem[] {
-                    this.startItem = CreateMenuItem("Start", new EventHandler(this.OnStartItemClick)),
-                    this.restartItem = CreateMenuItem("Restart", new EventHandler(this.OnRestartItemClick)),
-                    this.stopItem = CreateMenuItem("Stop", new EventHandler(this.OnStopItemClick)),
-                    new MenuItem("-"),
-                    this.killAllItem = CreateMenuItem("Stop All", new EventHandler(this.OnKillAllItemClick)),
-                }),
-                new MenuItem("-"),
-                this.autoStartupItem = CreateMenuItem("Start on Boot", new EventHandler(this.OnAutoStartupItemClick)),
-                new MenuItem("-"),
-                CreateMenuGroup("More...", new MenuItem[] {
-                    this.verboseLoggingItem = CreateMenuItem("Turn on KCP Log", new EventHandler(this.OnVerboseLoggingItemClick)),
-                    new MenuItem("-"),
-                    CreateMenuItem("Custome KCPTun", new EventHandler(this.OnCustomeKCPTunItemClick)),
-                    new MenuItem("-"),
-                    CreateMenuItem("Traffic Statistics", new EventHandler(this.OnStatisticsItemClick)),
-                }),
                 //new MenuItem("-"),
-                CreateMenuItem("Show Logs...", new EventHandler(this.OnShowLogItemClick)),
-                CreateMenuItem("About...", new EventHandler(this.OnAboutItemClick)),
+                CreateMenuItem(I18N.GetString("Traffic Statistics"), new EventHandler(this.OnStatisticsItemClick)),
+                CreateMenuItem(I18N.GetString("Show Logs..."), new EventHandler(this.OnShowLogItemClick)),
                 new MenuItem("-"),
-                CreateMenuItem("Quit", new EventHandler(this.OnQuitItemClick))
+                CreateMenuGroup(I18N.GetString("More..."), new MenuItem[] {
+                    CreateMenuItem(I18N.GetString("Custome KCPTun"), new EventHandler(this.OnCustomeKCPTunItemClick)),
+                    new MenuItem("-"),
+                    this.verboseLoggingItem = CreateMenuItem(I18N.GetString("Turn on KCP Log"), new EventHandler(this.OnVerboseLoggingItemClick)),
+                    this.autoStartupItem = CreateMenuItem(I18N.GetString("Start on Boot"), new EventHandler(this.OnAutoStartupItemClick)),
+                    new MenuItem("-"),
+                    CreateMenuItem(I18N.GetString("About..."), new EventHandler(this.OnAboutItemClick)),
+                }),
+                new MenuItem("-"),
+                CreateMenuItem(I18N.GetString("Quit"), new EventHandler(this.OnQuitItemClick))
             });
 
             this.startItem.Enabled = true;
@@ -156,10 +156,10 @@ namespace kcptun_gui.View
             else
             {
                 iconCopy = Utils.ToBlue(iconCopy);
-                runningInfo = "Running\n";
+                runningInfo = I18N.GetString("Running...") + "\n";
             }
 
-            string text = $"kcptun {MainController.Version}\n" + runningInfo + "Local: (" + server.localaddr + ")\nRemote: " + server.FriendlyName() + "";
+            string text = $"kcptun {MainController.Version}\n" + runningInfo + I18N.GetString("Local:") +" (" + server.localaddr + ")\n"+ I18N.GetString("Remote:") + " " + server.FriendlyName() + "";
 
             _notifyIcon.Icon = Icon.FromHandle(iconCopy.GetHicon());
             _notifyIcon.Text = text.Substring(0, Math.Min(63, text.Length));
@@ -177,8 +177,8 @@ namespace kcptun_gui.View
 
         private void ShowFirstTimeBalloon()
         {
-            ShowBalloonTip("kcptun is here",
-                "You can turn on/off kcptun in the context menu.",
+            ShowBalloonTip(I18N.GetString("kcptun is here"),
+                I18N.GetString("You can turn on/off kcptun in the context menu."),
                 ToolTipIcon.Info, 0);
         }
 
@@ -289,7 +289,7 @@ namespace kcptun_gui.View
             catch (Exception ex)
             {
                 Logging.LogUsefulException(ex);
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, I18N.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -302,7 +302,7 @@ namespace kcptun_gui.View
             catch (Exception ex)
             {
                 Logging.LogUsefulException(ex);
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, I18N.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -318,7 +318,7 @@ namespace kcptun_gui.View
             catch (Exception ex)
             {
                 Logging.LogUsefulException(ex);
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, I18N.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -331,7 +331,7 @@ namespace kcptun_gui.View
             catch (Exception ex)
             {
                 Logging.LogUsefulException(ex);
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, I18N.GetString("Error"), MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -340,7 +340,7 @@ namespace kcptun_gui.View
             autoStartupItem.Checked = !autoStartupItem.Checked;
             if (!AutoStartup.Set(autoStartupItem.Checked))
             {
-                MessageBox.Show("Failed to update registry");
+                MessageBox.Show(I18N.GetString("Failed to update registry"));
             }
         }
 

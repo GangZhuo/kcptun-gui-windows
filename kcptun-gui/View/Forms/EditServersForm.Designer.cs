@@ -38,19 +38,19 @@
             this.OkButton = new System.Windows.Forms.Button();
             this.ServerPropertyGrid = new System.Windows.Forms.PropertyGrid();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.ArgumentsTextBox = new System.Windows.Forms.TextBox();
+            this.ServerGroupBox = new System.Windows.Forms.GroupBox();
+            this.panel4 = new System.Windows.Forms.Panel();
             this.ArgumentsLabel = new System.Windows.Forms.Label();
+            this.ArgumentsTextBox = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.panel4 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2.SuspendLayout();
-            this.groupBox2.SuspendLayout();
+            this.ServerGroupBox.SuspendLayout();
+            this.panel4.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
-            this.panel4.SuspendLayout();
             this.SuspendLayout();
             // 
             // ServerListBox
@@ -153,17 +153,37 @@
             this.tableLayoutPanel2.Size = new System.Drawing.Size(212, 58);
             this.tableLayoutPanel2.TabIndex = 2;
             // 
-            // groupBox2
+            // ServerGroupBox
             // 
-            this.groupBox2.Controls.Add(this.ServerPropertyGrid);
-            this.groupBox2.Controls.Add(this.panel4);
-            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.groupBox2.Location = new System.Drawing.Point(6, 6);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(320, 369);
-            this.groupBox2.TabIndex = 3;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Server";
+            this.ServerGroupBox.Controls.Add(this.ServerPropertyGrid);
+            this.ServerGroupBox.Controls.Add(this.panel4);
+            this.ServerGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ServerGroupBox.Location = new System.Drawing.Point(6, 6);
+            this.ServerGroupBox.Name = "ServerGroupBox";
+            this.ServerGroupBox.Size = new System.Drawing.Size(320, 369);
+            this.ServerGroupBox.TabIndex = 3;
+            this.ServerGroupBox.TabStop = false;
+            this.ServerGroupBox.Text = "Server";
+            // 
+            // panel4
+            // 
+            this.panel4.Controls.Add(this.ArgumentsLabel);
+            this.panel4.Controls.Add(this.ArgumentsTextBox);
+            this.panel4.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel4.Location = new System.Drawing.Point(3, 257);
+            this.panel4.Name = "panel4";
+            this.panel4.Padding = new System.Windows.Forms.Padding(3);
+            this.panel4.Size = new System.Drawing.Size(314, 109);
+            this.panel4.TabIndex = 4;
+            // 
+            // ArgumentsLabel
+            // 
+            this.ArgumentsLabel.AutoSize = true;
+            this.ArgumentsLabel.Location = new System.Drawing.Point(6, 9);
+            this.ArgumentsLabel.Name = "ArgumentsLabel";
+            this.ArgumentsLabel.Size = new System.Drawing.Size(60, 13);
+            this.ArgumentsLabel.TabIndex = 2;
+            this.ArgumentsLabel.Text = "Arguments:";
             // 
             // ArgumentsTextBox
             // 
@@ -178,15 +198,6 @@
             this.ArgumentsTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.ArgumentsTextBox.Size = new System.Drawing.Size(308, 79);
             this.ArgumentsTextBox.TabIndex = 3;
-            // 
-            // ArgumentsLabel
-            // 
-            this.ArgumentsLabel.AutoSize = true;
-            this.ArgumentsLabel.Location = new System.Drawing.Point(6, 9);
-            this.ArgumentsLabel.Name = "ArgumentsLabel";
-            this.ArgumentsLabel.Size = new System.Drawing.Size(60, 13);
-            this.ArgumentsLabel.TabIndex = 2;
-            this.ArgumentsLabel.Text = "Arguments:";
             // 
             // panel1
             // 
@@ -211,24 +222,13 @@
             // 
             // panel3
             // 
-            this.panel3.Controls.Add(this.groupBox2);
+            this.panel3.Controls.Add(this.ServerGroupBox);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel3.Location = new System.Drawing.Point(215, 0);
             this.panel3.Name = "panel3";
             this.panel3.Padding = new System.Windows.Forms.Padding(6);
             this.panel3.Size = new System.Drawing.Size(332, 381);
             this.panel3.TabIndex = 10;
-            // 
-            // panel4
-            // 
-            this.panel4.Controls.Add(this.ArgumentsLabel);
-            this.panel4.Controls.Add(this.ArgumentsTextBox);
-            this.panel4.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel4.Location = new System.Drawing.Point(3, 257);
-            this.panel4.Name = "panel4";
-            this.panel4.Padding = new System.Windows.Forms.Padding(3);
-            this.panel4.Size = new System.Drawing.Size(314, 109);
-            this.panel4.TabIndex = 4;
             // 
             // EidtServersForm
             // 
@@ -246,13 +246,13 @@
             this.Text = "Edit Servers";
             this.Load += new System.EventHandler(this.ServerConfigForm_Load);
             this.tableLayoutPanel2.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
+            this.ServerGroupBox.ResumeLayout(false);
+            this.panel4.ResumeLayout(false);
+            this.panel4.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
-            this.panel4.ResumeLayout(false);
-            this.panel4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -267,7 +267,7 @@
         private System.Windows.Forms.Button OkButton;
         private System.Windows.Forms.PropertyGrid ServerPropertyGrid;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
-        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.GroupBox ServerGroupBox;
         private System.Windows.Forms.TextBox ArgumentsTextBox;
         private System.Windows.Forms.Label ArgumentsLabel;
         private System.Windows.Forms.Panel panel1;
