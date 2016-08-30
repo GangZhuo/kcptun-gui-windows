@@ -12,9 +12,9 @@ namespace kcptun_gui.Controller.Relay
         private EndPoint _localEP;
         private EndPoint _remoteEP;
 
-        Hashtable _handlers = Hashtable.Synchronized(new Hashtable());
+        private Hashtable _handlers = Hashtable.Synchronized(new Hashtable());
 
-        System.Timers.Timer _timer = new System.Timers.Timer(10000);
+        private System.Timers.Timer _timer = new System.Timers.Timer(10000);
 
         public UDPPipe(IRelay relay, EndPoint localEP, EndPoint remoteEP)
         {
@@ -30,7 +30,11 @@ namespace kcptun_gui.Controller.Relay
         ~UDPPipe()
         {
             _timer.Stop();
+            _timer = null;
+            foreach(Handler h in _handlers.Values)
+                h.Close(false);
             _handlers.Clear();
+            _handlers = null;
         }
 
         public bool CreatePipe(byte[] firstPacket, int length, Socket fromSocket, EndPoint fromEP)
@@ -40,18 +44,19 @@ namespace kcptun_gui.Controller.Relay
             return true;
         }
 
-        Handler getHandler(EndPoint fromEP, Socket fromSocket)
+        private Handler getHandler(EndPoint fromEP, Socket fromSocket)
         {
             string key = fromEP.ToString();
-            lock(this)
+            Hashtable handlers = _handlers;
+            lock (handlers)
             {
-                if (_handlers.ContainsKey(key))
+                if (handlers.ContainsKey(key))
                 {
                     //Logging.Debug($"reuse udp handler: {key}");
-                    return (Handler)_handlers[key];
+                    return (Handler)handlers[key];
                 }
                 Handler handler = new Handler(_relay);
-                _handlers.Add(key, handler);
+                handlers.Add(key, handler);
                 handler._local = fromSocket;
                 handler._localEP = fromEP;
                 handler._remoteEP = _remoteEP;
@@ -66,12 +71,13 @@ namespace kcptun_gui.Controller.Relay
         {
             Handler handler = (Handler)sender;
             string key = handler._localEP.ToString();
-            lock (this)
+            Hashtable handlers = _handlers;
+            lock (handlers)
             {
-                if (_handlers.ContainsKey(key))
+                if (handlers.ContainsKey(key))
                 {
                     Logging.Debug($"remove udp handler: {key}");
-                    _handlers.Remove(key);
+                    handlers.Remove(key);
                 }
             }
         }
@@ -81,12 +87,13 @@ namespace kcptun_gui.Controller.Relay
             try
             {
                 _timer.Stop();
-                List<Handler> keys = new List<Handler>(_handlers.Count);
-                lock (this)
+                Hashtable handlers = _handlers;
+                List<Handler> keys = new List<Handler>(handlers.Count);
+                lock (handlers)
                 {
-                    foreach (string key in _handlers.Keys)
+                    foreach (string key in handlers.Keys)
                     {
-                        Handler handler = (Handler)_handlers[key];
+                        Handler handler = (Handler)handlers[key];
                         if (handler.IsExpire())
                         {
                             keys.Add(handler);
@@ -97,7 +104,7 @@ namespace kcptun_gui.Controller.Relay
                         Logging.Debug($"remove expired udp handler: {handler._remote.LocalEndPoint.ToString()}");
                         string key = handler._localEP.ToString();
                         handler.Close(false);
-                        _handlers.Remove(key);
+                        handlers.Remove(key);
                     }
                 }
             }
@@ -111,7 +118,7 @@ namespace kcptun_gui.Controller.Relay
             }
         }
 
-        class Handler
+        private class Handler
         {
             public event EventHandler OnClose;
 
