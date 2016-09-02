@@ -85,7 +85,7 @@ namespace kcptun_gui.View
                 this.ServersItem = CreateMenuGroup(I18N.GetString("Servers"), new MenuItem[] {
                     this.seperatorItem = new MenuItem("-"),
                     CreateMenuItem(I18N.GetString("Edit Servers..."), new EventHandler(this.OnConfigItemClick)),
-                    this.seperatorItem = new MenuItem("-"),
+                    new MenuItem("-"),
                     CreateMenuGroup(I18N.GetString("Start/Stop/Restart kcptun client..."), new MenuItem[] {
                         this.startItem = CreateMenuItem(I18N.GetString("Start"), new EventHandler(this.OnStartItemClick)),
                         this.restartItem = CreateMenuItem(I18N.GetString("Restart"), new EventHandler(this.OnRestartItemClick)),
