@@ -76,7 +76,7 @@ namespace kcptun_gui.Controller
             try
             {
                 string filename = GetKCPTunPath();
-                Console.WriteLine($"Executable: {filename}");
+                Console.WriteLine($"kcptun client: {filename}");
                 MyProcess p = new MyProcess(_server);
                 p.StartInfo.FileName = filename;
                 p.StartInfo.Arguments = BuildArguments(_server, localaddr, remoteaddr);
@@ -95,7 +95,7 @@ namespace kcptun_gui.Controller
                 p.BeginOutputReadLine();
                 p.BeginErrorReadLine();
 
-                Console.WriteLine("kcptun started - " + p.server.FriendlyName());
+                Console.WriteLine("kcptun client started - " + p.server.FriendlyName());
 
                 if (Started != null)
                     Started.Invoke(this, new EventArgs());
@@ -117,7 +117,7 @@ namespace kcptun_gui.Controller
                     KillProcess(p);
                     p.Dispose();
 
-                    Console.WriteLine("kcptun stoped - " + p.server.FriendlyName());
+                    Console.WriteLine("kcptun client stoped - " + p.server.FriendlyName());
 
                     if (Stoped != null)
                         Stoped.Invoke(this, new EventArgs());
@@ -206,7 +206,7 @@ namespace kcptun_gui.Controller
             try
             {
                 string filename = GetKCPTunPath();
-                Console.WriteLine($"Executable: {filename}");
+                Console.WriteLine($"kcptun client: {filename}");
                 Process p = new Process();
                 // Configure the process using the StartInfo properties.
                 p.StartInfo.FileName = filename;
@@ -226,7 +226,7 @@ namespace kcptun_gui.Controller
                 }
                 if (count == 0)
                 {
-                    Console.WriteLine("Can't get kcptun version.");
+                    Console.WriteLine("Can't get kcptun client version.");
                     return "";
                 }
                 version = p.StandardOutput.ReadToEnd();
