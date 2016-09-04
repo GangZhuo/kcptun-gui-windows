@@ -15,14 +15,14 @@ namespace kcptun_gui.Controller
 
         private IRelay _tcpRelay;
         private IRelay _udpRelay;
+        private System.Timers.Timer timer;
 
         private TrafficStatistics _trafficStatistics;
+        private LinkedList<TrafficLog> _trafficLogList = new LinkedList<TrafficLog>();
 
         public TrafficLog traffic { get; private set; } = new TrafficLog();
-        public LinkedList<TrafficLog> trafficLogList { get; private set; } = new LinkedList<TrafficLog>();
+        public LinkedList<TrafficLog> trafficLogList { get { return _trafficLogList; } }
         public int trafficLogSize { get; set; } = 60; // 1 minutes
-
-        private System.Timers.Timer timer;
 
         public ConfigurationController ConfigController { get; private set; }
         public KCPTunnelController KCPTunnelController { get; private set; }
@@ -126,6 +126,17 @@ namespace kcptun_gui.Controller
             }
         }
 
+        public void ClearTrafficList()
+        {
+            lock (_trafficLogList)
+            {
+                int trafficLogSize = this.trafficLogSize;
+                if (trafficLogSize < 1) trafficLogSize = 1;
+                _trafficLogList.Clear();
+                while (_trafficLogList.Count < trafficLogSize) _trafficLogList.AddLast(new TrafficLog());
+            }
+        }
+
         private void RegistLeftStatistics()
         {
             Server server = KCPTunnelController.Server;
@@ -198,14 +209,7 @@ namespace kcptun_gui.Controller
 
         private void StartTrafficLogger()
         {
-            if (trafficLogList == null)
-                trafficLogList = new LinkedList<TrafficLog>();
-            else
-                trafficLogList.Clear();
-            for (int i = 0; i < trafficLogSize; i++)
-            {
-                trafficLogList.AddLast(new TrafficLog());
-            }
+            ClearTrafficList();
             if (timer == null)
             {
                 timer = new System.Timers.Timer(1000);
@@ -224,16 +228,21 @@ namespace kcptun_gui.Controller
 
         private void UpdateTrafficList()
         {
-            TrafficLog previous = trafficLogList.Last.Value;
-            TrafficLog current = new TrafficLog(
-                new Traffic(traffic.raw),
-                new Traffic(traffic.raw, previous.raw),
-                new Traffic(traffic.kcp),
-                new Traffic(traffic.kcp, previous.kcp));
-            trafficLogList.AddLast(current);
+            lock (_trafficLogList)
+            {
+                int trafficLogSize = this.trafficLogSize;
+                if (trafficLogSize < 1) trafficLogSize = 1;
+                TrafficLog previous = _trafficLogList.Last.Value;
+                TrafficLog current = new TrafficLog(
+                    new Traffic(traffic.raw),
+                    new Traffic(traffic.raw, previous.raw),
+                    new Traffic(traffic.kcp),
+                    new Traffic(traffic.kcp, previous.kcp));
+                _trafficLogList.AddLast(current);
 
-            while (trafficLogList.Count > trafficLogSize) trafficLogList.RemoveFirst();
-            while (trafficLogList.Count < trafficLogSize) trafficLogList.AddFirst(new TrafficLog());
+                while (_trafficLogList.Count > trafficLogSize) _trafficLogList.RemoveFirst();
+                while (_trafficLogList.Count < trafficLogSize) _trafficLogList.AddFirst(new TrafficLog());
+            }
         }
     }
 }

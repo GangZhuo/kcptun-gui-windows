@@ -63,10 +63,6 @@
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.topMostToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.chartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.TrafficChartGroupBox = new System.Windows.Forms.GroupBox();
-            this.TrafficChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.SpeedStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.minutesMenuItem_1 = new kcptun_gui.View.Forms.MyToolStripMenuItem();
             this.minutesMenuItem_2 = new kcptun_gui.View.Forms.MyToolStripMenuItem();
             this.minutesMenuItem_3 = new kcptun_gui.View.Forms.MyToolStripMenuItem();
@@ -75,6 +71,12 @@
             this.minutesMenuItem_10 = new kcptun_gui.View.Forms.MyToolStripMenuItem();
             this.minutesMenuItem_15 = new kcptun_gui.View.Forms.MyToolStripMenuItem();
             this.minutesMenuItem_30 = new kcptun_gui.View.Forms.MyToolStripMenuItem();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.resetChartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.TrafficChartGroupBox = new System.Windows.Forms.GroupBox();
+            this.TrafficChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.SpeedStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.RawGroupBox.SuspendLayout();
@@ -91,9 +93,9 @@
             // 
             this.panel2.Controls.Add(this.tableLayoutPanel1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel2.Location = new System.Drawing.Point(0, 24);
+            this.panel2.Location = new System.Drawing.Point(0, 25);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(442, 105);
+            this.panel2.Size = new System.Drawing.Size(442, 97);
             this.panel2.TabIndex = 3;
             // 
             // tableLayoutPanel1
@@ -108,8 +110,8 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 105F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(442, 105);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 97F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(442, 97);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // RawGroupBox
@@ -118,7 +120,7 @@
             this.RawGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.RawGroupBox.Location = new System.Drawing.Point(3, 3);
             this.RawGroupBox.Name = "RawGroupBox";
-            this.RawGroupBox.Size = new System.Drawing.Size(215, 99);
+            this.RawGroupBox.Size = new System.Drawing.Size(215, 91);
             this.RawGroupBox.TabIndex = 0;
             this.RawGroupBox.TabStop = false;
             this.RawGroupBox.Text = "Raw";
@@ -134,14 +136,14 @@
             this.tableLayoutPanel2.Controls.Add(this.RawOutbound, 1, 2);
             this.tableLayoutPanel2.Controls.Add(this.TotalTimes, 1, 3);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 16);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 17);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 4;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(209, 80);
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 18F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 18F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(209, 71);
             this.tableLayoutPanel2.TabIndex = 0;
             // 
             // RawInboundLabel
@@ -150,7 +152,7 @@
             this.RawInboundLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.RawInboundLabel.Location = new System.Drawing.Point(3, 0);
             this.RawInboundLabel.Name = "RawInboundLabel";
-            this.RawInboundLabel.Size = new System.Drawing.Size(62, 20);
+            this.RawInboundLabel.Size = new System.Drawing.Size(62, 17);
             this.RawInboundLabel.TabIndex = 0;
             this.RawInboundLabel.Text = "Inbound:";
             this.RawInboundLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -161,7 +163,7 @@
             this.RawInbound.Dock = System.Windows.Forms.DockStyle.Fill;
             this.RawInbound.Location = new System.Drawing.Point(71, 0);
             this.RawInbound.Name = "RawInbound";
-            this.RawInbound.Size = new System.Drawing.Size(135, 20);
+            this.RawInbound.Size = new System.Drawing.Size(135, 17);
             this.RawInbound.TabIndex = 2;
             this.RawInbound.Text = "Raw Inbound";
             this.RawInbound.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -170,9 +172,9 @@
             // 
             this.RawOutboundLabel.AutoEllipsis = true;
             this.RawOutboundLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.RawOutboundLabel.Location = new System.Drawing.Point(3, 40);
+            this.RawOutboundLabel.Location = new System.Drawing.Point(3, 34);
             this.RawOutboundLabel.Name = "RawOutboundLabel";
-            this.RawOutboundLabel.Size = new System.Drawing.Size(62, 20);
+            this.RawOutboundLabel.Size = new System.Drawing.Size(62, 18);
             this.RawOutboundLabel.TabIndex = 1;
             this.RawOutboundLabel.Text = "Outbound:";
             this.RawOutboundLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -181,9 +183,9 @@
             // 
             this.RawOutbound.AutoEllipsis = true;
             this.RawOutbound.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.RawOutbound.Location = new System.Drawing.Point(71, 40);
+            this.RawOutbound.Location = new System.Drawing.Point(71, 34);
             this.RawOutbound.Name = "RawOutbound";
-            this.RawOutbound.Size = new System.Drawing.Size(135, 20);
+            this.RawOutbound.Size = new System.Drawing.Size(135, 18);
             this.RawOutbound.TabIndex = 3;
             this.RawOutbound.Text = "Raw Outbound";
             this.RawOutbound.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -194,9 +196,9 @@
             this.TotalTimes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.TotalTimes.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.TotalTimes.ForeColor = System.Drawing.Color.DimGray;
-            this.TotalTimes.Location = new System.Drawing.Point(71, 60);
+            this.TotalTimes.Location = new System.Drawing.Point(71, 52);
             this.TotalTimes.Name = "TotalTimes";
-            this.TotalTimes.Size = new System.Drawing.Size(135, 20);
+            this.TotalTimes.Size = new System.Drawing.Size(135, 19);
             this.TotalTimes.TabIndex = 9;
             this.TotalTimes.Text = "total 1.0 times";
             this.TotalTimes.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -207,7 +209,7 @@
             this.KCPGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.KCPGroupBox.Location = new System.Drawing.Point(224, 3);
             this.KCPGroupBox.Name = "KCPGroupBox";
-            this.KCPGroupBox.Size = new System.Drawing.Size(215, 99);
+            this.KCPGroupBox.Size = new System.Drawing.Size(215, 91);
             this.KCPGroupBox.TabIndex = 1;
             this.KCPGroupBox.TabStop = false;
             this.KCPGroupBox.Text = "KCP";
@@ -224,14 +226,14 @@
             this.tableLayoutPanel3.Controls.Add(this.KCPOutbound, 1, 2);
             this.tableLayoutPanel3.Controls.Add(this.KCPInbound, 1, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 16);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(3, 17);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 4;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(209, 80);
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 18F));
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 18F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(209, 71);
             this.tableLayoutPanel3.TabIndex = 0;
             // 
             // OutboundPercent
@@ -240,9 +242,9 @@
             this.OutboundPercent.Dock = System.Windows.Forms.DockStyle.Fill;
             this.OutboundPercent.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.OutboundPercent.ForeColor = System.Drawing.Color.DimGray;
-            this.OutboundPercent.Location = new System.Drawing.Point(71, 60);
+            this.OutboundPercent.Location = new System.Drawing.Point(71, 52);
             this.OutboundPercent.Name = "OutboundPercent";
-            this.OutboundPercent.Size = new System.Drawing.Size(135, 20);
+            this.OutboundPercent.Size = new System.Drawing.Size(135, 19);
             this.OutboundPercent.TabIndex = 8;
             this.OutboundPercent.Text = "1.0 times";
             this.OutboundPercent.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -253,7 +255,7 @@
             this.KCPInboundLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.KCPInboundLabel.Location = new System.Drawing.Point(3, 0);
             this.KCPInboundLabel.Name = "KCPInboundLabel";
-            this.KCPInboundLabel.Size = new System.Drawing.Size(62, 20);
+            this.KCPInboundLabel.Size = new System.Drawing.Size(62, 17);
             this.KCPInboundLabel.TabIndex = 4;
             this.KCPInboundLabel.Text = "Inbound:";
             this.KCPInboundLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -262,9 +264,9 @@
             // 
             this.KCPOutboundLabel.AutoEllipsis = true;
             this.KCPOutboundLabel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.KCPOutboundLabel.Location = new System.Drawing.Point(3, 40);
+            this.KCPOutboundLabel.Location = new System.Drawing.Point(3, 34);
             this.KCPOutboundLabel.Name = "KCPOutboundLabel";
-            this.KCPOutboundLabel.Size = new System.Drawing.Size(62, 20);
+            this.KCPOutboundLabel.Size = new System.Drawing.Size(62, 18);
             this.KCPOutboundLabel.TabIndex = 5;
             this.KCPOutboundLabel.Text = "Outbound:";
             this.KCPOutboundLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -275,9 +277,9 @@
             this.InboundPercent.Dock = System.Windows.Forms.DockStyle.Fill;
             this.InboundPercent.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.InboundPercent.ForeColor = System.Drawing.Color.DimGray;
-            this.InboundPercent.Location = new System.Drawing.Point(71, 20);
+            this.InboundPercent.Location = new System.Drawing.Point(71, 17);
             this.InboundPercent.Name = "InboundPercent";
-            this.InboundPercent.Size = new System.Drawing.Size(135, 20);
+            this.InboundPercent.Size = new System.Drawing.Size(135, 17);
             this.InboundPercent.TabIndex = 8;
             this.InboundPercent.Text = "1.0 times";
             this.InboundPercent.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -286,9 +288,9 @@
             // 
             this.KCPOutbound.AutoEllipsis = true;
             this.KCPOutbound.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.KCPOutbound.Location = new System.Drawing.Point(71, 40);
+            this.KCPOutbound.Location = new System.Drawing.Point(71, 34);
             this.KCPOutbound.Name = "KCPOutbound";
-            this.KCPOutbound.Size = new System.Drawing.Size(135, 20);
+            this.KCPOutbound.Size = new System.Drawing.Size(135, 18);
             this.KCPOutbound.TabIndex = 7;
             this.KCPOutbound.Text = "KCP Outbound";
             this.KCPOutbound.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -299,7 +301,7 @@
             this.KCPInbound.Dock = System.Windows.Forms.DockStyle.Fill;
             this.KCPInbound.Location = new System.Drawing.Point(71, 0);
             this.KCPInbound.Name = "KCPInbound";
-            this.KCPInbound.Size = new System.Drawing.Size(135, 20);
+            this.KCPInbound.Size = new System.Drawing.Size(135, 17);
             this.KCPInbound.TabIndex = 6;
             this.KCPInbound.Text = "KCP Inbound";
             this.KCPInbound.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
@@ -318,7 +320,7 @@
             this.chartToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(442, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(442, 25);
             this.menuStrip1.TabIndex = 4;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -330,32 +332,32 @@
             this.toolStripSeparator1,
             this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(39, 21);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // enabledToolStripMenuItem
             // 
             this.enabledToolStripMenuItem.Name = "enabledToolStripMenuItem";
-            this.enabledToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.enabledToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
             this.enabledToolStripMenuItem.Text = "Enabled";
             this.enabledToolStripMenuItem.Click += new System.EventHandler(this.enabledToolStripMenuItem_Click);
             // 
             // resetToolStripMenuItem
             // 
             this.resetToolStripMenuItem.Name = "resetToolStripMenuItem";
-            this.resetToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.resetToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
             this.resetToolStripMenuItem.Text = "Reset";
             this.resetToolStripMenuItem.Click += new System.EventHandler(this.resetToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(113, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(120, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(123, 22);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
@@ -364,13 +366,13 @@
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.topMostToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
-            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(47, 21);
             this.viewToolStripMenuItem.Text = "View";
             // 
             // topMostToolStripMenuItem
             // 
             this.topMostToolStripMenuItem.Name = "topMostToolStripMenuItem";
-            this.topMostToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.topMostToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.topMostToolStripMenuItem.Text = "Top most";
             this.topMostToolStripMenuItem.Click += new System.EventHandler(this.topMostToolStripMenuItem_Click);
             // 
@@ -384,19 +386,97 @@
             this.minutesMenuItem_5,
             this.minutesMenuItem_10,
             this.minutesMenuItem_15,
-            this.minutesMenuItem_30});
+            this.minutesMenuItem_30,
+            this.toolStripSeparator2,
+            this.resetChartToolStripMenuItem});
             this.chartToolStripMenuItem.Name = "chartToolStripMenuItem";
-            this.chartToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
+            this.chartToolStripMenuItem.Size = new System.Drawing.Size(51, 21);
             this.chartToolStripMenuItem.Text = "Chart";
+            // 
+            // minutesMenuItem_1
+            // 
+            this.minutesMenuItem_1.Name = "minutesMenuItem_1";
+            this.minutesMenuItem_1.Size = new System.Drawing.Size(260, 22);
+            this.minutesMenuItem_1.Text = "Display data for last 1 minutes";
+            this.minutesMenuItem_1.TrafficLogSize = 60;
+            this.minutesMenuItem_1.Click += new System.EventHandler(this.minutesMenuItem_Click);
+            // 
+            // minutesMenuItem_2
+            // 
+            this.minutesMenuItem_2.Name = "minutesMenuItem_2";
+            this.minutesMenuItem_2.Size = new System.Drawing.Size(260, 22);
+            this.minutesMenuItem_2.Text = "Display data for last 2 minutes";
+            this.minutesMenuItem_2.TrafficLogSize = 120;
+            this.minutesMenuItem_2.Click += new System.EventHandler(this.minutesMenuItem_Click);
+            // 
+            // minutesMenuItem_3
+            // 
+            this.minutesMenuItem_3.Name = "minutesMenuItem_3";
+            this.minutesMenuItem_3.Size = new System.Drawing.Size(260, 22);
+            this.minutesMenuItem_3.Text = "Display data for last 3 minutes";
+            this.minutesMenuItem_3.TrafficLogSize = 180;
+            this.minutesMenuItem_3.Click += new System.EventHandler(this.minutesMenuItem_Click);
+            // 
+            // minutesMenuItem_4
+            // 
+            this.minutesMenuItem_4.Name = "minutesMenuItem_4";
+            this.minutesMenuItem_4.Size = new System.Drawing.Size(260, 22);
+            this.minutesMenuItem_4.Text = "Display data for last 4 minutes";
+            this.minutesMenuItem_4.TrafficLogSize = 240;
+            this.minutesMenuItem_4.Click += new System.EventHandler(this.minutesMenuItem_Click);
+            // 
+            // minutesMenuItem_5
+            // 
+            this.minutesMenuItem_5.Name = "minutesMenuItem_5";
+            this.minutesMenuItem_5.Size = new System.Drawing.Size(260, 22);
+            this.minutesMenuItem_5.Text = "Display data for last 5 minutes";
+            this.minutesMenuItem_5.TrafficLogSize = 300;
+            this.minutesMenuItem_5.Click += new System.EventHandler(this.minutesMenuItem_Click);
+            // 
+            // minutesMenuItem_10
+            // 
+            this.minutesMenuItem_10.Name = "minutesMenuItem_10";
+            this.minutesMenuItem_10.Size = new System.Drawing.Size(260, 22);
+            this.minutesMenuItem_10.Text = "Display data for last 10 minutes";
+            this.minutesMenuItem_10.TrafficLogSize = 600;
+            this.minutesMenuItem_10.Click += new System.EventHandler(this.minutesMenuItem_Click);
+            // 
+            // minutesMenuItem_15
+            // 
+            this.minutesMenuItem_15.Name = "minutesMenuItem_15";
+            this.minutesMenuItem_15.Size = new System.Drawing.Size(260, 22);
+            this.minutesMenuItem_15.Text = "Display data for last 15 minutes";
+            this.minutesMenuItem_15.TrafficLogSize = 900;
+            this.minutesMenuItem_15.Click += new System.EventHandler(this.minutesMenuItem_Click);
+            // 
+            // minutesMenuItem_30
+            // 
+            this.minutesMenuItem_30.Name = "minutesMenuItem_30";
+            this.minutesMenuItem_30.Size = new System.Drawing.Size(260, 22);
+            this.minutesMenuItem_30.Text = "Display data for last 30 minutes";
+            this.minutesMenuItem_30.TrafficLogSize = 1800;
+            this.minutesMenuItem_30.Click += new System.EventHandler(this.minutesMenuItem_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(257, 6);
+            // 
+            // resetChartToolStripMenuItem
+            // 
+            this.resetChartToolStripMenuItem.Name = "resetChartToolStripMenuItem";
+            this.resetChartToolStripMenuItem.Size = new System.Drawing.Size(260, 22);
+            this.resetChartToolStripMenuItem.Text = "Reset Chart";
+            this.resetChartToolStripMenuItem.Click += new System.EventHandler(this.resetChartToolStripMenuItem_Click);
             // 
             // TrafficChartGroupBox
             // 
             this.TrafficChartGroupBox.Controls.Add(this.TrafficChart);
             this.TrafficChartGroupBox.Controls.Add(this.statusStrip1);
             this.TrafficChartGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.TrafficChartGroupBox.Location = new System.Drawing.Point(0, 129);
+            this.TrafficChartGroupBox.Location = new System.Drawing.Point(0, 122);
             this.TrafficChartGroupBox.Name = "TrafficChartGroupBox";
-            this.TrafficChartGroupBox.Size = new System.Drawing.Size(442, 203);
+            this.TrafficChartGroupBox.Size = new System.Drawing.Size(442, 184);
             this.TrafficChartGroupBox.TabIndex = 5;
             this.TrafficChartGroupBox.TabStop = false;
             this.TrafficChartGroupBox.Text = "Traffic Chart";
@@ -431,7 +511,7 @@
             legend1.MaximumAutoSize = 80F;
             legend1.Name = "Legend1";
             this.TrafficChart.Legends.Add(legend1);
-            this.TrafficChart.Location = new System.Drawing.Point(3, 16);
+            this.TrafficChart.Location = new System.Drawing.Point(3, 17);
             this.TrafficChart.Name = "TrafficChart";
             this.TrafficChart.Palette = System.Windows.Forms.DataVisualization.Charting.ChartColorPalette.Bright;
             series1.ChartArea = "ChartArea1";
@@ -462,7 +542,7 @@
             this.TrafficChart.Series.Add(series2);
             this.TrafficChart.Series.Add(series3);
             this.TrafficChart.Series.Add(series4);
-            this.TrafficChart.Size = new System.Drawing.Size(436, 162);
+            this.TrafficChart.Size = new System.Drawing.Size(436, 142);
             this.TrafficChart.TabIndex = 0;
             this.TrafficChart.Text = "Traffic Chart";
             // 
@@ -470,7 +550,7 @@
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.SpeedStatusLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(3, 178);
+            this.statusStrip1.Location = new System.Drawing.Point(3, 159);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(436, 22);
             this.statusStrip1.SizingGrip = false;
@@ -482,79 +562,15 @@
             this.SpeedStatusLabel.AutoToolTip = true;
             this.SpeedStatusLabel.Name = "SpeedStatusLabel";
             this.SpeedStatusLabel.Overflow = System.Windows.Forms.ToolStripItemOverflow.Never;
-            this.SpeedStatusLabel.Size = new System.Drawing.Size(70, 17);
+            this.SpeedStatusLabel.Size = new System.Drawing.Size(80, 17);
             this.SpeedStatusLabel.Text = "Speed Label";
             this.SpeedStatusLabel.ToolTipText = "Speed";
             // 
-            // minutesMenuItem_1
-            // 
-            this.minutesMenuItem_1.Name = "minutesMenuItem_1";
-            this.minutesMenuItem_1.Size = new System.Drawing.Size(238, 22);
-            this.minutesMenuItem_1.Text = "Display data for last 1 minutes";
-            this.minutesMenuItem_1.TrafficLogSize = 60;
-            this.minutesMenuItem_1.Click += new System.EventHandler(this.minutesMenuItem_Click);
-            // 
-            // minutesMenuItem_2
-            // 
-            this.minutesMenuItem_2.Name = "minutesMenuItem_2";
-            this.minutesMenuItem_2.Size = new System.Drawing.Size(238, 22);
-            this.minutesMenuItem_2.Text = "Display data for last 2 minutes";
-            this.minutesMenuItem_2.TrafficLogSize = 120;
-            this.minutesMenuItem_2.Click += new System.EventHandler(this.minutesMenuItem_Click);
-            // 
-            // minutesMenuItem_3
-            // 
-            this.minutesMenuItem_3.Name = "minutesMenuItem_3";
-            this.minutesMenuItem_3.Size = new System.Drawing.Size(238, 22);
-            this.minutesMenuItem_3.Text = "Display data for last 3 minutes";
-            this.minutesMenuItem_3.TrafficLogSize = 180;
-            this.minutesMenuItem_3.Click += new System.EventHandler(this.minutesMenuItem_Click);
-            // 
-            // minutesMenuItem_4
-            // 
-            this.minutesMenuItem_4.Name = "minutesMenuItem_4";
-            this.minutesMenuItem_4.Size = new System.Drawing.Size(238, 22);
-            this.minutesMenuItem_4.Text = "Display data for last 4 minutes";
-            this.minutesMenuItem_4.TrafficLogSize = 240;
-            this.minutesMenuItem_4.Click += new System.EventHandler(this.minutesMenuItem_Click);
-            // 
-            // minutesMenuItem_5
-            // 
-            this.minutesMenuItem_5.Name = "minutesMenuItem_5";
-            this.minutesMenuItem_5.Size = new System.Drawing.Size(238, 22);
-            this.minutesMenuItem_5.Text = "Display data for last 5 minutes";
-            this.minutesMenuItem_5.TrafficLogSize = 300;
-            this.minutesMenuItem_5.Click += new System.EventHandler(this.minutesMenuItem_Click);
-            // 
-            // minutesMenuItem_10
-            // 
-            this.minutesMenuItem_10.Name = "minutesMenuItem_10";
-            this.minutesMenuItem_10.Size = new System.Drawing.Size(238, 22);
-            this.minutesMenuItem_10.Text = "Display data for last 10 minutes";
-            this.minutesMenuItem_10.TrafficLogSize = 600;
-            this.minutesMenuItem_10.Click += new System.EventHandler(this.minutesMenuItem_Click);
-            // 
-            // minutesMenuItem_15
-            // 
-            this.minutesMenuItem_15.Name = "minutesMenuItem_15";
-            this.minutesMenuItem_15.Size = new System.Drawing.Size(238, 22);
-            this.minutesMenuItem_15.Text = "Display data for last 15 minutes";
-            this.minutesMenuItem_15.TrafficLogSize = 900;
-            this.minutesMenuItem_15.Click += new System.EventHandler(this.minutesMenuItem_Click);
-            // 
-            // minutesMenuItem_30
-            // 
-            this.minutesMenuItem_30.Name = "minutesMenuItem_30";
-            this.minutesMenuItem_30.Size = new System.Drawing.Size(238, 22);
-            this.minutesMenuItem_30.Text = "Display data for last 30 minutes";
-            this.minutesMenuItem_30.TrafficLogSize = 1800;
-            this.minutesMenuItem_30.Click += new System.EventHandler(this.minutesMenuItem_Click);
-            // 
             // StatisticsForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(442, 332);
+            this.ClientSize = new System.Drawing.Size(442, 306);
             this.Controls.Add(this.TrafficChartGroupBox);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.menuStrip1);
@@ -622,5 +638,7 @@
         private MyToolStripMenuItem minutesMenuItem_15;
         private MyToolStripMenuItem minutesMenuItem_30;
         private System.Windows.Forms.Label TotalTimes;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripMenuItem resetChartToolStripMenuItem;
     }
 }

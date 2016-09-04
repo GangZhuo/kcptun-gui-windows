@@ -47,6 +47,7 @@ Log Viewer=日志浏览器
 
 # Traffic Statistics Form
 Display data for last {0} minutes=显示最近 {0} 分钟的统计数据
+Reset Chart=重置图表
 Raw=原始流量
 KCP=KCP 流量
 Traffic Chart=流量图表

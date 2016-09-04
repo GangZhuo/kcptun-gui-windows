@@ -48,6 +48,7 @@ namespace kcptun_gui.View.Forms
             minutesMenuItem_10.Text = string.Format(I18N.GetString("Display data for last {0} minutes"), 10);
             minutesMenuItem_15.Text = string.Format(I18N.GetString("Display data for last {0} minutes"), 15);
             minutesMenuItem_30.Text = string.Format(I18N.GetString("Display data for last {0} minutes"), 30);
+            resetChartToolStripMenuItem.Text = I18N.GetString("Reset Chart");
             RawGroupBox.Text = I18N.GetString("Raw");
             KCPGroupBox.Text = I18N.GetString("KCP");
             TrafficChartGroupBox.Text = I18N.GetString("Traffic Chart");
@@ -76,9 +77,12 @@ namespace kcptun_gui.View.Forms
 
         private void refreshChartToolStripMenuItems()
         {
-            foreach (MyToolStripMenuItem item in chartToolStripMenuItem.DropDownItems)
+            foreach (ToolStripItem item in chartToolStripMenuItem.DropDownItems)
             {
-                item.Checked = (item.TrafficLogSize == controller.trafficLogSize);
+                if (item is MyToolStripMenuItem)
+                {
+                    ((MyToolStripMenuItem)item).Checked = (((MyToolStripMenuItem)item).TrafficLogSize == controller.trafficLogSize);
+                }
             }
         }
 
@@ -277,6 +281,11 @@ namespace kcptun_gui.View.Forms
                 controller.trafficLogSize = menuitem.TrafficLogSize;
                 refreshChartToolStripMenuItems();
             }
+        }
+
+        private void resetChartToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            controller.ClearTrafficList();
         }
     }
 

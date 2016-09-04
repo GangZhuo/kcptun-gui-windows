@@ -18,9 +18,9 @@ namespace kcptun_gui.Model
 
         public Traffic(Traffic t1, Traffic t2)
         {
-            if (t1.inbound >= t2.inbound)
+            if (t2.inbound > 0 && t1.inbound >= t2.inbound)
                 inbound = t1.inbound - t2.inbound;
-            if (t1.outbound >= t2.outbound)
+            if (t2.outbound > 0 && t1.outbound >= t2.outbound)
                 outbound = t1.outbound - t2.outbound;
         }
 
