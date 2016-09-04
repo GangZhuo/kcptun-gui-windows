@@ -19,7 +19,7 @@ GUI for kcptun (https://github.com/xtaci/kcptun).  (.NET framework 4.5)
 ### 引用
 
 * kcptun https://github.com/xtaci/kcptun
-* shadowsocks-windows https://github.com/shadowsocks/shadowsocks-windows
+
 
 [Appveyor]:       https://ci.appveyor.com/project/GangZhuo/kcptun-gui-windows/branch/master
 [Build Status]:   https://ci.appveyor.com/api/projects/status/nutdkl99jgj2ryda/branch/master?svg=true
