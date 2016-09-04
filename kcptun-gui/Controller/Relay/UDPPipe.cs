@@ -8,6 +8,8 @@ namespace kcptun_gui.Controller.Relay
 {
     public class UDPPipe
     {
+        private const int EXPIRE_MILLISECONDS = 30000;
+
         private IRelay _relay;
         private EndPoint _localEP;
         private EndPoint _remoteEP;
@@ -52,7 +54,7 @@ namespace kcptun_gui.Controller.Relay
             {
                 if (handlers.ContainsKey(key))
                 {
-                    //Logging.Debug($"reuse udp handler: {key}");
+                    Logging.Debug($"reuse udp handler for {key}");
                     return (Handler)handlers[key];
                 }
                 Handler handler = new Handler(_relay);
@@ -62,7 +64,7 @@ namespace kcptun_gui.Controller.Relay
                 handler._remoteEP = _remoteEP;
                 handler.OnClose += handler_OnClose;
                 handler.Start();
-                Logging.Debug($"create udp handler: {key}");
+                Logging.Debug($"create udp handler for {key}");
                 return handler;
             }
         }
@@ -76,7 +78,7 @@ namespace kcptun_gui.Controller.Relay
             {
                 if (handlers.ContainsKey(key))
                 {
-                    Logging.Debug($"remove udp handler: {key}");
+                    Logging.Debug($"remove udp handler {key}");
                     handlers.Remove(key);
                 }
             }
@@ -101,7 +103,7 @@ namespace kcptun_gui.Controller.Relay
                     }
                     foreach (Handler handler in keys)
                     {
-                        Logging.Debug($"remove expired udp handler: {handler._remote.LocalEndPoint.ToString()}");
+                        Logging.Debug($"remove expired udp handler {handler._remote.LocalEndPoint.ToString()}");
                         string key = handler._localEP.ToString();
                         handler.Close(false);
                         handlers.Remove(key);
@@ -159,7 +161,7 @@ namespace kcptun_gui.Controller.Relay
                     _remote = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
                     _remote.SetSocketOption(SocketOptionLevel.Udp, SocketOptionName.NoDelay, true);
                     _remote.BeginConnect(_remoteEP, new AsyncCallback(remoteConnectCallback), null);
-                    Delay();
+                    resetExpireTime();
                 }
                 catch (Exception e)
                 {
@@ -218,9 +220,9 @@ namespace kcptun_gui.Controller.Relay
                 if (_closed) return;
                 try
                 {
-                    _remote.BeginReceive(this.remoteRecvBuffer, 0, RecvSize, 0,
+                    _remote.BeginReceive(remoteRecvBuffer, 0, RecvSize, 0,
                         new AsyncCallback(remoteReceiveCallback), null);
-                    Delay();
+                    resetExpireTime();
                     StartSend();
                 }
                 catch (Exception e)
@@ -245,8 +247,9 @@ namespace kcptun_gui.Controller.Relay
                             byte[] bytes = _packages.First.Value;
                             _packages.RemoveFirst();
                             _relay.onOutbound(bytes.Length);
+                            Logging.Debug($"send {bytes.Length} bytes to {_remoteEP}");
                             _remote.BeginSend(bytes, 0, bytes.Length, 0, new AsyncCallback(remoteSendCallback), null);
-                            Delay();
+                            resetExpireTime();
                         }
                     }
                 }
@@ -280,17 +283,19 @@ namespace kcptun_gui.Controller.Relay
                 try
                 {
                     int bytesRead = _remote.EndReceive(ar);
+                    Logging.Debug($"recv {bytesRead} bytes from {_remoteEP}");
                     if (bytesRead > 0)
                     {
                         _relay.onInbound(bytesRead);
+                        Logging.Debug($"send {bytesRead} bytes to {_localEP}");
                         _local.BeginSendTo(remoteRecvBuffer, 0, bytesRead, 0, _localEP, new AsyncCallback(localSendCallback), null);
-                        Delay();
+                        resetExpireTime();
                     }
                     else
                     {
                         this.Close();
                     }
-                    Delay();
+                    resetExpireTime();
                 }
                 catch (Exception e)
                 {
@@ -305,9 +310,9 @@ namespace kcptun_gui.Controller.Relay
                 try
                 {
                     _local.EndSendTo(ar);
-                    _remote.BeginReceive(this.remoteRecvBuffer, 0, RecvSize, 0,
+                    _remote.BeginReceive(remoteRecvBuffer, 0, RecvSize, 0,
                         new AsyncCallback(remoteReceiveCallback), null);
-                    Delay();
+                    resetExpireTime();
                 }
                 catch (Exception e)
                 {
@@ -316,11 +321,11 @@ namespace kcptun_gui.Controller.Relay
                 }
             }
 
-            private void Delay()
+            private void resetExpireTime()
             {
                 lock (this)
                 {
-                    _expires = DateTime.Now.AddMilliseconds(30000);
+                    _expires = DateTime.Now.AddMilliseconds(EXPIRE_MILLISECONDS);
                 }
             }
 
@@ -332,6 +337,7 @@ namespace kcptun_gui.Controller.Relay
                 {
                     try
                     {
+                        Logging.Debug($"close remote udp socket");
                         _remote.Shutdown(SocketShutdown.Both);
                         _remote.Close();
                         _remote = null;

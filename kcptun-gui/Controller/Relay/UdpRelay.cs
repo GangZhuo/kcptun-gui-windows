@@ -48,6 +48,9 @@ namespace kcptun_gui.Controller
                 // Create a TCP/IP socket.
                 _local = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
                 _local.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+                const int SIP_UDP_CONNRESET = -1744830452;
+                // Fix WinSock library bug, See https://support.microsoft.com/en-us/kb/263823
+                _local.IOControl(SIP_UDP_CONNRESET, new byte[] { 0, 0, 0, 0 }, null);
                 // Bind the socket to the local endpoint and listen for incoming connections.
                 _local.Bind(_localEP);
 
@@ -68,6 +71,7 @@ namespace kcptun_gui.Controller
             {
                 try
                 {
+                    Logging.Debug($"stop udp listen");
                     _local.Shutdown(SocketShutdown.Both);
                     _local.Close();
                 }
@@ -89,42 +93,6 @@ namespace kcptun_gui.Controller
             Outbound?.Invoke(this, new Controller.RelayEventArgs(n));
         }
 
-        private void Restart()
-        {
-            Console.WriteLine("Restart UDP server");
-            if (_local != null)
-            {
-                try
-                {
-                    _local.Shutdown(SocketShutdown.Both);
-                    _local.Close();
-                }
-                catch (Exception e)
-                {
-                    Logging.LogUsefulException(e);
-                }
-                _local = null;
-            }
-
-            try
-            {
-                // Create a TCP/IP socket.
-                _local = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-                _local.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
-                // Bind the socket to the local endpoint and listen for incoming connections.
-                _local.Bind(_localEP);
-
-                // Start an asynchronous socket to listen for connections.
-                Console.WriteLine("Restart UDPRelay on " + _localEP.ToString());
-                localStartReceive();
-            }
-            catch (SocketException e)
-            {
-                Logging.LogUsefulException(e);
-                Stop();
-            }
-        }
-
         private void localStartReceive()
         {
             if (_local == null) return;
@@ -136,7 +104,6 @@ namespace kcptun_gui.Controller
             catch (Exception e)
             {
                 Logging.LogUsefulException(e);
-                Restart();
             }
         }
 
@@ -148,13 +115,16 @@ namespace kcptun_gui.Controller
             {
                 EndPoint remoteEP = (EndPoint)(new IPEndPoint(IPAddress.Any, 0));
                 int bytesRead = _local.EndReceiveFrom(ar, ref remoteEP);
+                Logging.Debug($"recv {bytesRead} bytes from {remoteEP}");
                 _pipe.CreatePipe(state.buffer, bytesRead, _local, remoteEP);
-                localStartReceive();
             }
             catch (Exception e)
             {
                 Logging.LogUsefulException(e);
-                Restart();
+            }
+            finally
+            {
+                localStartReceive();
             }
         }
 
