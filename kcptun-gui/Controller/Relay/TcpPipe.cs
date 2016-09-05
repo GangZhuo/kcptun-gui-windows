@@ -181,6 +181,10 @@ namespace kcptun_gui.Controller.Relay
                 {
                     try
                     {
+                        // Shutdown ensures that all data is sent and received on the connected socket before it is closed.
+                        // See:
+                        //     https://msdn.microsoft.com/zh-cn/library/system.net.sockets.socket.shutdown(v=vs.110).aspx
+                        //     https://msdn.microsoft.com/en-us/library/windows/desktop/ms738547(v=vs.85).aspx
                         _local.Shutdown(SocketShutdown.Both);
                         _local.Close();
                         _local = null;
