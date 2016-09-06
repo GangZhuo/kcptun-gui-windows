@@ -1,4 +1,5 @@
-﻿using System;
+﻿#define TAR
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Collections;
@@ -9,6 +10,8 @@ using kcptun_gui.Controller;
 using kcptun_gui.Properties;
 using kcptun_gui.View.Forms;
 using kcptun_gui.Common;
+using System.IO;
+using System.Diagnostics;
 
 namespace kcptun_gui.View
 {
@@ -56,6 +59,7 @@ namespace kcptun_gui.View
             controller.KCPTunnelController.Stoped += OnKCPTunnelStoped;
             controller.ConfigController.ConfigChanged += OnConfigChanged;
             controller.UpdateChecker.CheckUpdateCompleted += OnCheckUpdateCompleted;
+            controller.UpdateChecker.DownloadCompleted += OnDownloadCompleted;
 
             _notifyIcon = new NotifyIcon();
             UpdateTrayIcon();
@@ -476,40 +480,110 @@ namespace kcptun_gui.View
         {
             try
             {
-                if (e.ReleaseList.Count == 0)
+                string text = null;
+                if (e.App == UpdateChecker.App.GUI)
                 {
-                    Logging.Debug($"No {e.Name} update is available");
-                    if (e.UserState != null)
+                    text = e.ReleaseList.Count == 0 ?
+                        I18N.GetString("GUI is up to date") :
+                        string.Format(I18N.GetString("New GUI version {0} is available"), e.ReleaseList[0].version);
+                    ShowBalloonTip("", text, ToolTipIcon.Info, 3000);
+                }
+                else if (e.App == UpdateChecker.App.KCPTun)
+                {
+                    UpdateChecker.Release release = null;
+                    string arch = Environment.Is64BitOperatingSystem ? "windows-amd64" : "windows-386";
+                    foreach (UpdateChecker.Release r in e.ReleaseList)
                     {
-                        if (e.Name == UpdateChecker.GUI_PROJECT_NAME)
+                        if (r.name.IndexOf(arch) > 0)
                         {
-                            ShowBalloonTip("",
-                                I18N.GetString("GUI is up to date"),
-                                ToolTipIcon.Info, 3000);
+                            release = r;
+                            break;
                         }
-                        else if (e.Name == UpdateChecker.KCPTUN_PROJECT_NAME)
-                        {
-                            ShowBalloonTip("",
-                                I18N.GetString("kcptun is up to date"),
-                                ToolTipIcon.Info, 3000);
-                        }
+                    }
+                    if (release != null)
+                    {
+                        controller.UpdateChecker.Download(release);
+                    }
+                    else
+                    {
+                        text = I18N.GetString("kcptun is up to date");
+                        ShowBalloonTip("", text, ToolTipIcon.Info, 3000);
                     }
                 }
                 else
                 {
-                    UpdateChecker.Release release = e.ReleaseList[0];
-                    if (e.Name == UpdateChecker.GUI_PROJECT_NAME)
+                    /* do nothing */
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.LogUsefulException(ex);
+            }
+        }
+
+        private void OnDownloadCompleted(object sender, UpdateChecker.DownloadEventArgs e)
+        {
+            try
+            {
+                string text = null;
+                if (e.Error != null)
+                {
+                    text = string.Format(I18N.GetString("failed to download {0}"), e.Release.name);
+                    ShowBalloonTip("", text, ToolTipIcon.Error, 3000);
+                    if (File.Exists(e.SaveTo))
+                        try
+                        {
+                            File.Delete(e.SaveTo);
+                        }
+                        catch (Exception ex)
+                        {
+                            Logging.LogUsefulException(ex);
+                        }
+                }
+                else
+                {
+#if TAR
+                    string dstFilename = controller.KCPTunnelController.GetKCPTunPath();
+                    try
                     {
-                        ShowBalloonTip("",
-                            string.Format(I18N.GetString("New GUI version {0} is available"), release.version),
-                            ToolTipIcon.Info, 3000);
+                        Directory.SetCurrentDirectory(Utils.GetTempPath());
+                        Ionic.Tar.Options opts = new Ionic.Tar.Options();
+                        opts.Overwrite = true;
+                        Ionic.Tar.Extract(e.SaveTo, opts);
+                        Directory.SetCurrentDirectory(Application.StartupPath);
+                        bool running = controller.KCPTunnelController.IsRunning;
+                        if (running)
+                            controller.KCPTunnelController.Stop();
+                        if (File.Exists(dstFilename))
+                            File.Delete(dstFilename);
+                        File.Move(Utils.GetTempPath("client_windows_amd64.exe"), dstFilename);
+                        if (running)
+                            controller.KCPTunnelController.Start();
+                        if (File.Exists(Utils.GetTempPath("client_windows_amd64.exe")))
+                            File.Delete(Utils.GetTempPath("client_windows_amd64.exe"));
+                        if (File.Exists(Utils.GetTempPath("server_windows_amd64.exe")))
+                            File.Delete(Utils.GetTempPath("server_windows_amd64.exe"));
+                        if (File.Exists(e.SaveTo))
+                            File.Delete(e.SaveTo);
+                        text = string.Format(I18N.GetString("kcptun updated to {0}"), controller.KCPTunnelController.GetKcptunVersionNumber());
+                        ShowBalloonTip("", text, ToolTipIcon.Error, 3000);
                     }
-                    else if (e.Name == UpdateChecker.KCPTUN_PROJECT_NAME)
+                    catch (Exception ex)
                     {
-                        ShowBalloonTip("",
-                            string.Format(I18N.GetString("New kcptun version {0} is available"), release.version),
-                            ToolTipIcon.Info, 3000);
+                        Logging.LogUsefulException(ex);
+                        text = string.Format(I18N.GetString("failed to uncompress {0}"), e.SaveTo);
+                        ShowBalloonTip("", text, ToolTipIcon.Error, 3000);
                     }
+                    finally
+                    {
+                        Directory.SetCurrentDirectory(Application.StartupPath);
+                    }
+#else
+                    text = string.Format(I18N.GetString("New kcptun version {0} is available"), e.Release.version);
+                    ShowBalloonTip("", text, ToolTipIcon.Error, 3000);
+                    string argument = "/select, \"" + e.SaveTo + "\"";
+                    Process.Start("explorer.exe", argument);
+#endif
                 }
             }
             catch (Exception ex)

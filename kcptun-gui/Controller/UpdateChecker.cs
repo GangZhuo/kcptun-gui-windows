@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Net;
 using System.Text.RegularExpressions;
+using System.ComponentModel;
 using Newtonsoft.Json.Linq;
+
+using kcptun_gui.Common;
 
 namespace kcptun_gui.Controller
 {
@@ -10,8 +13,6 @@ namespace kcptun_gui.Controller
     {
         public const string GUI_VERSION = "1.5.2";
 
-        public const string GUI_PROJECT_NAME = "kcptun-gui-windows";
-        public const string KCPTUN_PROJECT_NAME = "kcptun";
         private const string GUI_UPDATE_URL = "https://api.github.com/repos/GangZhuo/kcptun-gui-windows/releases";
         private const string KCPTUN_UPDATE_URL = "https://api.github.com/repos/xtaci/kcptun/releases";
         private const string UserAgent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36";
@@ -20,16 +21,20 @@ namespace kcptun_gui.Controller
 
         public event EventHandler<CheckUpdateEventArgs> CheckUpdateCompleted;
 
+        public event EventHandler<DownloadEventArgs> DownloadCompleted;
+
         public UpdateChecker(MainController controller)
         {
             this.controller = controller;
         }
 
+        #region Check Update
+
         public void CheckUpdateForGUI(int delay = 0, object userState = null)
         {
-            CheckUpdateState state = new Controller.UpdateChecker.CheckUpdateState
+            CheckUpdateState state = new CheckUpdateState
             {
-                name = GUI_PROJECT_NAME,
+                app = App.GUI,
                 apiUrl = GUI_UPDATE_URL,
                 currentVersion = GUI_VERSION,
                 userState = userState
@@ -39,19 +44,10 @@ namespace kcptun_gui.Controller
 
         public void CheckUpdateForKCPTun(int delay = 0, object userState = null)
         {
-            string version = controller.KCPTunnelController.GetKcptunVersion();
-            string[] sv = version.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            if (sv.Length == 3)
+            string version = controller.KCPTunnelController.GetKcptunVersionNumber();
+            CheckUpdateState state = new CheckUpdateState
             {
-                version = sv[2];
-            }
-            else
-            {
-                version = null;
-            }
-            CheckUpdateState state = new Controller.UpdateChecker.CheckUpdateState
-            {
-                name = KCPTUN_PROJECT_NAME,
+                app = App.KCPTun,
                 apiUrl = KCPTUN_UPDATE_URL,
                 currentVersion = version,
                 userState = userState
@@ -96,7 +92,7 @@ namespace kcptun_gui.Controller
                     {
                         CheckUpdateCompleted.Invoke(this, new CheckUpdateEventArgs()
                         {
-                            Name = state.name,
+                            App = state.app,
                             ApiUrl = state.apiUrl,
                             CurrentVersion = state.currentVersion,
                             UserState = state.userState
@@ -126,8 +122,8 @@ namespace kcptun_gui.Controller
 
                 JArray result = JArray.Parse(response);
 
-                CheckUpdateEventArgs args = new Controller.UpdateChecker.CheckUpdateEventArgs();
-                args.Name = state.name;
+                CheckUpdateEventArgs args = new CheckUpdateEventArgs();
+                args.App = state.app;
                 args.ApiUrl = state.apiUrl;
                 args.CurrentVersion = state.currentVersion;
                 args.UserState = state.userState;
@@ -141,7 +137,7 @@ namespace kcptun_gui.Controller
                         }
                         foreach (JObject asset in (JArray)release["assets"])
                         {
-                            Release ass = new Release();
+                            Release ass = new Release() { app = state.app };
                             ass.Parse(asset);
                             if (ass.IsNewVersion(state.currentVersion))
                             {
@@ -159,10 +155,62 @@ namespace kcptun_gui.Controller
             }
         }
 
+        #endregion
+
+        #region Download File
+
+        public void Download(Release release)
+        {
+            DownloadState state = new DownloadState
+            {
+                release = release,
+                saveTo = Utils.GetTempPath(release.name)
+            };
+            Download(state);
+        }
+
+        private void Download(DownloadState state)
+        {
+            try
+            {
+                WebClient http = CreateWebClient();
+                http.DownloadFileCompleted += Http_DownloadFileCompleted;
+                http.DownloadFileAsync(new Uri(state.release.browser_download_url), state.saveTo, state);
+            }
+            catch (Exception ex)
+            {
+                Logging.LogUsefulException(ex);
+            }
+        }
+
+        private void Http_DownloadFileCompleted(object sender, AsyncCompletedEventArgs e)
+        {
+            try
+            {
+                DownloadState state = (DownloadState)e.UserState;
+                DownloadEventArgs args = new DownloadEventArgs();
+                args.Error = e.Error;
+                args.SaveTo = state.saveTo;
+                args.Release = state.release;
+                args.UserState = state.userState;
+                if (e.Error == null)
+                    Logging.LogUsefulException(e.Error);
+                if (DownloadCompleted != null)
+                    DownloadCompleted.Invoke(this, args);
+            }
+            catch (Exception ex)
+            {
+                Logging.LogUsefulException(ex);
+            }
+        }
+
+        #endregion
+
         private WebClient CreateWebClient()
         {
             WebClient http = new WebClient();
             http.Headers.Add("User-Agent", UserAgent);
+            http.Proxy = WebRequest.GetSystemWebProxy();
             return http;
         }
 
@@ -180,13 +228,23 @@ namespace kcptun_gui.Controller
             }
         }
 
+        public enum App
+        {
+            None,
+            GUI,
+            KCPTun
+        }
+
         public class Release
         {
+            public App app;
+
             public bool prerelease;
             public string name;
             public string version;
             public string browser_download_url;
             public string url;
+            public long size;
 
             public bool IsNewVersion(string currentVersion)
             {
@@ -208,6 +266,7 @@ namespace kcptun_gui.Controller
                 version = ParseVersionFromURL(browser_download_url);
                 prerelease = browser_download_url.IndexOf("prerelease") >= 0;
                 url = (string)asset["url"];
+                size = (long)asset["size"];
             }
 
             private static string ParseVersionFromURL(string url)
@@ -242,7 +301,7 @@ namespace kcptun_gui.Controller
 
         public class CheckUpdateEventArgs : EventArgs
         {
-            public string Name { get; set; }
+            public App App { get; set; }
 
             public string ApiUrl { get; set; }
 
@@ -264,10 +323,28 @@ namespace kcptun_gui.Controller
 
         class CheckUpdateState
         {
-            public string name;
+            public App app;
             public string apiUrl;
             public string currentVersion;
             public object userState;
+        }
+
+        class DownloadState
+        {
+            public Release release;
+            public string saveTo;
+            public object userState;
+        }
+
+        public class DownloadEventArgs : EventArgs
+        {
+            public Exception Error { get; set; }
+
+            public Release Release { get; set; }
+
+            public string SaveTo { get; set; }
+
+            public object UserState { get; set; }
         }
     }
 }

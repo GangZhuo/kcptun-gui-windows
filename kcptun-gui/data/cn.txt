@@ -22,9 +22,9 @@ About...=关于...
 Quit=退出
 Update...=更新...
 Check GUI updates...=检测 GUI 版本...
-Check kcptun updates...=检测 kcptun 版本...
+Check kcptun updates...=升级 kcptun...
 Check GUI updates at startup=自动检测 GUI 版本
-Check kcptun updates at startup=自动检测 kcptun 版本
+Check kcptun updates at startup=自动升级 kcptun
 About Form=关于窗口
 
 # Message
@@ -37,8 +37,11 @@ You can turn on/off kcptun in the context menu.=右击此图标可管理 kcptun 
 GUI version =GUI 版本
 New GUI version {0} is available=GUI 有新的版本 {0}
 New kcptun version {0} is available=kcptun 有新的版本 {0}
+failed to download {0}=下载 {0} 失败
+failed to uncompress {0}=解压 {0} 失败
 GUI is up to date=GUI 已经是最新版
 kcptun is up to date=kcptun 已经是最新版
+kcptun updated to {0}=升级 kcptun 到 {0}
 
 # About
 About=关于

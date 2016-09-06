@@ -39,5 +39,24 @@ namespace kcptun_gui.Controller
                 }
             }
         }
+
+        public static void UncompressFile(string dstFilename, string srcFilename)
+        {
+            // Because the uncompressed size of the file is unknown,
+            // we are using an arbitrary buffer size.
+            byte[] buffer = new byte[4096];
+            int n;
+
+            using (var dst = File.Create(dstFilename))
+            using (var src = File.OpenRead(srcFilename))
+            using (var input = new GZipStream(src,
+                    CompressionMode.Decompress, false))
+            {
+                while ((n = input.Read(buffer, 0, buffer.Length)) > 0)
+                {
+                    dst.Write(buffer, 0, n);
+                }
+            }
+        }
     }
 }

@@ -59,7 +59,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="3rd\Tar\Tar.cs" />
     <Compile Include="Common\I18N.cs" />
+    <Compile Include="Common\Tar.cs" />
     <Compile Include="Common\TrafficSize.cs" />
     <Compile Include="Common\TrafficSpeed.cs" />
     <Compile Include="Controller\ConfigurationController.cs" />
@@ -176,6 +178,8 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="3rd\Tar\License.txt" />
+    <Content Include="3rd\Tar\Readme.txt" />
     <Content Include="data\en.txt" />
     <Content Include="data\cn.txt" />
     <Content Include="data\logo-small.ico" />
