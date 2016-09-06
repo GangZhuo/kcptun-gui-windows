@@ -61,11 +61,48 @@ namespace kcptun_gui.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to # kcptun-gui-windows language file
+        ///
+        ///# Context menu
+        ///
+        ///Enable=启用/禁用
+        ///Servers=服务器
+        ///Edit Servers...=配置服务器...
+        ///Start/Stop/Restart kcptun client...=启动/停止/重启 kcptun 客户端...
+        ///Start=启动
+        ///Restart=重启
+        ///Stop=停止
+        ///Kill all kcptun clients=杀死所有 kcptun 客户端
+        ///Start on Boot=开机启动
+        ///More...=更多...
+        ///Turn on KCP Log=启用/禁用 kcptun 日志
+        ///Custome KCPTun=自定义 kcptun 客户端路径
+        ///Traffic Statistics=流量统计
+        ///Show Logs...=查看日志...
+        ///About...=关于...
+        ///Quit=退出
+        ///Update...=更新...
+        ///Check GUI updates...=检测 GUI 版本...
+        ///Check kcptun updates...=检测 kcptun 版本...
+        ///Check [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string cn {
             get {
                 return ResourceManager.GetString("cn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to # kcptun-gui-windows language file
+        ///
+        ///# Language
+        ///
+        ///Chinese (Simplified)=简体中文
+        ///.
+        /// </summary>
+        internal static string en {
+            get {
+                return ResourceManager.GetString("en", resourceCulture);
             }
         }
         

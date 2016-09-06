@@ -176,6 +176,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="data\en.txt" />
     <Content Include="data\cn.txt" />
     <Content Include="data\logo-small.ico" />
     <Content Include="data\logo-small.png" />

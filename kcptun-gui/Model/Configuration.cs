@@ -26,6 +26,8 @@ namespace kcptun_gui.Model
 
         public bool check_kcptun_update;
 
+        public string language;
+
         [JsonIgnore]
         public bool isDefault;
 

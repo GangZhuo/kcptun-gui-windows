@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Collections;
+using System.Collections.Generic;
 
 using kcptun_gui.Model;
 using kcptun_gui.Controller;
@@ -28,6 +30,8 @@ namespace kcptun_gui.View
         private MenuItem verboseLoggingItem;
         private MenuItem checkGUIUpdateAtStartupItem;
         private MenuItem checkKcpTunUpdateAtStartupItem;
+        private MenuItem AboutItems;
+        private MenuItem aboutSeperatorItem;
 
         private EidtServersForm editServersForm;
         private AboutForm aboutForm;
@@ -39,6 +43,11 @@ namespace kcptun_gui.View
         public MenuViewController(MainController controller)
         {
             this.controller = controller;
+
+            Configuration config = controller.ConfigController.GetCurrentConfiguration();
+            I18N.SetLang(config.language);
+
+            I18N.LangChanged += onLanguageChanged;
 
             LoadMenu();
 
@@ -54,7 +63,6 @@ namespace kcptun_gui.View
 
             LoadCurrentConfiguration();
 
-            Configuration config = controller.ConfigController.GetCurrentConfiguration();
             _firstRun = config.isDefault;
             if (_firstRun)
             {
@@ -71,10 +79,16 @@ namespace kcptun_gui.View
             }
         }
 
+        private void onLanguageChanged(object sender, EventArgs e)
+        {
+            UpdateMenuItemsText(contextMenu1.MenuItems);
+        }
+
         private void LoadCurrentConfiguration()
         {
             Configuration config = controller.ConfigController.GetConfigurationCopy();
             UpdateServersMenu();
+            UpdateAboutMenu();
             enableItem.Checked = config.enabled;
             autoStartupItem.Checked = AutoStartup.Check();
             verboseLoggingItem.Checked = config.verbose;
@@ -82,51 +96,67 @@ namespace kcptun_gui.View
             checkKcpTunUpdateAtStartupItem.Checked = config.check_kcptun_update;
         }
 
+        private void UpdateMenuItemsText(Menu.MenuItemCollection items)
+        {
+            foreach(MenuItem item in items)
+            {
+                if (item is MyMenuItem)
+                {
+                    ((MyMenuItem)item).onLangChanged();
+                }
+                if (item.MenuItems.Count > 0)
+                    UpdateMenuItemsText(item.MenuItems);
+            }
+        }
+
         private MenuItem CreateMenuItem(string text, EventHandler click)
         {
-            return new MenuItem(text, click);
+            return new MyMenuItem(text, click);
         }
 
         private MenuItem CreateMenuGroup(string text, MenuItem[] items)
         {
-            return new MenuItem(text, items);
+            return new MyMenuItem(text, items);
         }
 
         private void LoadMenu()
         {
             this.contextMenu1 = new ContextMenu(new MenuItem[] {
-                this.enableItem = CreateMenuItem(I18N.GetString("Enable"), new EventHandler(this.OnEnableItemClick)),
-                this.ServersItem = CreateMenuGroup(I18N.GetString("Servers"), new MenuItem[] {
+                this.enableItem = CreateMenuItem("Enable", new EventHandler(this.OnEnableItemClick)),
+                this.ServersItem = CreateMenuGroup("Servers", new MenuItem[] {
                     this.seperatorItem = new MenuItem("-"),
-                    CreateMenuItem(I18N.GetString("Edit Servers..."), new EventHandler(this.OnConfigItemClick)),
+                    CreateMenuItem("Edit Servers...", new EventHandler(this.OnConfigItemClick)),
                     new MenuItem("-"),
-                    CreateMenuGroup(I18N.GetString("Start/Stop/Restart kcptun client..."), new MenuItem[] {
-                        this.startItem = CreateMenuItem(I18N.GetString("Start"), new EventHandler(this.OnStartItemClick)),
-                        this.restartItem = CreateMenuItem(I18N.GetString("Restart"), new EventHandler(this.OnRestartItemClick)),
-                        this.stopItem = CreateMenuItem(I18N.GetString("Stop"), new EventHandler(this.OnStopItemClick)),
+                    CreateMenuGroup("Start/Stop/Restart kcptun client...", new MenuItem[] {
+                        this.startItem = CreateMenuItem("Start", new EventHandler(this.OnStartItemClick)),
+                        this.restartItem = CreateMenuItem("Restart", new EventHandler(this.OnRestartItemClick)),
+                        this.stopItem = CreateMenuItem("Stop", new EventHandler(this.OnStopItemClick)),
                         new MenuItem("-"),
-                        this.killAllItem = CreateMenuItem(I18N.GetString("Kill all kcptun clients"), new EventHandler(this.OnKillAllItemClick)),
+                        this.killAllItem = CreateMenuItem("Kill all kcptun clients", new EventHandler(this.OnKillAllItemClick)),
                     }),
                 }),
                 new MenuItem("-"),
-                this.autoStartupItem = CreateMenuItem(I18N.GetString("Start on Boot"), new EventHandler(this.OnAutoStartupItemClick)),
+                this.autoStartupItem = CreateMenuItem("Start on Boot", new EventHandler(this.OnAutoStartupItemClick)),
                 new MenuItem("-"),
-                CreateMenuGroup(I18N.GetString("More..."), new MenuItem[] {
-                    this.verboseLoggingItem = CreateMenuItem(I18N.GetString("Turn on KCP Log"), new EventHandler(this.OnVerboseLoggingItemClick)),
-                    CreateMenuItem(I18N.GetString("Custome KCPTun"), new EventHandler(this.OnCustomeKCPTunItemClick)),
+                CreateMenuGroup("More...", new MenuItem[] {
+                    this.verboseLoggingItem = CreateMenuItem("Turn on KCP Log", new EventHandler(this.OnVerboseLoggingItemClick)),
+                    CreateMenuItem("Custome KCPTun", new EventHandler(this.OnCustomeKCPTunItemClick)),
                 }),
-                CreateMenuItem(I18N.GetString("Traffic Statistics"), new EventHandler(this.OnStatisticsItemClick)),
-                CreateMenuItem(I18N.GetString("Show Logs..."), new EventHandler(this.OnShowLogItemClick)),
-                CreateMenuGroup(I18N.GetString("Update..."), new MenuItem[] {
-                    CreateMenuItem(I18N.GetString("Check GUI updates..."), new EventHandler(this.OnCheckGUIUpdatesItemClick)),
-                    CreateMenuItem(I18N.GetString("Check kcptun updates..."), new EventHandler(this.OnCheckKcpTunUpdatesItemClick)),
+                CreateMenuItem("Traffic Statistics", new EventHandler(this.OnStatisticsItemClick)),
+                CreateMenuItem("Show Logs...", new EventHandler(this.OnShowLogItemClick)),
+                CreateMenuGroup("Update...", new MenuItem[] {
+                    CreateMenuItem("Check GUI updates...", new EventHandler(this.OnCheckGUIUpdatesItemClick)),
+                    CreateMenuItem("Check kcptun updates...", new EventHandler(this.OnCheckKcpTunUpdatesItemClick)),
                     new MenuItem("-"),
-                    this.checkGUIUpdateAtStartupItem = CreateMenuItem(I18N.GetString("Check GUI updates at startup"), new EventHandler(this.OnCheckGUIUpdateAtStartupItemClick)),
-                    this.checkKcpTunUpdateAtStartupItem = CreateMenuItem(I18N.GetString("Check kcptun updates at startup"), new EventHandler(this.OnCheckKcpTunUpdateAtStartup)),
+                    this.checkGUIUpdateAtStartupItem = CreateMenuItem("Check GUI updates at startup", new EventHandler(this.OnCheckGUIUpdateAtStartupItemClick)),
+                    this.checkKcpTunUpdateAtStartupItem = CreateMenuItem("Check kcptun updates at startup", new EventHandler(this.OnCheckKcpTunUpdateAtStartup)),
                 }),
-                CreateMenuItem(I18N.GetString("About..."), new EventHandler(this.OnAboutItemClick)),
+                this.AboutItems = CreateMenuGroup("About...", new MenuItem[] {
+                    this.aboutSeperatorItem = new MenuItem("-"),
+                    CreateMenuItem("About Form", new EventHandler(this.OnAboutItemClick)),
+                }),
                 new MenuItem("-"),
-                CreateMenuItem(I18N.GetString("Quit"), new EventHandler(this.OnQuitItemClick))
+                CreateMenuItem("Quit", new EventHandler(this.OnQuitItemClick))
             });
 
             this.startItem.Enabled = true;
@@ -149,6 +179,30 @@ namespace kcptun_gui.View
                 item.Tag = i;
                 item.Click += OnServerItemClick;
                 if (i == configuration.index)
+                    item.Checked = true;
+                items.Add(i, item);
+            }
+        }
+
+        private void UpdateAboutMenu()
+        {
+            var items = AboutItems.MenuItems;
+            while (items[0] != aboutSeperatorItem)
+            {
+                items.RemoveAt(0);
+            }
+
+            Configuration config = controller.ConfigController.GetConfigurationCopy();
+            I18N.SetLang(config.language);
+
+            IList<I18N.Lang> langlist = I18N.GetLangList();
+            for (int i = 0; i < langlist.Count; i++)
+            {
+                I18N.Lang lang = langlist[i];
+                MenuItem item = new MenuItem(I18N.GetString(lang.fullname));
+                item.Tag = lang;
+                item.Click += OnLanguageItemClick;
+                if (lang == I18N.Current)
                     item.Checked = true;
                 items.Add(i, item);
             }
@@ -480,6 +534,37 @@ namespace kcptun_gui.View
         private void OnCheckKcpTunUpdatesItemClick(object sender, EventArgs e)
         {
             controller.UpdateChecker.CheckUpdateForKCPTun(100, this);
+        }
+
+        private void OnLanguageItemClick(object sender, EventArgs e)
+        {
+            MenuItem item = (MenuItem)sender;
+            I18N.Lang lang = (I18N.Lang)item.Tag;
+            I18N.SetLang(lang.name);
+            controller.ConfigController.SelectLanguage(lang);
+        }
+
+
+        class MyMenuItem : MenuItem
+        {
+            private string _originalText;
+
+            public MyMenuItem(string text, EventHandler onClick)
+                : base(I18N.GetString(text), onClick)
+            {
+                _originalText = text;
+            }
+
+            public MyMenuItem(string text, MenuItem[] items)
+                : base(I18N.GetString(text), items)
+            {
+                _originalText = text;
+            }
+
+            public void onLangChanged()
+            {
+                this.Text = I18N.GetString(_originalText);
+            }
         }
 
     }

@@ -1,0 +1,7 @@
+﻿# kcptun-gui-windows language file
+# Name: en
+# Full name: English
+
+# Language
+
+Chinese (Simplified)=简体中文

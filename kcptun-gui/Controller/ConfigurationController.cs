@@ -18,6 +18,7 @@ namespace kcptun_gui.Controller
         public event EventHandler StatisticsEnableChanged;
         public event EventHandler CheckGUIUpdateChanged;
         public event EventHandler CheckKCPTunUpdateChanged;
+        public event EventHandler LanguageChanged;
 
         public ConfigurationController(MainController controller)
         {
@@ -99,6 +100,17 @@ namespace kcptun_gui.Controller
                 SaveConfig(_config);
                 if (ServerIndexChanged != null)
                     ServerIndexChanged.Invoke(this, new EventArgs());
+            }
+        }
+
+        public void SelectLanguage(I18N.Lang lang)
+        {
+            if (_config.language != lang.name)
+            {
+                _config.language = lang.name;
+                SaveConfig(_config);
+                if (LanguageChanged != null)
+                    LanguageChanged.Invoke(this, new EventArgs());
             }
         }
 
