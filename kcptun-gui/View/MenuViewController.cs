@@ -26,6 +26,8 @@ namespace kcptun_gui.View
         private MenuItem killAllItem;
         private MenuItem autoStartupItem;
         private MenuItem verboseLoggingItem;
+        private MenuItem checkGUIUpdateAtStartupItem;
+        private MenuItem checkKcpTunUpdateAtStartupItem;
 
         private EidtServersForm editServersForm;
         private AboutForm aboutForm;
@@ -43,6 +45,7 @@ namespace kcptun_gui.View
             controller.KCPTunnelController.Started += OnKCPTunnelStarted;
             controller.KCPTunnelController.Stoped += OnKCPTunnelStoped;
             controller.ConfigController.ConfigChanged += OnConfigChanged;
+            controller.UpdateChecker.CheckUpdateCompleted += OnCheckUpdateCompleted;
 
             _notifyIcon = new NotifyIcon();
             UpdateTrayIcon();
@@ -57,6 +60,15 @@ namespace kcptun_gui.View
             {
                 ShowEditServicesForm();
             }
+
+            if (config.check_gui_update)
+            {
+                controller.UpdateChecker.CheckUpdateForGUI(5000);
+            }
+            if (config.check_kcptun_update)
+            {
+                controller.UpdateChecker.CheckUpdateForKCPTun(5000);
+            }
         }
 
         private void LoadCurrentConfiguration()
@@ -66,6 +78,8 @@ namespace kcptun_gui.View
             enableItem.Checked = config.enabled;
             autoStartupItem.Checked = AutoStartup.Check();
             verboseLoggingItem.Checked = config.verbose;
+            checkGUIUpdateAtStartupItem.Checked = config.check_gui_update;
+            checkKcpTunUpdateAtStartupItem.Checked = config.check_kcptun_update;
         }
 
         private MenuItem CreateMenuItem(string text, EventHandler click)
@@ -95,18 +109,22 @@ namespace kcptun_gui.View
                     }),
                 }),
                 new MenuItem("-"),
-                //new MenuItem("-"),
-                CreateMenuItem(I18N.GetString("Traffic Statistics"), new EventHandler(this.OnStatisticsItemClick)),
-                CreateMenuItem(I18N.GetString("Show Logs..."), new EventHandler(this.OnShowLogItemClick)),
+                this.autoStartupItem = CreateMenuItem(I18N.GetString("Start on Boot"), new EventHandler(this.OnAutoStartupItemClick)),
                 new MenuItem("-"),
                 CreateMenuGroup(I18N.GetString("More..."), new MenuItem[] {
-                    CreateMenuItem(I18N.GetString("Custome KCPTun"), new EventHandler(this.OnCustomeKCPTunItemClick)),
-                    new MenuItem("-"),
                     this.verboseLoggingItem = CreateMenuItem(I18N.GetString("Turn on KCP Log"), new EventHandler(this.OnVerboseLoggingItemClick)),
-                    this.autoStartupItem = CreateMenuItem(I18N.GetString("Start on Boot"), new EventHandler(this.OnAutoStartupItemClick)),
-                    new MenuItem("-"),
-                    CreateMenuItem(I18N.GetString("About..."), new EventHandler(this.OnAboutItemClick)),
+                    CreateMenuItem(I18N.GetString("Custome KCPTun"), new EventHandler(this.OnCustomeKCPTunItemClick)),
                 }),
+                CreateMenuItem(I18N.GetString("Traffic Statistics"), new EventHandler(this.OnStatisticsItemClick)),
+                CreateMenuItem(I18N.GetString("Show Logs..."), new EventHandler(this.OnShowLogItemClick)),
+                CreateMenuGroup(I18N.GetString("Update..."), new MenuItem[] {
+                    CreateMenuItem(I18N.GetString("Check GUI updates..."), new EventHandler(this.OnCheckGUIUpdatesItemClick)),
+                    CreateMenuItem(I18N.GetString("Check kcptun updates..."), new EventHandler(this.OnCheckKcpTunUpdatesItemClick)),
+                    new MenuItem("-"),
+                    this.checkGUIUpdateAtStartupItem = CreateMenuItem(I18N.GetString("Check GUI updates at startup"), new EventHandler(this.OnCheckGUIUpdateAtStartupItemClick)),
+                    this.checkKcpTunUpdateAtStartupItem = CreateMenuItem(I18N.GetString("Check kcptun updates at startup"), new EventHandler(this.OnCheckKcpTunUpdateAtStartup)),
+                }),
+                CreateMenuItem(I18N.GetString("About..."), new EventHandler(this.OnAboutItemClick)),
                 new MenuItem("-"),
                 CreateMenuItem(I18N.GetString("Quit"), new EventHandler(this.OnQuitItemClick))
             });
@@ -159,7 +177,7 @@ namespace kcptun_gui.View
                 runningInfo = I18N.GetString("Running...") + "\n";
             }
 
-            string text = $"kcptun {MainController.Version}\n" + runningInfo + I18N.GetString("Local:") +" (" + server.localaddr + ")\n"+ I18N.GetString("Remote:") + " " + server.FriendlyName() + "";
+            string text = $"kcptun {UpdateChecker.GUI_VERSION}\n" + runningInfo + I18N.GetString("Local:") +" (" + server.localaddr + ")\n"+ I18N.GetString("Remote:") + " " + server.FriendlyName() + "";
 
             _notifyIcon.Icon = Icon.FromHandle(iconCopy.GetHicon());
             _notifyIcon.Text = text.Substring(0, Math.Min(63, text.Length));
@@ -396,6 +414,72 @@ namespace kcptun_gui.View
             this.startItem.Enabled = true;
             this.restartItem.Enabled = false;
             this.stopItem.Enabled = false;
+        }
+
+        private void OnCheckUpdateCompleted(object sender, UpdateChecker.CheckUpdateEventArgs e)
+        {
+            try
+            {
+                if (e.ReleaseList.Count == 0)
+                {
+                    Logging.Debug($"No {e.Name} update is available");
+                    if (e.UserState != null)
+                    {
+                        if (e.Name == UpdateChecker.GUI_PROJECT_NAME)
+                        {
+                            ShowBalloonTip("",
+                                I18N.GetString("GUI is up to date"),
+                                ToolTipIcon.Info, 3000);
+                        }
+                        else if (e.Name == UpdateChecker.KCPTUN_PROJECT_NAME)
+                        {
+                            ShowBalloonTip("",
+                                I18N.GetString("kcptun is up to date"),
+                                ToolTipIcon.Info, 3000);
+                        }
+                    }
+                }
+                else
+                {
+                    UpdateChecker.Release release = e.ReleaseList[0];
+                    if (e.Name == UpdateChecker.GUI_PROJECT_NAME)
+                    {
+                        ShowBalloonTip("",
+                            string.Format(I18N.GetString("New GUI version {0} is available"), release.version),
+                            ToolTipIcon.Info, 3000);
+                    }
+                    else if (e.Name == UpdateChecker.KCPTUN_PROJECT_NAME)
+                    {
+                        ShowBalloonTip("",
+                            string.Format(I18N.GetString("New kcptun version {0} is available"), release.version),
+                            ToolTipIcon.Info, 3000);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.LogUsefulException(ex);
+            }
+        }
+
+        private void OnCheckGUIUpdateAtStartupItemClick(object sender, EventArgs e)
+        {
+            controller.ConfigController.ToggleCheckGUIUpdate(!checkGUIUpdateAtStartupItem.Checked);
+        }
+
+        private void OnCheckKcpTunUpdateAtStartup(object sender, EventArgs e)
+        {
+            controller.ConfigController.ToggleCheckKCPTunUpdate(!checkKcpTunUpdateAtStartupItem.Checked);
+        }
+
+        private void OnCheckGUIUpdatesItemClick(object sender, EventArgs e)
+        {
+            controller.UpdateChecker.CheckUpdateForGUI(100, this);
+        }
+
+        private void OnCheckKcpTunUpdatesItemClick(object sender, EventArgs e)
+        {
+            controller.UpdateChecker.CheckUpdateForKCPTun(100, this);
         }
 
     }

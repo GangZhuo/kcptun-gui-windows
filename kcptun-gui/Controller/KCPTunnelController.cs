@@ -16,6 +16,7 @@ namespace kcptun_gui.Controller
 
         private MyProcess _process;
         private Server _server;
+        private string _KcptunVersion;
 
         public Server Server
         {
@@ -203,37 +204,48 @@ namespace kcptun_gui.Controller
         public string GetKcptunVersion()
         {
             string version = "";
-            try
+            if (_KcptunVersion == null)
             {
-                string filename = GetKCPTunPath();
-                Console.WriteLine($"kcptun client: {filename}");
-                Process p = new Process();
-                // Configure the process using the StartInfo properties.
-                p.StartInfo.FileName = filename;
-                p.StartInfo.Arguments = "-v";
-                p.StartInfo.WorkingDirectory = Utils.GetTempPath();
-                p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
-                p.StartInfo.UseShellExecute = false;
-                p.StartInfo.CreateNoWindow = true;
-                p.StartInfo.RedirectStandardError = true;
-                p.StartInfo.RedirectStandardOutput = true;
-                p.Start();
-                int count = 300;
-                while (!p.HasExited && count > 0)
+                try
                 {
-                    p.WaitForExit(100);
-                    count--;
+                    string filename = GetKCPTunPath();
+                    Console.WriteLine($"kcptun client: {filename}");
+                    Process p = new Process();
+                    // Configure the process using the StartInfo properties.
+                    p.StartInfo.FileName = filename;
+                    p.StartInfo.Arguments = "-v";
+                    p.StartInfo.WorkingDirectory = Utils.GetTempPath();
+                    p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
+                    p.StartInfo.UseShellExecute = false;
+                    p.StartInfo.CreateNoWindow = true;
+                    p.StartInfo.RedirectStandardError = true;
+                    p.StartInfo.RedirectStandardOutput = true;
+                    p.Start();
+                    int count = 300;
+                    while (!p.HasExited && count > 0)
+                    {
+                        p.WaitForExit(100);
+                        count--;
+                    }
+                    if (count == 0)
+                    {
+                        Console.WriteLine("Can't get kcptun client version.");
+                        return "";
+                    }
+                    version = p.StandardOutput.ReadToEnd();
                 }
-                if (count == 0)
+                catch (Exception e)
                 {
-                    Console.WriteLine("Can't get kcptun client version.");
-                    return "";
+                    Logging.LogUsefulException(e);
                 }
-                version = p.StandardOutput.ReadToEnd();
+                finally
+                {
+                    _KcptunVersion = version;
+                }
             }
-            catch(Exception e)
+            else
             {
-                Logging.LogUsefulException(e);
+                version = _KcptunVersion;
             }
             return version;
         }

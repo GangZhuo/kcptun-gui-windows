@@ -11,8 +11,6 @@ namespace kcptun_gui.Controller
 {
     public class MainController
     {
-        public const string Version = "1.5.2";
-
         private IRelay _tcpRelay;
         private IRelay _udpRelay;
         private System.Timers.Timer timer;
@@ -26,6 +24,7 @@ namespace kcptun_gui.Controller
 
         public ConfigurationController ConfigController { get; private set; }
         public KCPTunnelController KCPTunnelController { get; private set; }
+        public UpdateChecker UpdateChecker { get; private set; }
 
         public event EventHandler TrafficChanged;
 
@@ -40,8 +39,10 @@ namespace kcptun_gui.Controller
             ConfigController.ConfigChanged += OnConfigChanged;
 
             KCPTunnelController = new KCPTunnelController(this);
+            UpdateChecker = new UpdateChecker(this);
 
             _trafficStatistics = TrafficStatistics.Load();
+
         }
 
         public void Start()

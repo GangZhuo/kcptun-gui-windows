@@ -16,6 +16,8 @@ namespace kcptun_gui.Controller
         public event EventHandler ServerIndexChanged;
         public event EventHandler KCPTunPathChanged;
         public event EventHandler StatisticsEnableChanged;
+        public event EventHandler CheckGUIUpdateChanged;
+        public event EventHandler CheckKCPTunUpdateChanged;
 
         public ConfigurationController(MainController controller)
         {
@@ -67,6 +69,28 @@ namespace kcptun_gui.Controller
             }
         }
 
+        public void ToggleCheckGUIUpdate(bool enabled)
+        {
+            if (_config.check_gui_update != enabled)
+            {
+                _config.check_gui_update = enabled;
+                SaveConfig(_config);
+                if (CheckGUIUpdateChanged != null)
+                    CheckGUIUpdateChanged.Invoke(this, new EventArgs());
+            }
+        }
+
+        public void ToggleCheckKCPTunUpdate(bool enabled)
+        {
+            if (_config.check_kcptun_update != enabled)
+            {
+                _config.check_kcptun_update = enabled;
+                SaveConfig(_config);
+                if (CheckKCPTunUpdateChanged != null)
+                    CheckKCPTunUpdateChanged.Invoke(this, new EventArgs());
+            }
+        }
+
         public void SelectServerIndex(int index)
         {
             if (_config.index != index)
@@ -109,6 +133,5 @@ namespace kcptun_gui.Controller
             if (ConfigChanged != null)
                 ConfigChanged.Invoke(this, new EventArgs());
         }
-
     }
 }

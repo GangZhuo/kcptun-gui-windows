@@ -25,7 +25,7 @@ namespace kcptun_gui.View
         {
             InitializeComponent();
             UpdateText();
-            GUIVersion.Text = I18N.GetString("GUI version ") + MainController.Version;
+            GUIVersion.Text = I18N.GetString("GUI version ") + UpdateChecker.GUI_VERSION;
         }
 
         private void UpdateText()

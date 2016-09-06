@@ -74,6 +74,7 @@
     <Compile Include="Controller\Relay\UDPRelay.cs" />
     <Compile Include="Controller\Relay\UDPPipe.cs" />
     <Compile Include="Controller\System\AutoStartup.cs" />
+    <Compile Include="Controller\UpdateChecker.cs" />
     <Compile Include="Model\kcptun_crypt.cs" />
     <Compile Include="Model\kcptun_mode.cs" />
     <Compile Include="Model\PropertyCategories.cs" />
