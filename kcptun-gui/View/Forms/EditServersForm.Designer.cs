@@ -128,7 +128,7 @@
             // ServerPropertyGrid
             // 
             this.ServerPropertyGrid.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ServerPropertyGrid.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.ServerPropertyGrid.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.ServerPropertyGrid.Location = new System.Drawing.Point(3, 16);
             this.ServerPropertyGrid.Name = "ServerPropertyGrid";
             this.ServerPropertyGrid.PropertySort = System.Windows.Forms.PropertySort.Categorized;
