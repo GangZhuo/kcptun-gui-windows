@@ -45,7 +45,8 @@ namespace kcptun_gui.View
             this.controller = controller;
 
             Configuration config = controller.ConfigController.GetCurrentConfiguration();
-            I18N.SetLang(config.language);
+            if (!string.IsNullOrEmpty(config.language))
+                I18N.SetLang(config.language);
 
             I18N.LangChanged += onLanguageChanged;
 
@@ -193,7 +194,8 @@ namespace kcptun_gui.View
             }
 
             Configuration config = controller.ConfigController.GetConfigurationCopy();
-            I18N.SetLang(config.language);
+            if (!string.IsNullOrEmpty(config.language))
+                I18N.SetLang(config.language);
 
             IList<I18N.Lang> langlist = I18N.GetLangList();
             for (int i = 0; i < langlist.Count; i++)
