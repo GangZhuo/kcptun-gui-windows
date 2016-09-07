@@ -61,6 +61,7 @@
   <ItemGroup>
     <Compile Include="3rd\Tar\Tar.cs" />
     <Compile Include="Common\I18N.cs" />
+    <Compile Include="Common\MyBooleanConverter.cs" />
     <Compile Include="Common\Tar.cs" />
     <Compile Include="Common\TrafficSize.cs" />
     <Compile Include="Common\TrafficSpeed.cs" />

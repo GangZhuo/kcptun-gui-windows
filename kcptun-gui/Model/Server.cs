@@ -10,84 +10,113 @@ namespace kcptun_gui.Model
     {
         #region Properties
 
-        [Category(PropertyCategories.General)]
-        [Description("Mnemonic-name for server.")]
+        #region General
+
+        [MyCategory(PropertyCategories.General)]
+        [MyDescription("mnemonic-name for server")]
         public string remarks { get; set; }
 
-        [Category(PropertyCategories.General)]
-        [Description("Local listen address.")]
+        [MyCategory(PropertyCategories.General)]
+        [MyDescription("local listen address")]
         public string localaddr { get; set; }
 
-        [Category(PropertyCategories.General)]
-        [Description("KCP server address.")]
+        [MyCategory(PropertyCategories.General)]
+        [MyDescription("kcp server address")]
         public string remoteaddr { get; set; }
 
-        [Category(PropertyCategories.General)]
-        [Description("Mode for communication.")]
-        [TypeConverter(typeof(MyEnumConverter))]
-        public kcptun_mode mode { get; set; }
-
-        [Category(PropertyCategories.General)]
-        [Description("Establish N physical connections as specified by 'conn' to server.")]
+        [MyCategory(PropertyCategories.General)]
+        [MyDescription("set num of UDP connections to server")]
         public int conn { get; set; }
 
-        [Category(PropertyCategories.General)]
-        [Description("MTU of UDP packets, suggest 'tracepath' to discover path mtu.")]
-        public int mtu { get; set; }
+        #endregion
 
-        [Category(PropertyCategories.General)]
-        [Description("No snappy compression. Must be same as KCP server.")]
-        public bool nocomp { get; set; }
+        #region Security
 
-        [Category(PropertyCategories.General)]
-        [Description("DSCP(6bit). Ref https://en.wikipedia.org/wiki/Differentiated_services#Commonly_used_DSCP_values .")]
-        public int dscp { get; set; }
-
-        [Category(PropertyCategories.General)]
-        [Description("Send window size (num of packets).")]
-        public int sndwnd { get; set; }
-
-        [Category(PropertyCategories.General)]
-        [Description("Receive window size (num of packets).")]
-        public int rcvwnd { get; set; }
-
-        [Category(PropertyCategories.General)]
-        [Description("Reed-solomon erasure coding - datashard. Must be same as KCP server.")]
-        public int datashard { get; set; }
-
-        [Category(PropertyCategories.General)]
-        [Description("Reed-solomon erasure coding - parityshard. Must be same as KCP server.")]
-        public int parityshard { get; set; }
-
-        [Category(PropertyCategories.Security)]
-        [Description("Method for encryption. Must be same as KCP server.")]
+        [MyCategory(PropertyCategories.Security)]
+        [MyDescription("method for encryption")]
         [TypeConverter(typeof(MyEnumConverter))]
         public kcptun_crypt crypt { get; set; }
 
-        [Category(PropertyCategories.Security)]
-        [Description("Key for communcation. Must be same as KCP server.")]
+        [MyCategory(PropertyCategories.Security)]
+        [MyDescription("key for communcation")]
         public string key { get; set; }
 
-        [Category(PropertyCategories.Options)]
-        [Description("Ref https://github.com/xtaci/kcptun .")]
+        [MyCategory(PropertyCategories.Security)]
+        [MyDescription("disable compression")]
+        [TypeConverter(typeof(MyBooleanConverter))]
+        public bool nocomp { get; set; }
+
+        #endregion
+
+        #region Mode
+
+        [MyCategory(PropertyCategories.Mode)]
+        [MyDescription("mode for communication. Ignore all other parameters exclude 'extend arguments', when select 'manual-all'")]
+        [TypeConverter(typeof(MyEnumConverter))]
+        public kcptun_mode mode { get; set; }
+
+        [MyCategory(PropertyCategories.Mode)]
+        [MyDescription("enabled on 'manual' mode, ref https://github.com/xtaci/kcptun")]
         public int nodelay { get; set; }
 
-        [Category(PropertyCategories.Options)]
-        [Description("Ref https://github.com/xtaci/kcptun .")]
+        [MyCategory(PropertyCategories.Mode)]
+        [MyDescription("enabled on 'manual' mode, ref https://github.com/xtaci/kcptun")]
         public int resend { get; set; }
 
-        [Category(PropertyCategories.Options)]
-        [Description("Ref https://github.com/xtaci/kcptun .")]
+        [MyCategory(PropertyCategories.Mode)]
+        [MyDescription("enabled on 'manual' mode, ref https://github.com/xtaci/kcptun")]
         public int nc { get; set; }
 
-        [Category(PropertyCategories.Options)]
-        [Description("Ref https://github.com/xtaci/kcptun .")]
+        [MyCategory(PropertyCategories.Mode)]
+        [MyDescription("enabled on 'manual' mode, ref https://github.com/xtaci/kcptun")]
         public int interval { get; set; }
 
-        [Category(PropertyCategories.Options)]
-        [DisplayName("extend arguments")]
-        [Description("Extend arguments append to end.")]
+        #endregion
+
+        #region Error-correcting
+
+        [MyCategory(PropertyCategories.ErrorCorrecting)]
+        [MyDescription("Reed-solomon erasure coding - datashard")]
+        public int datashard { get; set; }
+
+        [MyCategory(PropertyCategories.ErrorCorrecting)]
+        [MyDescription("Reed-solomon erasure coding - parityshard")]
+        public int parityshard { get; set; }
+
+        #endregion
+
+        #region Window size
+
+        [MyCategory(PropertyCategories.WindowSize)]
+        [MyDescription("send window size (num of packets)")]
+        public int sndwnd { get; set; }
+
+        [MyCategory(PropertyCategories.WindowSize)]
+        [MyDescription("receive window size (num of packets)")]
+        public int rcvwnd { get; set; }
+
+        #endregion
+
+        #region Advance
+
+        [MyCategory(PropertyCategories.Advance)]
+        [MyDescription("set maximum transmission unit for UDP packets")]
+        public int mtu { get; set; }
+
+        [MyCategory(PropertyCategories.Advance)]
+        [MyDescription("DSCP(6bit). Ref https://en.wikipedia.org/wiki/Differentiated_services#Commonly_used_DSCP_values")]
+        public int dscp { get; set; }
+
+        [MyCategory(PropertyCategories.Advance)]
+        [MyDescription("set auto expiration time(in seconds) for a single UDP connection, 0 to disable")]
+        public int autoexpire { get; set; }
+
+        [MyCategory(PropertyCategories.Advance)]
+        [MyDisplayName("extend arguments")]
+        [MyDescription("extend arguments which are append to end of command line")]
         public string extend_arguments { get; set; }
+
+        #endregion
 
         #endregion
 
@@ -113,6 +142,8 @@ namespace kcptun_gui.Model
             interval = 20;
 
             remarks = "";
+
+            autoexpire = 0;
         }
 
         public string FriendlyName()
@@ -137,6 +168,51 @@ namespace kcptun_gui.Model
         public override string ToString()
         {
             return FriendlyName();
+        }
+
+        public class MyCategoryAttribute: CategoryAttribute
+        {
+            public MyCategoryAttribute() { }
+
+            public MyCategoryAttribute(string category)
+                : base(category) { }
+
+            protected override string GetLocalizedString(string value)
+            {
+                return I18N.GetString(value);
+            }
+        }
+
+        public class MyDescriptionAttribute: DescriptionAttribute
+        {
+            public MyDescriptionAttribute() { }
+
+            public MyDescriptionAttribute(string description)
+                : base(description) { }
+
+            public override string Description
+            {
+                get
+                {
+                    return I18N.GetString(DescriptionValue);
+                }
+            }
+        }
+
+        public class MyDisplayNameAttribute : DisplayNameAttribute
+        {
+            public MyDisplayNameAttribute() { }
+
+            public MyDisplayNameAttribute(string displayName)
+                : base(displayName) { }
+
+            public override string DisplayName
+            {
+                get
+                {
+                    return I18N.GetString(DisplayNameValue);
+                }
+            }
         }
     }
 }

@@ -263,29 +263,23 @@ namespace kcptun_gui.Controller
             StringBuilder arguments = new StringBuilder();
             if (server.mode == kcptun_mode.manual_all)
             {
-                arguments.Append($" -l \"{localaddr}\"");
-                arguments.Append($" -r \"{remoteaddr}\"");
+                arguments.Append($" --localaddr \"{localaddr}\"");
+                arguments.Append($" --remoteaddr \"{remoteaddr}\"");
                 arguments.Append($" {server.extend_arguments}");
             }
             else
             {
                 MyEnumConverter cryptConverter = new MyEnumConverter(typeof(kcptun_crypt));
                 MyEnumConverter modeConverter = new MyEnumConverter(typeof(kcptun_mode));
-                arguments.Append($" -l \"{localaddr}\"");
-                arguments.Append($" -r \"{remoteaddr}\"");
+                arguments.Append($" --localaddr \"{localaddr}\"");
+                arguments.Append($" --remoteaddr \"{remoteaddr}\"");
+                arguments.Append($" --conn {server.conn}");
                 arguments.Append($" --crypt {cryptConverter.ConvertToString(server.crypt)}");
                 if (server.crypt != kcptun_crypt.none)
                     arguments.Append($" --key \"{server.key}\"");
-                arguments.Append($" --mode {modeConverter.ConvertToString(server.mode)}");
-                arguments.Append($" --conn {server.conn}");
-                arguments.Append($" --mtu {server.mtu}");
-                arguments.Append($" --sndwnd {server.sndwnd}");
-                arguments.Append($" --rcvwnd {server.rcvwnd}");
                 if (server.nocomp)
                     arguments.Append($" --nocomp");
-                arguments.Append($" --datashard {server.datashard}");
-                arguments.Append($" --parityshard {server.parityshard}");
-                arguments.Append($" --dscp {server.dscp}");
+                arguments.Append($" --mode {modeConverter.ConvertToString(server.mode)}");
                 if (server.mode == kcptun_mode.manual)
                 {
                     arguments.Append($" --nodelay {server.nodelay}");
@@ -293,10 +287,13 @@ namespace kcptun_gui.Controller
                     arguments.Append($" --nc {server.nc}");
                     arguments.Append($" --interval {server.interval}");
                 }
-                else
-                {
-                    /*do nothing*/
-                }
+                arguments.Append($" --datashard {server.datashard}");
+                arguments.Append($" --parityshard {server.parityshard}");
+                arguments.Append($" --sndwnd {server.sndwnd}");
+                arguments.Append($" --rcvwnd {server.rcvwnd}");
+                arguments.Append($" --mtu {server.mtu}");
+                arguments.Append($" --dscp {server.dscp}");
+                arguments.Append($" --autoexpire {server.autoexpire}");
                 if (!string.IsNullOrEmpty(server.extend_arguments))
                     arguments.Append($" {server.extend_arguments}");
             }

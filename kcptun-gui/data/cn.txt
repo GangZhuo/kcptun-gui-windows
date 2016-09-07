@@ -107,6 +107,35 @@ Error=错误
 Can't access the file '{0}', it is maybe used by another process.=无法打开文件 '{0}'，可能已经被其他程序打开
 Failed to update registry=更新注册表失败
 
+# Category
+
+General=基本
+Security=安全
+Mode=通信模式
+Error-correcting=纠错
+Window size=窗口
+Advance=高级
+#extend arguments=扩展参数
+remarks=备注
+
+mnemonic-name for server=设置用于帮助记忆服务的助记符
+local listen address=设置本地侦听地址
+kcp server address=设置服务器地址
+set num of UDP connections to server=设置连接到服务器的 UDP 连接数量
+method for encryption=设置加密方式
+key for communcation=设置通信密钥
+disable compression=设置是否禁用压缩
+mode for communication. Ignore all other parameters exclude 'extend arguments', when select 'manual-all'=设置通信方式。选择 'manual-all' 后，忽略其它参数，仅使用 'extend arguments'。
+enabled on 'manual' mode, ref https://github.com/xtaci/kcptun=仅在 'manual' 模式下有效，参考 https://github.com/xtaci/kcptun
+Reed-solomon erasure coding - datashard=Reed-Solomon 纠错算法的 'datashard' 参数
+Reed-solomon erasure coding - parityshard=Reed-Solomon 纠错算法的 'parityshard' 参数
+send window size (num of packets)=设置发送窗口的大小（值为包的数量）
+receive window size (num of packets)=设置接收窗口的大小（值为包的数量）
+set maximum transmission unit for UDP packets=设置 UDP 包的最大传输单元
+DSCP(6bit). Ref https://en.wikipedia.org/wiki/Differentiated_services#Commonly_used_DSCP_values=设置 DSCP(6bit)值，参考 https://en.wikipedia.org/wiki/Differentiated_services#Commonly_used_DSCP_values
+extend arguments which are append to end of command line=设置扩展参数，值将会添加到客户端参数的最后
+set auto expiration time(in seconds) for a single UDP connection, 0 to disable=设置单个 UDP 连接的过期时间（单位为秒）,设置为 0 则禁用此功能
+config from json file, which will override the command from shell=通过配置文件来启动客户端
 
 # Language
 

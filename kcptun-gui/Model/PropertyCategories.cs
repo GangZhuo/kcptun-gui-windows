@@ -6,6 +6,9 @@ namespace kcptun_gui.Model
     {
         public const string General = "General";
         public const string Security = "Security";
-        public const string Options = "Options";
+        public const string Mode = "Mode";
+        public const string ErrorCorrecting = "Error-correcting";
+        public const string WindowSize = "Window size";
+        public const string Advance = "Advance";
     }
 }
