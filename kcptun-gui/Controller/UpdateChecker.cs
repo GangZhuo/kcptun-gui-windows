@@ -11,7 +11,7 @@ namespace kcptun_gui.Controller
 {
     public class UpdateChecker
     {
-        public const string GUI_VERSION = "1.5.2";
+        public const string GUI_VERSION = "1.5.3";
 
         private const string GUI_UPDATE_URL = "https://api.github.com/repos/GangZhuo/kcptun-gui-windows/releases";
         private const string KCPTUN_UPDATE_URL = "https://api.github.com/repos/xtaci/kcptun/releases";
