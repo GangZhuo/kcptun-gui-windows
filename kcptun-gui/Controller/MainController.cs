@@ -164,7 +164,7 @@ namespace kcptun_gui.Controller
             string[] remoteaddr_compns = server.remoteaddr.Split(':');
             IPEndPoint localEP = new IPEndPoint(
                 IPAddress.Loopback,
-                Utils.GetFreePort(ProtocolType.Udp, Convert.ToInt32(localaddr_compns[1])));
+                Utils.GetFreePort(ProtocolType.Udp, Convert.ToInt32(localaddr_compns[1]) + 1)); // Do not use same TCP port, since shadowsocks maybe send data to this port.
             IPEndPoint remoteEP = new IPEndPoint(
                 IPAddress.Parse(remoteaddr_compns[0]),
                 Convert.ToInt32(remoteaddr_compns[1]));
