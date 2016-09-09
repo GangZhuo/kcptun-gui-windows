@@ -45,6 +45,9 @@ namespace kcptun_gui.View
             MoveDownButton.Text = I18N.GetString("Move Down");
             OkButton.Text = I18N.GetString("OK");
             MyCancelButton.Text = I18N.GetString("Cancel");
+            ImportButton.Text = I18N.GetString("Import");
+            openFileDialog1.Title = I18N.GetString("Select configuration file ...");
+            openFileDialog1.Filter = I18N.GetString("JSON files|*.json|All files|*.*");
         }
 
         private void LoadServerList()
@@ -208,6 +211,40 @@ namespace kcptun_gui.View
             this.Close();
         }
 
+        private void ImportButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (openFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    string[] files = openFileDialog1.FileNames;
+                    int num = 0;
+                    foreach(string file in files)
+                    {
+                        try
+                        {
+                            Server server = Configuration.GetServerFromConfigFile(file);
+                            _config.servers.Add(server);
+                            num++;
+                        }
+                        catch (Exception ex)
+                        {
+                            Logging.LogUsefulException(ex);
+                        }
+                    }
+                    if (num > 0)
+                    {
+                        controller.ConfigController.SaveConfig(_config);
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                Logging.LogUsefulException(ex);
+                MessageBox.Show(ex.Message, I18N.GetString("kcptun-gui"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
         protected override void OnClosing(CancelEventArgs e)
         {
             controller.ConfigController.ConfigChanged -= OnConfigChanged;
@@ -219,6 +256,5 @@ namespace kcptun_gui.View
             LoadServerList();
             RefreshButtons();
         }
-
     }
 }

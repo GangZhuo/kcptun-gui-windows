@@ -99,5 +99,13 @@ namespace kcptun_gui.Model
         {
             return new Server();
         }
+
+        public static Server GetServerFromConfigFile(string file)
+        {
+            string configContent = File.ReadAllText(file);
+            Server server = JsonConvert.DeserializeObject<Server>(configContent);
+            return server;
+        }
+
     }
 }
