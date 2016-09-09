@@ -112,6 +112,18 @@ namespace kcptun_gui.Model
         public int autoexpire { get; set; }
 
         [MyCategory(PropertyCategories.Advance)]
+        [MyDescription("socket buffer size in bytes")]
+        public int sockbuf { get; set; }
+
+        [MyCategory(PropertyCategories.Advance)]
+        [MyDescription("nat keepalive interval in seconds")]
+        public int keepalive { get; set; }
+
+        [MyCategory(PropertyCategories.Advance)]
+        [MyDescription("flush ack immediately when a packet is received")]
+        public int acknodelay { get; set; }
+
+        [MyCategory(PropertyCategories.Advance)]
         [MyDisplayName("extend arguments")]
         [MyDescription("extend arguments which are append to end of command line")]
         public string extend_arguments { get; set; }
@@ -144,6 +156,9 @@ namespace kcptun_gui.Model
             remarks = "";
 
             autoexpire = 0;
+            sockbuf = 4194304;
+            acknodelay = 0;
+            keepalive = 10;
         }
 
         public string FriendlyName()

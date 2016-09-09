@@ -273,7 +273,7 @@ namespace kcptun_gui.Controller
                 MyEnumConverter modeConverter = new MyEnumConverter(typeof(kcptun_mode));
                 arguments.Append($" --localaddr \"{localaddr}\"");
                 arguments.Append($" --remoteaddr \"{remoteaddr}\"");
-                arguments.Append($" --conn {server.conn}");
+                if (server.conn >= 0) arguments.Append($" --conn {server.conn}");
                 arguments.Append($" --crypt {cryptConverter.ConvertToString(server.crypt)}");
                 if (server.crypt != kcptun_crypt.none)
                     arguments.Append($" --key \"{server.key}\"");
@@ -282,18 +282,21 @@ namespace kcptun_gui.Controller
                 arguments.Append($" --mode {modeConverter.ConvertToString(server.mode)}");
                 if (server.mode == kcptun_mode.manual)
                 {
-                    arguments.Append($" --nodelay {server.nodelay}");
-                    arguments.Append($" --resend {server.resend}");
-                    arguments.Append($" --nc {server.nc}");
-                    arguments.Append($" --interval {server.interval}");
+                    if (server.nodelay >= 0) arguments.Append($" --nodelay {server.nodelay}");
+                    if (server.resend >= 0) arguments.Append($" --resend {server.resend}");
+                    if (server.nc >= 0) arguments.Append($" --nc {server.nc}");
+                    if (server.interval >= 0) arguments.Append($" --interval {server.interval}");
                 }
-                arguments.Append($" --datashard {server.datashard}");
-                arguments.Append($" --parityshard {server.parityshard}");
-                arguments.Append($" --sndwnd {server.sndwnd}");
-                arguments.Append($" --rcvwnd {server.rcvwnd}");
-                arguments.Append($" --mtu {server.mtu}");
-                arguments.Append($" --dscp {server.dscp}");
-                arguments.Append($" --autoexpire {server.autoexpire}");
+                if (server.datashard >= 0) arguments.Append($" --datashard {server.datashard}");
+                if (server.parityshard >= 0) arguments.Append($" --parityshard {server.parityshard}");
+                if (server.sndwnd >= 0) arguments.Append($" --sndwnd {server.sndwnd}");
+                if (server.rcvwnd >= 0) arguments.Append($" --rcvwnd {server.rcvwnd}");
+                if (server.mtu >= 0) arguments.Append($" --mtu {server.mtu}");
+                if (server.dscp >= 0) arguments.Append($" --dscp {server.dscp}");
+                if (server.autoexpire >= 0) arguments.Append($" --autoexpire {server.autoexpire}");
+                if (server.sockbuf >= 0) arguments.Append($" --sockbuf {server.sockbuf}");
+                if (server.acknodelay >= 0) arguments.Append($" --acknodelay {server.acknodelay}");
+                if (server.keepalive >= 0) arguments.Append($" --keepalive {server.keepalive}");
                 if (!string.IsNullOrEmpty(server.extend_arguments))
                     arguments.Append($" {server.extend_arguments}");
             }
