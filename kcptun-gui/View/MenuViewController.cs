@@ -525,7 +525,7 @@ namespace kcptun_gui.View
                     }
                     if (release != null)
                     {
-                        if (controller.ConfigController.GetConfigurationCopy().auto_upgrade_kcptun)
+                        if (e.UserState != null || controller.ConfigController.GetConfigurationCopy().auto_upgrade_kcptun)
                         {
                             controller.UpdateChecker.Download(release);
                         }
