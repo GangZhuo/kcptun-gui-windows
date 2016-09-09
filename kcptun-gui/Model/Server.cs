@@ -121,7 +121,8 @@ namespace kcptun_gui.Model
 
         [MyCategory(PropertyCategories.Advance)]
         [MyDescription("flush ack immediately when a packet is received")]
-        public int acknodelay { get; set; }
+        [TypeConverter(typeof(MyBooleanConverter))]
+        public bool acknodelay { get; set; }
 
         [MyCategory(PropertyCategories.Advance)]
         [MyDisplayName("extend arguments")]
@@ -157,7 +158,7 @@ namespace kcptun_gui.Model
 
             autoexpire = 0;
             sockbuf = 4194304;
-            acknodelay = 0;
+            acknodelay = false;
             keepalive = 10;
         }
 
