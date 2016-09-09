@@ -18,6 +18,7 @@ namespace kcptun_gui.Controller
         public event EventHandler StatisticsEnableChanged;
         public event EventHandler CheckGUIUpdateChanged;
         public event EventHandler CheckKCPTunUpdateChanged;
+        public event EventHandler AutoUpgradeKCPTunChanged;
         public event EventHandler LanguageChanged;
 
         public ConfigurationController(MainController controller)
@@ -89,6 +90,17 @@ namespace kcptun_gui.Controller
                 SaveConfig(_config);
                 if (CheckKCPTunUpdateChanged != null)
                     CheckKCPTunUpdateChanged.Invoke(this, new EventArgs());
+            }
+        }
+
+        public void ToggleAutoUpgradeKCPTun(bool enabled)
+        {
+            if (_config.auto_upgrade_kcptun != enabled)
+            {
+                _config.auto_upgrade_kcptun = enabled;
+                SaveConfig(_config);
+                if (AutoUpgradeKCPTunChanged != null)
+                    AutoUpgradeKCPTunChanged.Invoke(this, new EventArgs());
             }
         }
 

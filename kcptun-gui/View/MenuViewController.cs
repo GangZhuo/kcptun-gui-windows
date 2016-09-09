@@ -15,7 +15,7 @@ using System.Diagnostics;
 
 namespace kcptun_gui.View
 {
-    public class MenuViewController
+    public class MenuViewController : IDisposable
     {
         private MainController controller;
 
@@ -33,6 +33,7 @@ namespace kcptun_gui.View
         private MenuItem verboseLoggingItem;
         private MenuItem checkGUIUpdateAtStartupItem;
         private MenuItem checkKcpTunUpdateAtStartupItem;
+        private MenuItem upgradeKcpTunAtStartupItem;
         private MenuItem AboutItems;
         private MenuItem aboutSeperatorItem;
 
@@ -42,6 +43,7 @@ namespace kcptun_gui.View
         private StatisticsForm statisticsForm;
 
         private bool _firstRun;
+        private LinkedList<BalloonTipAction> _balloonTipActions;
 
         public MenuViewController(MainController controller)
         {
@@ -61,7 +63,9 @@ namespace kcptun_gui.View
             controller.UpdateChecker.CheckUpdateCompleted += OnCheckUpdateCompleted;
             controller.UpdateChecker.DownloadCompleted += OnDownloadCompleted;
 
+            _balloonTipActions = new LinkedList<BalloonTipAction>();
             _notifyIcon = new NotifyIcon();
+            _notifyIcon.BalloonTipClicked += OnBalloonTipClicked;
             UpdateTrayIcon();
             _notifyIcon.Visible = true;
             _notifyIcon.ContextMenu = contextMenu1;
@@ -78,7 +82,7 @@ namespace kcptun_gui.View
             {
                 controller.UpdateChecker.CheckUpdateForGUI(5000);
             }
-            if (config.check_kcptun_update)
+            if (config.check_kcptun_update || config.auto_upgrade_kcptun)
             {
                 controller.UpdateChecker.CheckUpdateForKCPTun(5000);
             }
@@ -99,6 +103,7 @@ namespace kcptun_gui.View
             verboseLoggingItem.Checked = config.verbose;
             checkGUIUpdateAtStartupItem.Checked = config.check_gui_update;
             checkKcpTunUpdateAtStartupItem.Checked = config.check_kcptun_update;
+            upgradeKcpTunAtStartupItem.Checked = config.auto_upgrade_kcptun;
         }
 
         private void UpdateMenuItemsText(Menu.MenuItemCollection items)
@@ -154,7 +159,8 @@ namespace kcptun_gui.View
                     CreateMenuItem("Check kcptun updates...", new EventHandler(this.OnCheckKcpTunUpdatesItemClick)),
                     new MenuItem("-"),
                     this.checkGUIUpdateAtStartupItem = CreateMenuItem("Check GUI updates at startup", new EventHandler(this.OnCheckGUIUpdateAtStartupItemClick)),
-                    this.checkKcpTunUpdateAtStartupItem = CreateMenuItem("Check kcptun updates at startup", new EventHandler(this.OnCheckKcpTunUpdateAtStartup)),
+                    this.checkKcpTunUpdateAtStartupItem = CreateMenuItem("Check kcptun updates at startup", new EventHandler(this.OnCheckKcpTunUpdateAtStartupItemClick)),
+                    this.upgradeKcpTunAtStartupItem = CreateMenuItem("Upgrade kcptun updates at startup", new EventHandler(this.OnUpgradeKcpTunAtStartupItemClick)),
                 }),
                 this.AboutItems = CreateMenuGroup("About...", new MenuItem[] {
                     this.aboutSeperatorItem = new MenuItem("-"),
@@ -258,6 +264,17 @@ namespace kcptun_gui.View
             ShowBalloonTip(I18N.GetString("kcptun is here"),
                 I18N.GetString("You can turn on/off kcptun in the context menu."),
                 ToolTipIcon.Info, 0);
+        }
+
+        private void OnBalloonTipClicked(object sender, EventArgs e)
+        {
+            while (_balloonTipActions.Count > 0)
+            {
+                BalloonTipAction action = _balloonTipActions.First.Value;
+                _balloonTipActions.RemoveFirst();
+                action.Execute(sender, e);
+                action.Dispose();
+            }
         }
 
         private void ShowAboutForm()
@@ -487,6 +504,12 @@ namespace kcptun_gui.View
                         I18N.GetString("GUI is up to date") :
                         string.Format(I18N.GetString("New GUI version {0} is available"), e.ReleaseList[0].version);
                     ShowBalloonTip("", text, ToolTipIcon.Info, 3000);
+                    if (e.ReleaseList.Count > 0)
+                    {
+                        BalloonTopOpenWebPageAction action = new BalloonTopOpenWebPageAction(UpdateChecker.GUI_RELEASE_PAGE, 4000);
+                        action.Timeout += OnBalloonTipActionTimeout;
+                        action.Tag = _balloonTipActions.AddLast(action);
+                    }
                 }
                 else if (e.App == UpdateChecker.App.KCPTun)
                 {
@@ -502,7 +525,18 @@ namespace kcptun_gui.View
                     }
                     if (release != null)
                     {
-                        controller.UpdateChecker.Download(release);
+                        if (controller.ConfigController.GetConfigurationCopy().auto_upgrade_kcptun)
+                        {
+                            controller.UpdateChecker.Download(release);
+                        }
+                        else
+                        {
+                            text = string.Format(I18N.GetString("New kcptun version {0} is available"), release.version);
+                            ShowBalloonTip("", text, ToolTipIcon.Info, 3000);
+                            BalloonTopOpenWebPageAction action = new BalloonTopOpenWebPageAction(UpdateChecker.KCPTUN_RELEASE_PAGE, 3000);
+                            action.Timeout += OnBalloonTipActionTimeout;
+                            action.Tag = _balloonTipActions.AddLast(action);
+                        }
                     }
                     else
                     {
@@ -518,6 +552,28 @@ namespace kcptun_gui.View
             catch (Exception ex)
             {
                 Logging.LogUsefulException(ex);
+            }
+        }
+
+        private void OnBalloonTipActionTimeout(object sender, EventArgs e)
+        {
+            BalloonTipAction action = (BalloonTipAction)sender;
+            try
+            {
+                Logging.Debug("balloon tip action timeout");
+                if (action.Tag is LinkedListNode<BalloonTipAction>)
+                {
+                    LinkedListNode<BalloonTipAction> node = action.Tag as LinkedListNode<BalloonTipAction>;
+                    _balloonTipActions.Remove(node);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logging.LogUsefulException(ex);
+            }
+            finally
+            {
+                action.Dispose();
             }
         }
 
@@ -566,7 +622,7 @@ namespace kcptun_gui.View
                         if (File.Exists(e.SaveTo))
                             File.Delete(e.SaveTo);
                         text = string.Format(I18N.GetString("kcptun updated to {0}"), controller.KCPTunnelController.GetKcptunVersionNumber());
-                        ShowBalloonTip("", text, ToolTipIcon.Error, 3000);
+                        ShowBalloonTip("", text, ToolTipIcon.Info, 3000);
                     }
                     catch (Exception ex)
                     {
@@ -597,9 +653,14 @@ namespace kcptun_gui.View
             controller.ConfigController.ToggleCheckGUIUpdate(!checkGUIUpdateAtStartupItem.Checked);
         }
 
-        private void OnCheckKcpTunUpdateAtStartup(object sender, EventArgs e)
+        private void OnCheckKcpTunUpdateAtStartupItemClick(object sender, EventArgs e)
         {
             controller.ConfigController.ToggleCheckKCPTunUpdate(!checkKcpTunUpdateAtStartupItem.Checked);
+        }
+
+        private void OnUpgradeKcpTunAtStartupItemClick(object sender, EventArgs e)
+        {
+            controller.ConfigController.ToggleAutoUpgradeKCPTun(!upgradeKcpTunAtStartupItem.Checked);
         }
 
         private void OnCheckGUIUpdatesItemClick(object sender, EventArgs e)
@@ -620,6 +681,15 @@ namespace kcptun_gui.View
             controller.ConfigController.SelectLanguage(lang);
         }
 
+        public void Dispose()
+        {
+            while (_balloonTipActions.Count > 0)
+            {
+                BalloonTipAction action = _balloonTipActions.First.Value;
+                _balloonTipActions.RemoveFirst();
+                action.Dispose();
+            }
+        }
 
         class MyMenuItem : MenuItem
         {
@@ -643,5 +713,84 @@ namespace kcptun_gui.View
             }
         }
 
+        abstract class BalloonTipAction : IDisposable
+        {
+            private System.Timers.Timer _timer;
+
+            public event EventHandler Timeout;
+
+            public object Tag { get; set; }
+
+            public BalloonTipAction()
+            { }
+
+            public BalloonTipAction(int timeout)
+            {
+                _timer = new System.Timers.Timer(timeout);
+                _timer.Elapsed += _timer_Elapsed;
+                _timer.AutoReset = false;
+                _timer.Enabled = true;
+            }
+
+            private void _timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+            {
+                disposeTimer();
+                Timeout?.Invoke(this, new EventArgs());
+            }
+
+            private void disposeTimer()
+            {
+                try
+                {
+                    if (_timer != null)
+                    {
+                        _timer.Enabled = false;
+                        _timer.Dispose();
+                        _timer = null;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logging.LogUsefulException(ex);
+                }
+            }
+
+            public void Execute(object sender, EventArgs e)
+            {
+                disposeTimer();
+                OnExecute(sender, e);
+            }
+
+            protected abstract void OnExecute(object sender, EventArgs e);
+
+            public void Dispose()
+            {
+                disposeTimer();
+                Timeout = null;
+            }
+        }
+
+        class BalloonTopOpenWebPageAction : BalloonTipAction
+        {
+            private string _url;
+
+            public BalloonTopOpenWebPageAction(string url, int timeout)
+                : base(timeout)
+            {
+                _url = url;
+            }
+
+            protected override void OnExecute(object sender, EventArgs e)
+            {
+                try
+                {
+                    Process.Start(_url);
+                }
+                catch (Exception ex)
+                {
+                    Logging.LogUsefulException(ex);
+                }
+            }
+        }
     }
 }

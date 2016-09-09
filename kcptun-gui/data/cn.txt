@@ -24,7 +24,8 @@ Update...=更新...
 Check GUI updates...=检测 GUI 版本...
 Check kcptun updates...=升级 kcptun...
 Check GUI updates at startup=自动检测 GUI 版本
-Check kcptun updates at startup=自动升级 kcptun
+Check kcptun updates at startup=自动检测 kcptun 版本
+Upgrade kcptun updates at startup=自动升级 kcptun
 About Form=关于窗口
 
 # Message

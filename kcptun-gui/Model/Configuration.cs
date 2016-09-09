@@ -26,6 +26,8 @@ namespace kcptun_gui.Model
 
         public bool check_kcptun_update;
 
+        public bool auto_upgrade_kcptun;
+
         public string language;
 
         [JsonIgnore]
@@ -63,6 +65,7 @@ namespace kcptun_gui.Model
                     statistics_enabled = false,
                     check_gui_update = true,
                     check_kcptun_update = true,
+                    auto_upgrade_kcptun = false,
                     servers = new List<Server>()
                     {
                         GetDefaultServer()

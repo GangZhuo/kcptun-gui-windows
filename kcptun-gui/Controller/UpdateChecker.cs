@@ -13,8 +13,12 @@ namespace kcptun_gui.Controller
     {
         public const string GUI_VERSION = "1.5.3";
 
-        private const string GUI_UPDATE_URL = "https://api.github.com/repos/GangZhuo/kcptun-gui-windows/releases";
-        private const string KCPTUN_UPDATE_URL = "https://api.github.com/repos/xtaci/kcptun/releases";
+        public const string GUI_RELEASE_PAGE = "https://github.com/GangZhuo/kcptun-gui-windows/releases";
+        public const string KCPTUN_RELEASE_PAGE = "https://github.com/xtaci/kcptun/releases";
+
+
+        private const string GUI_UPDATE_API_URL = "https://api.github.com/repos/GangZhuo/kcptun-gui-windows/releases";
+        private const string KCPTUN_UPDATE_API_URL = "https://api.github.com/repos/xtaci/kcptun/releases";
         private const string UserAgent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36";
 
         private MainController controller;
@@ -35,7 +39,7 @@ namespace kcptun_gui.Controller
             CheckUpdateState state = new CheckUpdateState
             {
                 app = App.GUI,
-                apiUrl = GUI_UPDATE_URL,
+                apiUrl = GUI_UPDATE_API_URL,
                 currentVersion = GUI_VERSION,
                 userState = userState
             };
@@ -48,7 +52,7 @@ namespace kcptun_gui.Controller
             CheckUpdateState state = new CheckUpdateState
             {
                 app = App.KCPTun,
-                apiUrl = KCPTUN_UPDATE_URL,
+                apiUrl = KCPTUN_UPDATE_API_URL,
                 currentVersion = version,
                 userState = userState
             };
