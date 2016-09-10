@@ -76,7 +76,7 @@ namespace kcptun_gui.View
             _firstRun = config.isDefault;
             if (_firstRun)
             {
-                ShowEditServicesForm();
+                ShowEditServersForm();
             }
 
             if (config.check_gui_update)
@@ -269,7 +269,7 @@ namespace kcptun_gui.View
 
         private void OnNotifyIconDoubleClick(object sender, EventArgs e)
         {
-            ShowEditServicesForm();
+            ShowEditServersForm();
         }
 
         private void OnBalloonTipClicked(object sender, EventArgs e)
@@ -321,7 +321,7 @@ namespace kcptun_gui.View
             customKcptunForm = null;
         }
 
-        private void ShowEditServicesForm()
+        private void ShowEditServersForm()
         {
             if (editServersForm != null)
             {
@@ -377,7 +377,7 @@ namespace kcptun_gui.View
 
         private void OnConfigItemClick(object sender, EventArgs e)
         {
-            ShowEditServicesForm();
+            ShowEditServersForm();
         }
 
         private void OnStartItemClick(object sender, EventArgs e)
