@@ -65,6 +65,7 @@ namespace kcptun_gui.View
 
             _balloonTipActions = new LinkedList<BalloonTipAction>();
             _notifyIcon = new NotifyIcon();
+            _notifyIcon.DoubleClick += OnNotifyIconDoubleClick;
             _notifyIcon.BalloonTipClicked += OnBalloonTipClicked;
             UpdateTrayIcon();
             _notifyIcon.Visible = true;
@@ -264,6 +265,11 @@ namespace kcptun_gui.View
             ShowBalloonTip(I18N.GetString("kcptun is here"),
                 I18N.GetString("You can turn on/off kcptun in the context menu."),
                 ToolTipIcon.Info, 0);
+        }
+
+        private void OnNotifyIconDoubleClick(object sender, EventArgs e)
+        {
+            ShowEditServicesForm();
         }
 
         private void OnBalloonTipClicked(object sender, EventArgs e)
