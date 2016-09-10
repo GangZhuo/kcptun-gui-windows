@@ -159,11 +159,8 @@ namespace kcptun_gui.Controller
             try
             {
                 string[] localaddr_compns = server.localaddr.Split(':');
-                string[] remoteaddr_compns = server.ss_server.Split(':');
                 IPEndPoint localEP = new IPEndPoint(IPAddress.Loopback, Convert.ToInt32(localaddr_compns[1]));
-                IPEndPoint remoteEP = new IPEndPoint(
-                    IPAddress.Parse(remoteaddr_compns[0]),
-                    Convert.ToInt32(remoteaddr_compns[1]));
+                IPEndPoint remoteEP = Utils.ToEndPoint(server.ss_server);
                 _ssudpRelay = new UDPRelay(this, localEP, remoteEP);
                 _ssudpRelay.Start();
             }
@@ -176,10 +173,7 @@ namespace kcptun_gui.Controller
         private void RegistLeftStatistics()
         {
             Server server = KCPTunnelController.Server;
-            string[] localaddr_compns = server.localaddr.Split(':');
-            IPEndPoint localEP = new IPEndPoint(
-                string.IsNullOrEmpty(localaddr_compns[0]) ? IPAddress.Any : IPAddress.Parse(localaddr_compns[0]),
-                Convert.ToInt32(localaddr_compns[1]));
+            IPEndPoint localEP = Utils.ToEndPoint(server.localaddr);
             IPEndPoint remoteEP = new IPEndPoint(
                 IPAddress.Loopback,
                 Utils.GetFreePort(ProtocolType.Tcp, localEP.Port + 1));
@@ -196,13 +190,10 @@ namespace kcptun_gui.Controller
         {
             Server server = KCPTunnelController.Server;
             string[] localaddr_compns = server.localaddr.Split(':');
-            string[] remoteaddr_compns = server.remoteaddr.Split(':');
             IPEndPoint localEP = new IPEndPoint(
                 IPAddress.Loopback,
                 Utils.GetFreePort(ProtocolType.Udp, Convert.ToInt32(localaddr_compns[1]) + 1)); // Do not use same TCP port, since shadowsocks maybe send data to this port.
-            IPEndPoint remoteEP = new IPEndPoint(
-                IPAddress.Parse(remoteaddr_compns[0]),
-                Convert.ToInt32(remoteaddr_compns[1]));
+            IPEndPoint remoteEP = Utils.ToEndPoint(server.remoteaddr);
 
             KCPTunnelController.remoteaddr = localEP.ToString();
             Logging.Debug($"right: localEP={localEP.ToString()}, remoteEP={remoteEP.ToString()}");
