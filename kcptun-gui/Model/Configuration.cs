@@ -107,5 +107,22 @@ namespace kcptun_gui.Model
             return server;
         }
 
+        public static void SaveServer(Server server, string filename)
+        {
+            try
+            {
+                using (StreamWriter sw = new StreamWriter(File.Open(filename, FileMode.Create)))
+                {
+                    string jsonString = JsonConvert.SerializeObject(server, Formatting.Indented);
+                    sw.Write(jsonString);
+                    sw.Flush();
+                }
+            }
+            catch (IOException e)
+            {
+                Console.Error.WriteLine(e);
+            }
+        }
+
     }
 }

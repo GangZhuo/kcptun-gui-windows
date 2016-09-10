@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel;
 using kcptun_gui.Common;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 
 namespace kcptun_gui.Model
 {
@@ -35,6 +37,7 @@ namespace kcptun_gui.Model
         [MyCategory(PropertyCategories.Security)]
         [MyDescription("method for encryption")]
         [TypeConverter(typeof(MyEnumConverter))]
+        [JsonConverter(typeof(StringEnumConverter))]
         public kcptun_crypt crypt { get; set; }
 
         [MyCategory(PropertyCategories.Security)]
@@ -53,6 +56,7 @@ namespace kcptun_gui.Model
         [MyCategory(PropertyCategories.Mode)]
         [MyDescription("mode for communication. Ignore all other parameters exclude 'extend arguments', when select 'manual-all'")]
         [TypeConverter(typeof(MyEnumConverter))]
+        [JsonConverter(typeof(StringEnumConverter))]
         public kcptun_mode mode { get; set; }
 
         [MyCategory(PropertyCategories.Mode)]

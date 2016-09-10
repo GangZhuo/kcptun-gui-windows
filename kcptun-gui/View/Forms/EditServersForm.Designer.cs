@@ -43,10 +43,12 @@
             this.ArgumentsLabel = new System.Windows.Forms.Label();
             this.ArgumentsTextBox = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.ImportButton = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.ImportButton = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
+            this.ExportButton = new System.Windows.Forms.Button();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.tableLayoutPanel2.SuspendLayout();
             this.ServerGroupBox.SuspendLayout();
             this.panel4.SuspendLayout();
@@ -109,7 +111,7 @@
             // 
             this.MyCancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.MyCancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.MyCancelButton.Location = new System.Drawing.Point(446, 17);
+            this.MyCancelButton.Location = new System.Drawing.Point(505, 17);
             this.MyCancelButton.Name = "MyCancelButton";
             this.MyCancelButton.Size = new System.Drawing.Size(89, 29);
             this.MyCancelButton.TabIndex = 7;
@@ -120,7 +122,7 @@
             // OkButton
             // 
             this.OkButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.OkButton.Location = new System.Drawing.Point(351, 17);
+            this.OkButton.Location = new System.Drawing.Point(410, 17);
             this.OkButton.Name = "OkButton";
             this.OkButton.Size = new System.Drawing.Size(89, 29);
             this.OkButton.TabIndex = 6;
@@ -135,7 +137,7 @@
             this.ServerPropertyGrid.Location = new System.Drawing.Point(3, 17);
             this.ServerPropertyGrid.Name = "ServerPropertyGrid";
             this.ServerPropertyGrid.PropertySort = System.Windows.Forms.PropertySort.Categorized;
-            this.ServerPropertyGrid.Size = new System.Drawing.Size(314, 218);
+            this.ServerPropertyGrid.Size = new System.Drawing.Size(373, 218);
             this.ServerPropertyGrid.TabIndex = 1;
             // 
             // tableLayoutPanel2
@@ -163,7 +165,7 @@
             this.ServerGroupBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ServerGroupBox.Location = new System.Drawing.Point(6, 6);
             this.ServerGroupBox.Name = "ServerGroupBox";
-            this.ServerGroupBox.Size = new System.Drawing.Size(320, 339);
+            this.ServerGroupBox.Size = new System.Drawing.Size(379, 339);
             this.ServerGroupBox.TabIndex = 3;
             this.ServerGroupBox.TabStop = false;
             this.ServerGroupBox.Text = "Server";
@@ -176,7 +178,7 @@
             this.panel4.Location = new System.Drawing.Point(3, 235);
             this.panel4.Name = "panel4";
             this.panel4.Padding = new System.Windows.Forms.Padding(3);
-            this.panel4.Size = new System.Drawing.Size(314, 101);
+            this.panel4.Size = new System.Drawing.Size(373, 101);
             this.panel4.TabIndex = 4;
             // 
             // ArgumentsLabel
@@ -199,11 +201,12 @@
             this.ArgumentsTextBox.Name = "ArgumentsTextBox";
             this.ArgumentsTextBox.ReadOnly = true;
             this.ArgumentsTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.ArgumentsTextBox.Size = new System.Drawing.Size(308, 73);
+            this.ArgumentsTextBox.Size = new System.Drawing.Size(367, 73);
             this.ArgumentsTextBox.TabIndex = 3;
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.ExportButton);
             this.panel1.Controls.Add(this.ImportButton);
             this.panel1.Controls.Add(this.tableLayoutPanel2);
             this.panel1.Controls.Add(this.MyCancelButton);
@@ -211,8 +214,18 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel1.Location = new System.Drawing.Point(0, 351);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(547, 63);
+            this.panel1.Size = new System.Drawing.Size(606, 63);
             this.panel1.TabIndex = 8;
+            // 
+            // ImportButton
+            // 
+            this.ImportButton.Location = new System.Drawing.Point(220, 7);
+            this.ImportButton.Name = "ImportButton";
+            this.ImportButton.Size = new System.Drawing.Size(85, 23);
+            this.ImportButton.TabIndex = 8;
+            this.ImportButton.Text = "Import";
+            this.ImportButton.UseVisualStyleBackColor = true;
+            this.ImportButton.Click += new System.EventHandler(this.ImportButton_Click);
             // 
             // panel2
             // 
@@ -231,18 +244,8 @@
             this.panel3.Location = new System.Drawing.Point(215, 0);
             this.panel3.Name = "panel3";
             this.panel3.Padding = new System.Windows.Forms.Padding(6);
-            this.panel3.Size = new System.Drawing.Size(332, 351);
+            this.panel3.Size = new System.Drawing.Size(391, 351);
             this.panel3.TabIndex = 10;
-            // 
-            // ImportButton
-            // 
-            this.ImportButton.Location = new System.Drawing.Point(220, 7);
-            this.ImportButton.Name = "ImportButton";
-            this.ImportButton.Size = new System.Drawing.Size(85, 23);
-            this.ImportButton.TabIndex = 8;
-            this.ImportButton.Text = "Import";
-            this.ImportButton.UseVisualStyleBackColor = true;
-            this.ImportButton.Click += new System.EventHandler(this.ImportButton_Click);
             // 
             // openFileDialog1
             // 
@@ -251,12 +254,27 @@
             this.openFileDialog1.Filter = "JSON files|*.json|All files|*.*";
             this.openFileDialog1.Multiselect = true;
             // 
+            // ExportButton
+            // 
+            this.ExportButton.Location = new System.Drawing.Point(311, 7);
+            this.ExportButton.Name = "ExportButton";
+            this.ExportButton.Size = new System.Drawing.Size(75, 23);
+            this.ExportButton.TabIndex = 9;
+            this.ExportButton.Text = "Export";
+            this.ExportButton.UseVisualStyleBackColor = true;
+            this.ExportButton.Click += new System.EventHandler(this.ExportButton_Click);
+            // 
+            // saveFileDialog1
+            // 
+            this.saveFileDialog1.DefaultExt = "json";
+            this.saveFileDialog1.Filter = "JSON files|*.json|All files|*.*";
+            // 
             // EidtServersForm
             // 
             this.AcceptButton = this.OkButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(547, 414);
+            this.ClientSize = new System.Drawing.Size(606, 414);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.panel1);
@@ -297,5 +315,7 @@
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.Button ImportButton;
         private System.Windows.Forms.OpenFileDialog openFileDialog1;
+        private System.Windows.Forms.Button ExportButton;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }

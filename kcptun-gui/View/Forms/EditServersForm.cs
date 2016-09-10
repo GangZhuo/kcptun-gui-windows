@@ -46,8 +46,11 @@ namespace kcptun_gui.View
             OkButton.Text = I18N.GetString("OK");
             MyCancelButton.Text = I18N.GetString("Cancel");
             ImportButton.Text = I18N.GetString("Import");
+            ExportButton.Text = I18N.GetString("Export");
             openFileDialog1.Title = I18N.GetString("Select configuration file ...");
             openFileDialog1.Filter = I18N.GetString("JSON files|*.json|All files|*.*");
+            saveFileDialog1.Title = I18N.GetString("Export server to a configuration file ...");
+            saveFileDialog1.Filter = I18N.GetString("JSON files|*.json|All files|*.*");
         }
 
         private void LoadServerList()
@@ -239,6 +242,26 @@ namespace kcptun_gui.View
                 }
             }
             catch(Exception ex)
+            {
+                Logging.LogUsefulException(ex);
+                MessageBox.Show(ex.Message, I18N.GetString("kcptun-gui"), MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void ExportButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Server server = GetSelectedServer();
+                if (server.remoteaddr != null)
+                    saveFileDialog1.FileName = server.remoteaddr.Replace(":", ",") + ".json";
+                if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    string filename = saveFileDialog1.FileName;
+                    Configuration.SaveServer(server, filename);
+                }
+            }
+            catch (Exception ex)
             {
                 Logging.LogUsefulException(ex);
                 MessageBox.Show(ex.Message, I18N.GetString("kcptun-gui"), MessageBoxButtons.OK, MessageBoxIcon.Error);

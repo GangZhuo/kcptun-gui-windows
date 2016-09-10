@@ -59,8 +59,10 @@ Edit Servers=配置服务器
 Server=服务器
 Arguments:=客户端参数：
 Import=导入
+Export=导出
 Select configuration file ...=选择配置文件 ...
 JSON files|*.json|All files|*.*=JSON 文件|*.json|所有文件|*.*
+Export server to a configuration file ...=导出服务器配置 ...
 
 # Log Viewer Form
 Log Viewer=日志浏览器
