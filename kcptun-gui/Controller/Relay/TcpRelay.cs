@@ -38,7 +38,7 @@ namespace kcptun_gui.Controller
                 _socket.Bind(_localEP);
                 _socket.Listen(1024);
                 // Start an asynchronous socket to listen for connections.
-                Console.WriteLine("TCPRelay listen on " + _localEP.ToString());
+                Console.WriteLine($"TCPRelay listen on {_localEP}, relay to {_remoteEP}");
                 _socket.BeginAccept(new AsyncCallback(AcceptCallback), _socket);
             }
             catch (SocketException)
