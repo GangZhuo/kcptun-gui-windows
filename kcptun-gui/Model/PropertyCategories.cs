@@ -10,5 +10,6 @@ namespace kcptun_gui.Model
         public const string ErrorCorrecting = "Error-correcting";
         public const string WindowSize = "Window size";
         public const string Advance = "Advance";
+        public const string Shadowsocks = "Shadowsocks";
     }
 }

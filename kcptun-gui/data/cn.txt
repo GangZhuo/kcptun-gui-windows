@@ -63,6 +63,8 @@ Export=导出
 Select configuration file ...=选择配置文件 ...
 JSON files|*.json|All files|*.*=JSON 文件|*.json|所有文件|*.*
 Export server to a configuration file ...=导出服务器配置 ...
+relay udp data which is come from shadowsocks=设置是否转发来自 Shadowsocks 的 UDP 数据包
+shadowsocks server, should be same as 'remoteaddr'=Shadowsocks 服务器地址，应该和 'remoteaddr' 相同
 
 # Log Viewer Form
 Log Viewer=日志浏览器

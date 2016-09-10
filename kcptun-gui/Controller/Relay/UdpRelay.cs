@@ -55,7 +55,7 @@ namespace kcptun_gui.Controller
                 _local.Bind(_localEP);
 
                 // Start an asynchronous socket to listen for connections.
-                Console.WriteLine("UDPRelay listen on " + _localEP.ToString());
+                Console.WriteLine($"UDPRelay listen on {_localEP}, relay to {_remoteEP}");
                 localStartReceive();
             }
             catch (SocketException e)

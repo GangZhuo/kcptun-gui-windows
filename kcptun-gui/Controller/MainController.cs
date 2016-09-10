@@ -13,6 +13,7 @@ namespace kcptun_gui.Controller
     {
         private IRelay _tcpRelay;
         private IRelay _udpRelay;
+        private IRelay _ssudpRelay;
         private System.Timers.Timer timer;
 
         private TrafficStatistics _trafficStatistics;
@@ -60,6 +61,11 @@ namespace kcptun_gui.Controller
                     timer.Dispose();
                     timer = null;
                 }
+                if (_ssudpRelay != null)
+                {
+                    _ssudpRelay.Stop();
+                    _ssudpRelay = null;
+                }
                 if (_tcpRelay != null)
                 {
                     _tcpRelay.Stop();
@@ -91,6 +97,11 @@ namespace kcptun_gui.Controller
                     timer.Dispose();
                     timer = null;
                 }
+                if (_ssudpRelay != null)
+                {
+                    _ssudpRelay.Stop();
+                    _ssudpRelay = null;
+                }
                 if (_tcpRelay != null)
                 {
                     _tcpRelay.Stop();
@@ -110,6 +121,11 @@ namespace kcptun_gui.Controller
                 traffic = _trafficStatistics.GetTrafficLog(server);
                 if (config.enabled)
                 {
+                    if (server.ss_relay_udp)
+                    {
+                        RelaySSUDPData(server);
+                    }
+
                     KCPTunnelController.Server = server;
                     KCPTunnelController.localaddr = null;
                     KCPTunnelController.remoteaddr = null;
@@ -135,6 +151,28 @@ namespace kcptun_gui.Controller
                 if (trafficLogSize < 1) trafficLogSize = 1;
                 _trafficLogList.Clear();
                 while (_trafficLogList.Count < trafficLogSize) _trafficLogList.AddLast(new TrafficLog());
+            }
+        }
+
+        private void RelaySSUDPData(Server server)
+        {
+            try
+            {
+                string ss_server = server.ss_server;
+                if (string.IsNullOrEmpty(ss_server))
+                    ss_server = server.remoteaddr;
+                string[] localaddr_compns = server.localaddr.Split(':');
+                string[] remoteaddr_compns = ss_server.Split(':');
+                IPEndPoint localEP = new IPEndPoint(IPAddress.Loopback, Convert.ToInt32(localaddr_compns[1]));
+                IPEndPoint remoteEP = new IPEndPoint(
+                    IPAddress.Parse(remoteaddr_compns[0]),
+                    Convert.ToInt32(remoteaddr_compns[1]));
+                _ssudpRelay = new UDPRelay(this, localEP, remoteEP);
+                _ssudpRelay.Start();
+            }
+            catch(Exception e)
+            {
+                Logging.LogUsefulException(e);
             }
         }
 

@@ -135,6 +135,19 @@ namespace kcptun_gui.Model
 
         #endregion
 
+        #region Window size
+
+        [MyCategory(PropertyCategories.Shadowsocks)]
+        [MyDescription("relay udp data which is come from shadowsocks")]
+        [TypeConverter(typeof(MyBooleanConverter))]
+        public bool ss_relay_udp { get; set; }
+
+        [MyCategory(PropertyCategories.Shadowsocks)]
+        [MyDescription("shadowsocks server, should be same as 'remoteaddr'")]
+        public string ss_server { get; set; }
+
+        #endregion
+
         #endregion
 
         public Server()
@@ -164,6 +177,9 @@ namespace kcptun_gui.Model
             sockbuf = 4194304;
             acknodelay = false;
             keepalive = 10;
+
+            ss_relay_udp = false;
+            ss_server = "";
         }
 
         public string FriendlyName()
