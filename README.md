@@ -1,5 +1,5 @@
 # kcptun-gui
-GUI for kcptun (https://github.com/xtaci/kcptun).  (.NET framework 4.5)
+GUI for [kcptun].  ([.NET framework 4.5])
 
 [![Build Status]][Appveyor]
 
@@ -26,7 +26,9 @@ GUI for kcptun (https://github.com/xtaci/kcptun).  (.NET framework 4.5)
 * Shadowsocks https://github.com/shadowsocks
 
 
-[Appveyor]:       https://ci.appveyor.com/project/GangZhuo/kcptun-gui-windows/branch/master
-[Build Status]:   https://ci.appveyor.com/api/projects/status/nutdkl99jgj2ryda/branch/master?svg=true
+[Appveyor]: https://ci.appveyor.com/project/GangZhuo/kcptun-gui-windows/branch/master
+[Build Status]: https://ci.appveyor.com/api/projects/status/nutdkl99jgj2ryda/branch/master?svg=true
 [shadowsocks]: https://github.com/shadowsocks/shadowsocks-windows
 [kcptun]: https://github.com/xtaci/kcptun
+[.NET framework 4.5]: https://www.microsoft.com/en-us/download/details.aspx?id=30653
+
