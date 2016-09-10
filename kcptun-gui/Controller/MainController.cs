@@ -158,11 +158,8 @@ namespace kcptun_gui.Controller
         {
             try
             {
-                string ss_server = server.ss_server;
-                if (string.IsNullOrEmpty(ss_server))
-                    ss_server = server.remoteaddr;
                 string[] localaddr_compns = server.localaddr.Split(':');
-                string[] remoteaddr_compns = ss_server.Split(':');
+                string[] remoteaddr_compns = server.ss_server.Split(':');
                 IPEndPoint localEP = new IPEndPoint(IPAddress.Loopback, Convert.ToInt32(localaddr_compns[1]));
                 IPEndPoint remoteEP = new IPEndPoint(
                     IPAddress.Parse(remoteaddr_compns[0]),

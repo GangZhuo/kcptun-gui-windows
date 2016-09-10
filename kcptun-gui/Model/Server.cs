@@ -143,7 +143,7 @@ namespace kcptun_gui.Model
         public bool ss_relay_udp { get; set; }
 
         [MyCategory(PropertyCategories.Shadowsocks)]
-        [MyDescription("shadowsocks server, should be same as 'remoteaddr'")]
+        [MyDescription("shadowsocks server address")]
         public string ss_server { get; set; }
 
         #endregion
@@ -179,7 +179,7 @@ namespace kcptun_gui.Model
             keepalive = 10;
 
             ss_relay_udp = false;
-            ss_server = "";
+            ss_server = "192.168.1.1:8388";
         }
 
         public string FriendlyName()
