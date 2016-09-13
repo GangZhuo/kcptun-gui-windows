@@ -43,13 +43,46 @@ namespace kcptun_gui
                 case PowerModes.Resume:
                     Console.WriteLine("os wake up");
                     if (controller != null)
-                        controller.Start();
+                    {
+                        System.Timers.Timer timer = new System.Timers.Timer(5000);
+                        timer.Elapsed += Timer_Elapsed;
+                        timer.AutoReset = false;
+                        timer.Enabled = true;
+                        timer.Start();
+                    }
                     break;
                 case PowerModes.Suspend:
                     if (controller != null)
                         controller.Stop();
                     Console.WriteLine("os suspend");
                     break;
+            }
+        }
+
+        private static void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            try
+            {
+                if (controller != null)
+                    controller.Start();
+            }
+            catch (Exception ex)
+            {
+                Logging.LogUsefulException(ex);
+            }
+            finally
+            {
+                try
+                {
+                    System.Timers.Timer timer = (System.Timers.Timer)sender;
+                    timer.Enabled = false;
+                    timer.Stop();
+                    timer.Dispose();
+                }
+                catch (Exception ex)
+                {
+                    Logging.LogUsefulException(ex);
+                }
             }
         }
 
