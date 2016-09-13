@@ -249,7 +249,6 @@ namespace kcptun_gui.Controller.Relay
                             _relay.onOutbound(bytes.Length);
                             Logging.Debug($"send {bytes.Length} bytes to {_remoteEP}");
                             _remote.BeginSend(bytes, 0, bytes.Length, 0, new AsyncCallback(remoteSendCallback), null);
-                            resetExpireTime();
                         }
                     }
                 }
@@ -283,19 +282,18 @@ namespace kcptun_gui.Controller.Relay
                 try
                 {
                     int bytesRead = _remote.EndReceive(ar);
+                    resetExpireTime();
                     Logging.Debug($"recv {bytesRead} bytes from {_remoteEP}");
                     if (bytesRead > 0)
                     {
                         _relay.onInbound(bytesRead);
                         Logging.Debug($"send {bytesRead} bytes to {_localEP}");
                         _local.BeginSendTo(remoteRecvBuffer, 0, bytesRead, 0, _localEP, new AsyncCallback(localSendCallback), null);
-                        resetExpireTime();
                     }
                     else
                     {
                         this.Close();
                     }
-                    resetExpireTime();
                 }
                 catch (Exception e)
                 {
@@ -312,7 +310,6 @@ namespace kcptun_gui.Controller.Relay
                     _local.EndSendTo(ar);
                     _remote.BeginReceive(remoteRecvBuffer, 0, RecvSize, 0,
                         new AsyncCallback(remoteReceiveCallback), null);
-                    resetExpireTime();
                 }
                 catch (Exception e)
                 {
