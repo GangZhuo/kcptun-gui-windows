@@ -295,7 +295,7 @@ namespace kcptun_gui.Controller
                 if (server.dscp >= 0) arguments.Append($" --dscp {server.dscp}");
                 if (server.autoexpire >= 0) arguments.Append($" --autoexpire {server.autoexpire}");
                 if (server.sockbuf >= 0) arguments.Append($" --sockbuf {server.sockbuf}");
-                arguments.Append($" --acknodelay {server.acknodelay.ToString().ToLower()}");
+                arguments.Append($" --acknodelay={server.acknodelay.ToString().ToLower()}");
                 if (server.keepalive >= 0) arguments.Append($" --keepalive {server.keepalive}");
                 if (!string.IsNullOrEmpty(server.extend_arguments))
                     arguments.Append($" {server.extend_arguments}");
