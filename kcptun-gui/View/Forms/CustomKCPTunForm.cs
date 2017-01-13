@@ -24,7 +24,7 @@ namespace kcptun_gui.View.Forms
             config = controller.ConfigController.GetConfigurationCopy();
             InitializeComponent();
             UpdateText();
-            controller.ConfigController.ConfigChanged += OnConfigChanged;
+            controller.ConfigController.KCPTunPathChanged += OnConfigChanged;
         }
 
         private void UpdateText()
