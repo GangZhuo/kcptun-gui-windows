@@ -20,6 +20,7 @@ namespace kcptun_gui.Controller
         public event EventHandler CheckKCPTunUpdateChanged;
         public event EventHandler AutoUpgradeKCPTunChanged;
         public event EventHandler LanguageChanged;
+        public event EventHandler SNMPConfigChanged;
 
         public ConfigurationController(MainController controller)
         {
@@ -145,6 +146,17 @@ namespace kcptun_gui.Controller
                 SaveConfig(_config);
                 if (StatisticsEnableChanged != null)
                     StatisticsEnableChanged.Invoke(this, new EventArgs());
+            }
+        }
+
+        public void ChangeSNMPConfig(SNMPConfiguration config)
+        {
+            if (!_config.snmp.Equals(config))
+            {
+                _config.snmp = config;
+                SaveConfig(_config);
+                if (SNMPConfigChanged != null)
+                    SNMPConfigChanged.Invoke(this, new EventArgs());
             }
         }
 

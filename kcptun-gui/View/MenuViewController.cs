@@ -41,6 +41,7 @@ namespace kcptun_gui.View
         private AboutForm aboutForm;
         private CustomKCPTunForm customKcptunForm;
         private StatisticsForm statisticsForm;
+        private SNMPConfigurationForm snmpConfigForm;
 
         private bool _firstRun;
         private LinkedList<BalloonTipAction> _balloonTipActions;
@@ -162,6 +163,11 @@ namespace kcptun_gui.View
                     this.checkGUIUpdateAtStartupItem = CreateMenuItem("Check GUI updates at startup", new EventHandler(this.OnCheckGUIUpdateAtStartupItemClick)),
                     this.checkKcpTunUpdateAtStartupItem = CreateMenuItem("Check kcptun updates at startup", new EventHandler(this.OnCheckKcpTunUpdateAtStartupItemClick)),
                     this.upgradeKcpTunAtStartupItem = CreateMenuItem("Upgrade kcptun updates at startup", new EventHandler(this.OnUpgradeKcpTunAtStartupItemClick)),
+                }),
+                CreateMenuGroup("SNMP...", new MenuItem[] {
+                    CreateMenuItem("View SNMP...", new EventHandler(this.OnShowSNMPItemClick)),
+                    new MenuItem("-"),
+                    CreateMenuItem("SNMP Configurations...", new EventHandler(this.OnSNMPConfigurationItemClick)),
                 }),
                 this.AboutItems = CreateMenuGroup("About...", new MenuItem[] {
                     this.aboutSeperatorItem = new MenuItem("-"),
@@ -364,6 +370,25 @@ namespace kcptun_gui.View
             statisticsForm = null;
         }
 
+        private void ShowSNMPConfigForm()
+        {
+            if (snmpConfigForm != null)
+            {
+                snmpConfigForm.Activate();
+            }
+            else
+            {
+                snmpConfigForm = new SNMPConfigurationForm(controller);
+                snmpConfigForm.Show();
+                snmpConfigForm.FormClosed += OnSNMPConfigFormClosed;
+            }
+        }
+
+        private void OnSNMPConfigFormClosed(object sender, FormClosedEventArgs e)
+        {
+            snmpConfigForm = null;
+        }
+
         private void OnEnableItemClick(object sender, EventArgs e)
         {
             controller.ConfigController.ToggleEnable(!enableItem.Checked);
@@ -463,6 +488,22 @@ namespace kcptun_gui.View
         private void OnShowLogItemClick(object sender, EventArgs e)
         {
             new LogForm(controller).Show();
+        }
+
+        private void OnShowSNMPItemClick(object sender, EventArgs e)
+        {
+            SNMPConfiguration snmp = controller.ConfigController.GetCurrentConfiguration().snmp;
+            if (!string.IsNullOrEmpty(snmp.snmplog))
+            {
+                FileInfo fi = new FileInfo(Path.Combine(Utils.GetTempPath(), snmp.snmplog));
+                string argument = "/select, \"" + fi.FullName + "\"";
+                Process.Start("explorer.exe", argument);
+            }
+        }
+
+        private void OnSNMPConfigurationItemClick(object sender, EventArgs e)
+        {
+            ShowSNMPConfigForm();
         }
 
         private void OnAboutItemClick(object sender, EventArgs e)

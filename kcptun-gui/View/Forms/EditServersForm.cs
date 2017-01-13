@@ -93,7 +93,7 @@ namespace kcptun_gui.View
         {
             Server server = GetSelectedServer();
             if (server != null)
-                ArgumentsTextBox.Text = KCPTunnelController.BuildArguments(server);
+                ArgumentsTextBox.Text = KCPTunnelController.BuildArguments(_config.snmp, server);
             else
                 ArgumentsTextBox.Text = "";
         }

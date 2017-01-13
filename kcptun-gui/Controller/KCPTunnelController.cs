@@ -75,11 +75,12 @@ namespace kcptun_gui.Controller
 
             try
             {
+                Configuration config = controller.ConfigController.GetCurrentConfiguration();
                 string filename = GetKCPTunPath();
                 Console.WriteLine($"kcptun client: {filename}");
                 MyProcess p = new MyProcess(_server);
                 p.StartInfo.FileName = filename;
-                p.StartInfo.Arguments = BuildArguments(_server, localaddr, remoteaddr);
+                p.StartInfo.Arguments = BuildArguments(config.snmp, _server, localaddr, remoteaddr);
                 p.StartInfo.WorkingDirectory = Utils.GetTempPath();
                 p.StartInfo.WindowStyle = ProcessWindowStyle.Hidden;
                 p.StartInfo.UseShellExecute = false;
@@ -249,12 +250,12 @@ namespace kcptun_gui.Controller
             return version;
         }
 
-        public static string BuildArguments(Server server)
+        public static string BuildArguments(SNMPConfiguration snmp, Server server)
         {
-            return BuildArguments(server, null, null);
+            return BuildArguments(snmp, server, null, null);
         }
 
-        private static string BuildArguments(Server server, string localaddr, string remoteaddr)
+        private static string BuildArguments(SNMPConfiguration snmp, Server server, string localaddr, string remoteaddr)
         {
             if (string.IsNullOrEmpty(localaddr))
                 localaddr = server.localaddr;
@@ -300,7 +301,11 @@ namespace kcptun_gui.Controller
                 if (!string.IsNullOrEmpty(server.extend_arguments))
                     arguments.Append($" {server.extend_arguments}");
             }
-
+            if (snmp != null && snmp.enabled)
+            {
+                arguments.Append($" --snmplog=\"{snmp.snmplog}\"");
+                arguments.Append($" --snmpperiod {snmp.snmpperiod}");
+            }
             return arguments.ToString().Trim();
         }
 

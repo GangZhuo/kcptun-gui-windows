@@ -81,6 +81,7 @@
     <Compile Include="Model\kcptun_crypt.cs" />
     <Compile Include="Model\kcptun_mode.cs" />
     <Compile Include="Model\PropertyCategories.cs" />
+    <Compile Include="Model\SNMPConfiguration.cs" />
     <Compile Include="Model\Traffic.cs" />
     <Compile Include="Model\TrafficLog.cs" />
     <Compile Include="Model\TrafficStatistics.cs" />
@@ -100,6 +101,12 @@
     </Compile>
     <Compile Include="View\Forms\CustomKCPTunForm.Designer.cs">
       <DependentUpon>CustomKCPTunForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="View\Forms\SNMPConfigurationForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="View\Forms\SNMPConfigurationForm.Designer.cs">
+      <DependentUpon>SNMPConfigurationForm.cs</DependentUpon>
     </Compile>
     <Compile Include="View\Forms\StatisticsForm.cs">
       <SubType>Form</SubType>
@@ -145,6 +152,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="View\Forms\EditServersForm.resx">
       <DependentUpon>EditServersForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\Forms\SNMPConfigurationForm.resx">
+      <DependentUpon>SNMPConfigurationForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\Forms\StatisticsForm.resx">
       <DependentUpon>StatisticsForm.cs</DependentUpon>

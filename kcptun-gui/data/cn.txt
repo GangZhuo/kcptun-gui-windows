@@ -27,6 +27,8 @@ Check GUI updates at startup=自动检测 GUI 版本
 Check kcptun updates at startup=自动检测 kcptun 版本
 Upgrade kcptun updates at startup=自动升级 kcptun
 About Form=关于窗口
+View SNMP...=查看 SNMP...
+SNMP Configurations...=配置 SNMP...
 
 # Message
 
@@ -84,6 +86,11 @@ Raw Inbound=入站 - 原始
 Raw Outbound=出站 - 原始
 KCP Inbound=入站 - KCP
 KCP Outbound=出站 - KCP
+
+# SNMP Configuration
+SNMP Configuration=配置 SNMP
+SNMP Log File:=SNMP 日志文件：
+SNMP Period (Seconds):=SNMP 周期（秒）：
 
 # Buttons
 Browser=浏览

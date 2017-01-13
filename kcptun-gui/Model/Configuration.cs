@@ -30,6 +30,8 @@ namespace kcptun_gui.Model
 
         public string language;
 
+        public SNMPConfiguration snmp;
+
         [JsonIgnore]
         public bool isDefault;
 
@@ -50,6 +52,7 @@ namespace kcptun_gui.Model
                 string configContent = File.ReadAllText(CONFIG_FILE);
                 Configuration config = JsonConvert.DeserializeObject<Configuration>(configContent);
                 if (config.servers == null) config.servers = new List<Server>();
+                if (config.snmp == null) config.snmp = new SNMPConfiguration();
                 return config;
             }
             catch (Exception e)
@@ -66,6 +69,7 @@ namespace kcptun_gui.Model
                     check_gui_update = true,
                     check_kcptun_update = true,
                     auto_upgrade_kcptun = false,
+                    snmp = new SNMPConfiguration(),
                     servers = new List<Server>()
                     {
                         GetDefaultServer()
