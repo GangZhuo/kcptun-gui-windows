@@ -4,6 +4,7 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.ComponentModel;
 using Newtonsoft.Json.Linq;
+using System.Text;
 
 using kcptun_gui.Common;
 
@@ -17,8 +18,8 @@ namespace kcptun_gui.Controller
         public const string KCPTUN_RELEASE_PAGE = "https://github.com/xtaci/kcptun/releases";
 
 
-        private const string GUI_UPDATE_API_URL = "https://api.github.com/repos/GangZhuo/kcptun-gui-windows/releases";
-        private const string KCPTUN_UPDATE_API_URL = "https://api.github.com/repos/xtaci/kcptun/releases";
+        private const string GUI_UPDATE_API_URL = "https://api.github.com/repos/GangZhuo/kcptun-gui-windows/releases/latest";
+        private const string KCPTUN_UPDATE_API_URL = "https://api.github.com/repos/xtaci/kcptun/releases/latest";
         private const string UserAgent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36";
 
         private MainController controller;
@@ -106,6 +107,7 @@ namespace kcptun_gui.Controller
                 else
                 {
                     WebClient http = CreateWebClient();
+                    http.Encoding = Encoding.UTF8;
                     http.DownloadStringCompleted += http_DownloadStringCompleted;
                     http.DownloadStringAsync(new Uri(state.apiUrl), state);
                 }
@@ -124,29 +126,22 @@ namespace kcptun_gui.Controller
 
                 string response = e.Result;
 
-                JArray result = JArray.Parse(response);
+                JObject release = JObject.Parse(response);
 
                 CheckUpdateEventArgs args = new CheckUpdateEventArgs();
                 args.App = state.app;
                 args.ApiUrl = state.apiUrl;
                 args.CurrentVersion = state.currentVersion;
                 args.UserState = state.userState;
-                if (result != null)
+                if (release != null)
                 {
-                    foreach (JObject release in result)
+                    foreach (JObject asset in (JArray)release["assets"])
                     {
-                        if ((bool)release["prerelease"])
+                        Release ass = new Release() { app = state.app };
+                        ass.Parse(asset);
+                        if (ass.IsNewVersion(state.currentVersion))
                         {
-                            continue;
-                        }
-                        foreach (JObject asset in (JArray)release["assets"])
-                        {
-                            Release ass = new Release() { app = state.app };
-                            ass.Parse(asset);
-                            if (ass.IsNewVersion(state.currentVersion))
-                            {
-                                args.ReleaseList.Add(ass);
-                            }
+                            args.ReleaseList.Add(ass);
                         }
                     }
                 }
@@ -197,7 +192,7 @@ namespace kcptun_gui.Controller
                 args.SaveTo = state.saveTo;
                 args.Release = state.release;
                 args.UserState = state.userState;
-                if (e.Error == null)
+                if (e.Error != null)
                     Logging.LogUsefulException(e.Error);
                 if (DownloadCompleted != null)
                     DownloadCompleted.Invoke(this, args);
