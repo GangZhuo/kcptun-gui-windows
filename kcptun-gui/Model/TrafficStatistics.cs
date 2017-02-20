@@ -33,6 +33,8 @@ namespace kcptun_gui.Model
                 string filename = Utils.GetTempPath(TRAFFIC_STATISTICS_FILE);
                 string content = File.ReadAllText(filename);
                 TrafficStatistics instance = JsonConvert.DeserializeObject<TrafficStatistics>(content);
+                if (instance == null)
+                    return new TrafficStatistics();
                 return instance;
             }
             catch (Exception e)
