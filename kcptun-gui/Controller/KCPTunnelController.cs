@@ -246,7 +246,7 @@ namespace kcptun_gui.Controller
             if (sv.Length == 3)
                 version = sv[2];
             else
-                version = null;
+                version = "0.0.0";
             return version;
         }
 
