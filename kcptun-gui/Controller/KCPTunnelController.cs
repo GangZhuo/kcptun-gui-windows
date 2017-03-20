@@ -54,12 +54,10 @@ namespace kcptun_gui.Controller
             if (string.IsNullOrEmpty(config.kcptun_path))
             {
                 string path = null;
-                if (Environment.Is64BitOperatingSystem && File.Exists("client_windows_amd64.exe"))
+                if (Environment.Is64BitOperatingSystem)
                     path = "client_windows_amd64.exe";
-                else if (File.Exists("client_windows_386.exe"))
+                else
                     path = "client_windows_386.exe";
-                if (path == null)
-                    throw new Exception("client_windows_amd64.exe or client_windows_386.exe not exists, please download from https://github.com/xtaci/kcptun or specify absolute path through context menu (Right click task bar icon, then select 'More/Custom KCPTun').");
                 return path;
             }
             else

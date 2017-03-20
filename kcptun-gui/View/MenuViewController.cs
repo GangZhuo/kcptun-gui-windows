@@ -646,6 +646,7 @@ namespace kcptun_gui.View
                 else
                 {
 #if TAR
+                    string arch = Environment.Is64BitOperatingSystem ? "amd64" : "386";
                     string dstFilename = controller.KCPTunnelController.GetKCPTunPath();
                     try
                     {
@@ -659,13 +660,13 @@ namespace kcptun_gui.View
                             controller.KCPTunnelController.Stop();
                         if (File.Exists(dstFilename))
                             File.Delete(dstFilename);
-                        File.Move(Utils.GetTempPath("client_windows_amd64.exe"), dstFilename);
+                        File.Move(Utils.GetTempPath($"client_windows_{arch}.exe"), dstFilename);
                         if (running)
                             controller.KCPTunnelController.Start();
-                        if (File.Exists(Utils.GetTempPath("client_windows_amd64.exe")))
-                            File.Delete(Utils.GetTempPath("client_windows_amd64.exe"));
-                        if (File.Exists(Utils.GetTempPath("server_windows_amd64.exe")))
-                            File.Delete(Utils.GetTempPath("server_windows_amd64.exe"));
+                        if (File.Exists(Utils.GetTempPath($"client_windows_{arch}.exe")))
+                            File.Delete(Utils.GetTempPath($"client_windows_{arch}.exe"));
+                        if (File.Exists(Utils.GetTempPath($"server_windows_{arch}.exe")))
+                            File.Delete(Utils.GetTempPath($"server_windows_{arch}.exe"));
                         if (File.Exists(e.SaveTo))
                             File.Delete(e.SaveTo);
                         text = string.Format(I18N.GetString("kcptun updated to {0}"), controller.KCPTunnelController.GetKcptunVersionNumber());
