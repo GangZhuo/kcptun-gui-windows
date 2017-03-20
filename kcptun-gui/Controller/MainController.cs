@@ -158,8 +158,8 @@ namespace kcptun_gui.Controller
         {
             try
             {
-                string[] localaddr_compns = server.localaddr.Split(':');
-                IPEndPoint localEP = new IPEndPoint(IPAddress.Loopback, Convert.ToInt32(localaddr_compns[1]));
+                IPEndPoint localEP = Utils.ToEndPoint(server.localaddr);
+                localEP = new IPEndPoint(IPAddress.Loopback, localEP.Port);
                 IPEndPoint remoteEP = Utils.ToEndPoint(server.ss_server);
                 _ssudpRelay = new UDPRelay(this, localEP, remoteEP);
                 _ssudpRelay.Start();
@@ -189,10 +189,10 @@ namespace kcptun_gui.Controller
         private void RegistRightStatistics()
         {
             Server server = KCPTunnelController.Server;
-            string[] localaddr_compns = server.localaddr.Split(':');
-            IPEndPoint localEP = new IPEndPoint(
+            IPEndPoint localEP = Utils.ToEndPoint(server.localaddr);
+            localEP = new IPEndPoint(
                 IPAddress.Loopback,
-                Utils.GetFreePort(ProtocolType.Udp, Convert.ToInt32(localaddr_compns[1]) + 1)); // Do not use same TCP port, since shadowsocks maybe send data to this port.
+                Utils.GetFreePort(ProtocolType.Udp, localEP.Port + 1)); // Do not use same TCP port, since shadowsocks maybe send data to this port.
             IPEndPoint remoteEP = Utils.ToEndPoint(server.remoteaddr);
 
             KCPTunnelController.remoteaddr = localEP.ToString();

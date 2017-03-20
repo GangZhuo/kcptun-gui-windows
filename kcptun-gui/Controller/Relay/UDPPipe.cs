@@ -158,7 +158,7 @@ namespace kcptun_gui.Controller.Relay
             {
                 try
                 {
-                    _remote = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+                    _remote = new Socket(_remoteEP.AddressFamily, SocketType.Dgram, ProtocolType.Udp);
                     _remote.SetSocketOption(SocketOptionLevel.Udp, SocketOptionName.NoDelay, true);
                     _remote.BeginConnect(_remoteEP, new AsyncCallback(remoteConnectCallback), null);
                     resetExpireTime();

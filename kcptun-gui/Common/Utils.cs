@@ -176,13 +176,15 @@ namespace kcptun_gui.Common
 
         public static IPEndPoint ToEndPoint(string address)
         {
-            string[] addr_compns = address.Split(':');
+            int index = address.LastIndexOf(':');
+            string host = address.Substring(0, index);
+            string port = address.Substring(index + 1);
             IPAddress ipAddress;
-            if (string.IsNullOrEmpty(addr_compns[0]))
+            if (string.IsNullOrEmpty(host))
                 ipAddress = IPAddress.Any;
-            else if (!IPAddress.TryParse(addr_compns[0], out ipAddress))
-                ipAddress = Dns.GetHostEntry(addr_compns[0]).AddressList[0];
-            IPEndPoint ep = new IPEndPoint(ipAddress, Convert.ToInt32(addr_compns[1]));
+            else if (!IPAddress.TryParse(host, out ipAddress))
+                ipAddress = Dns.GetHostEntry(host).AddressList[0];
+            IPEndPoint ep = new IPEndPoint(ipAddress, Convert.ToInt32(port));
             return ep;
         }
     }

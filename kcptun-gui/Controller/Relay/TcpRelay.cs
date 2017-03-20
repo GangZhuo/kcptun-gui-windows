@@ -32,7 +32,7 @@ namespace kcptun_gui.Controller
             try
             {
                 // Create a TCP/IP socket.
-                _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                _socket = new Socket(_localEP.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
                 _socket.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
                 // Bind the socket to the local endpoint and listen for incoming connections.
                 _socket.Bind(_localEP);

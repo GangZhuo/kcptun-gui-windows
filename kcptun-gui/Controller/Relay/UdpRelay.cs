@@ -46,7 +46,7 @@ namespace kcptun_gui.Controller
             try
             {
                 // Create a TCP/IP socket.
-                _local = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+                _local = new Socket(_localEP.AddressFamily, SocketType.Dgram, ProtocolType.Udp);
                 _local.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
                 const int SIP_UDP_CONNRESET = -1744830452;
                 // Fix WinSock library bug, See https://support.microsoft.com/en-us/kb/263823
