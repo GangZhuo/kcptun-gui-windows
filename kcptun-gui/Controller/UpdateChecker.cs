@@ -163,7 +163,8 @@ namespace kcptun_gui.Controller
             DownloadState state = new DownloadState
             {
                 release = release,
-                saveTo = Utils.GetTempPath(release.name)
+                saveTo = Utils.GetTempPath(release.name),
+                percent = 0
             };
             Download(state);
         }
@@ -174,7 +175,27 @@ namespace kcptun_gui.Controller
             {
                 WebClient http = CreateWebClient();
                 http.DownloadFileCompleted += Http_DownloadFileCompleted;
+                http.DownloadProgressChanged += Http_DownloadProgressChanged;
+                state.percent = 0;
                 http.DownloadFileAsync(new Uri(state.release.browser_download_url), state.saveTo, state);
+                Console.WriteLine($"Downloading {state.release.browser_download_url}...");
+            }
+            catch (Exception ex)
+            {
+                Logging.LogUsefulException(ex);
+            }
+        }
+
+        private void Http_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
+        {
+            try
+            {
+                DownloadState state = (DownloadState)e.UserState;
+                if (state.percent != e.ProgressPercentage)
+                {
+                    state.percent = e.ProgressPercentage;
+                    Console.WriteLine($"{e.ProgressPercentage}%  {e.BytesReceived}/{e.TotalBytesToReceive} Bytes");
+                }
             }
             catch (Exception ex)
             {
@@ -332,6 +353,7 @@ namespace kcptun_gui.Controller
         {
             public Release release;
             public string saveTo;
+            public int percent;
             public object userState;
         }
 
